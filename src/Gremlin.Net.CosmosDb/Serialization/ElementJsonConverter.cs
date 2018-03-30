@@ -6,7 +6,7 @@ using System;
 namespace Gremlin.Net.CosmosDb.Serialization
 {
     /// <summary>
-    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Element"/> objects
+    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.Element"/> objects
     /// </summary>
     /// <seealso cref="Newtonsoft.Json.JsonConverter"/>
     internal sealed class ElementJsonConverter : JsonConverter
