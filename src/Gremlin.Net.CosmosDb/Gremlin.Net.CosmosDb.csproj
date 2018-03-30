@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Terren Musselwhite</Authors>
+    <Company>evo</Company>
+    <PackageTags>gremlin cosmos cosmosdb gremlin.net</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Helper library to use Gremlin.Net with a Cosmos DB graph instance</Description>
+    <Copyright>© 2001-2018 evo - All rights reserved, all wrongs reversed</Copyright>
+    <Version>0.1.0.0-alpha</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Gremlin.Net" Version="3.3.1" />
+  </ItemGroup>
+
+</Project>
