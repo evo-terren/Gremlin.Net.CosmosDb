@@ -9,37 +9,37 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// Represents an edge on a graph
     /// </summary>
     /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element"/>
-    public class Edge : Element
+    public sealed class Edge : Element
     {
         /// <summary>
         /// Gets or sets the id of the "in" vertex.
         /// </summary>
         [JsonProperty("inV", Order = 3)]
-        public virtual string InV { get; set; }
+        public string InV { get; set; }
 
         /// <summary>
         /// Gets or sets the "in" vertex label.
         /// </summary>
         [JsonProperty("inVLabel", Order = 4)]
-        public virtual string InVLabel { get; set; }
+        public string InVLabel { get; set; }
 
         /// <summary>
         /// Gets or sets the id of the "out" vertex.
         /// </summary>
         [JsonProperty("outV", Order = 5)]
-        public virtual string OutV { get; set; }
+        public string OutV { get; set; }
 
         /// <summary>
         /// Gets or sets the "out" vertex label.
         /// </summary>
         [JsonProperty("outVLabel", Order = 6)]
-        public virtual string OutVLabel { get; set; }
+        public string OutVLabel { get; set; }
 
         /// <summary>
         /// Gets or sets the properties.
         /// </summary>
         [JsonProperty("properties", Order = 7)]
-        public virtual IReadOnlyDictionary<string, object> Properties
+        public IReadOnlyDictionary<string, object> Properties
         {
             get { return _properties; }
             set { _properties = value ?? new Dictionary<string, object>(); }
@@ -58,5 +58,15 @@ namespace Gremlin.Net.CosmosDb.Structure
         {
             return $"e[{Id}][{OutV}-{Label}->{InV}]";
         }
+    }
+
+    /// <summary>
+    /// Schema-bound container of a graph's edge
+    /// </summary>
+    /// <typeparam name="TinV">The type of the in vertex.</typeparam>
+    /// <typeparam name="ToutV">The type of the out vertex.</typeparam>
+    /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element"/>
+    public abstract class Edge<TinV, ToutV> : IInVEdge<TinV>, IOutVEdge<ToutV>
+    {
     }
 }

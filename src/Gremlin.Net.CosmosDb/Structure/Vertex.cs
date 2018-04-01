@@ -9,13 +9,13 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// Represents a single vertex/node within a graph
     /// </summary>
     /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element"/>
-    public class Vertex : Element
+    public sealed class Vertex : Element
     {
         /// <summary>
         /// Gets or sets the properties.
         /// </summary>
         [JsonProperty("properties", Order = 3)]
-        public virtual IReadOnlyDictionary<string, IReadOnlyCollection<VertexPropertyValue>> Properties
+        public IReadOnlyDictionary<string, IReadOnlyCollection<VertexPropertyValue>> Properties
         {
             get { return _properties; }
             set { _properties = value ?? new Dictionary<string, IReadOnlyCollection<VertexPropertyValue>>(); }
@@ -34,5 +34,14 @@ namespace Gremlin.Net.CosmosDb.Structure
         {
             return $"v[{Id}]";
         }
+    }
+
+    /// <summary>
+    /// Data container for a schema-bound vertex
+    /// </summary>
+    /// <typeparam name="TPropertyContainer">The type of the property container.</typeparam>
+    /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element"/>
+    public class Vertex<TPropertyContainer>
+    {
     }
 }

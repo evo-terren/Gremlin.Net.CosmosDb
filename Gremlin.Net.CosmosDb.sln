@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gremlin.Net.CosmosDb", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{21CCBA67-BD21-4693-B1E7-A1B17A8AA762}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GremlinSample", "GremlinSample\GremlinSample.csproj", "{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{57E3A906-DCD2-4CCA-BF83-26890672CCB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57E3A906-DCD2-4CCA-BF83-26890672CCB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57E3A906-DCD2-4CCA-BF83-26890672CCB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{57E3A906-DCD2-4CCA-BF83-26890672CCB9} = {21CCBA67-BD21-4693-B1E7-A1B17A8AA762}
+		{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2} = {21CCBA67-BD21-4693-B1E7-A1B17A8AA762}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43E88192-1430-491B-8D2C-1CF6647B18B4}

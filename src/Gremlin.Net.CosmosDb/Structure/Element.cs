@@ -24,7 +24,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Initializes a new instance of the <see cref="Element"/> class.
         /// </summary>
-        protected Element()
+        protected internal Element()
         {
         }
     }
