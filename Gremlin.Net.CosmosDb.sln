@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gremlin.Net.CosmosDb", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{21CCBA67-BD21-4693-B1E7-A1B17A8AA762}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GremlinSample", "GremlinSample\GremlinSample.csproj", "{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GremlinSample", "GremlinSample\GremlinSample.csproj", "{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EA59905B-97BF-4C5D-BECF-251DABFC7C16}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
