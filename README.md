@@ -15,19 +15,21 @@ using Gremlin.Net.CosmosDb;
 
 ...
 
-using (var graphClient = new GraphClient("Your Gremlin Cosmos Db Host", "Your DB Name", "Your Graph Name", "Your Access Key"))
+using (var graphClient = new GraphClient("Your Gremlin Cosmos Db Host", "Your DB Name", 
+			"Your Graph Name", "Your Access Key"))
 {
-	//Create the traversal source using the graph client
-	//This is the typical "g" that your gremlin queries start with
+    //Create the traversal source using the graph client
+    //This is the typical "g" that your gremlin queries start with
     var g = graphClient.CreateTraversalSource();
 
-	//build a query using Gremlin.Net traversals
+    //build a query using Gremlin.Net traversals
     var query = g.V("some-vertex-id").Out("some-edge-label");
 
-	//use the SubmitAsync(ITraversal traversal) extension methods that accept Gremlin.Net traversals
+    //use the SubmitAsync(ITraversal traversal) extension methods that accept Gremlin.Net traversals
     var response = await graphClient.SubmitAsync(query);
 
-	//use the .ToGremlinQuery() extension method if you need the raw query in string form for any reason (logging, validating this code actually works, etc.)
+    //use the .ToGremlinQuery() extension method if you need the raw query 
+    //in string form for any reason (logging, validating this code actually works, etc.)
     Console.WriteLine(query.ToGremlinQuery());
 
     Console.WriteLine();
@@ -60,10 +62,10 @@ using Newtonsoft.Json;
 var query = //your gremlin query traversal
 var serializerSettings = new JsonSerializerSettings
 {
-	Converters = new []
-	{
-		new YourCustomTypeJsonConverter()
-	}
+    Converters = new []
+    {
+        new YourCustomTypeJsonConverter()
+    }
 };
 var response = await graphClient.SubmitAsync<YourCustomType>(query, serializerSettings);
 ```
@@ -80,13 +82,13 @@ using Gremlin.Net.CosmosDb.Structure;
 [Label("person")]
 public class PersonVertex : Vertex
 {
-	public PersonPurchasedProductEdge Purchased { get; }
+    public PersonPurchasedProductEdge Purchased { get; }
 }
 
 [Label("product")]
 public class ProductVertex : Vertex
 {
-	public PersonPurchasedProductEdge PurchasedBy { get; }
+    public PersonPurchasedProductEdge PurchasedBy { get; }
 }
 
 [Label("purchased")]
@@ -97,11 +99,11 @@ public class PersonPurchasedProductEdge : Edge<Person, Product>
 
 ...
 
-var query = g.V<PersonVertex>("person-vertex-id")	//typed to a specific Vertex class
-			 .Out(pv => pv.Purchased)				//this gets us to the ProductVertex
-			 .In(pv => pv.PurchasedBy)				//now we're back to the PersonVertex
-			 .OutE(pv => pv.Purchased)				//now we're on the edge (still type-specific)
-			 .InV();								//back to the product vertex
+var query = g.V<PersonVertex>("person-vertex-id")   //typed to a specific Vertex class
+             .Out(pv => pv.Purchased)               //this gets us to the ProductVertex
+             .In(pv => pv.PurchasedBy)              //now we're back to the PersonVertex
+             .OutE(pv => pv.Purchased)              //now we're on the edge (still type-specific)
+             .InV();                                //back to the product vertex
 var response = await graphClient.SubmitAsync(query);
 
 foreach (ProductVertex product in response)
