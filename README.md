@@ -1,6 +1,6 @@
 ﻿# Gremlin.Net.CosmosDb
 
-Gremlin.Net.CosmosDb is a helper library to be used in conjuntion with Gremlin.Net [Gremlin.Net](https://github.com/apache/tinkerpop/tree/master/gremlin-dotnet).
+Gremlin.Net.CosmosDb is a helper library to be used in conjuntion with [Gremlin.Net](https://github.com/apache/tinkerpop/tree/master/gremlin-dotnet).
 
 To date, the [only documented way](https://docs.microsoft.com/en-us/azure/cosmos-db/create-graph-dotnet) to utilize Gremlin.Net with a CosmosDb graph instance is to utilize the `gremlinClient.SubmitAsync<dynamic>("gremlin query here")` method, which only accepts a string and returns a `dynamic`, which is pretty error-prone and not very helpful in a production C# application. The primary limitation to utilizing Gremlin.Net to its fullest potential is that it sends the gremlin query to the server as java bytecode, [something CosmosDb does not yet support](https://feedback.azure.com/forums/263030-azure-cosmos-db/suggestions/33632779-support-gremlin-bytecode-to-enable-the-fluent-api).
 
