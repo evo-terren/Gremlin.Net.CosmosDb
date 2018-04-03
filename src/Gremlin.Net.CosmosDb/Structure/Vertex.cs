@@ -9,13 +9,13 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// Represents a single vertex/node within a graph
     /// </summary>
     /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element"/>
-    public sealed class Vertex : Element
+    public class Vertex : Element
     {
         /// <summary>
         /// Gets or sets the properties.
         /// </summary>
         [JsonProperty("properties", Order = 3)]
-        public IReadOnlyDictionary<string, IReadOnlyCollection<VertexPropertyValue>> Properties
+        public virtual IReadOnlyDictionary<string, IReadOnlyCollection<VertexPropertyValue>> Properties
         {
             get { return _properties; }
             set { _properties = value ?? new Dictionary<string, IReadOnlyCollection<VertexPropertyValue>>(); }
@@ -27,21 +27,15 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// Gets a value indicating whether the Properties property should be serialized.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializeProperties() => Properties.Any();
+        public virtual bool ShouldSerializeProperties() => Properties.Any();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             return $"v[{Id}]";
         }
-    }
-
-    /// <summary>
-    /// Data container for a schema-bound vertex
-    /// </summary>
-    /// <typeparam name="TPropertyContainer">The type of the property container.</typeparam>
-    /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element"/>
-    public class Vertex<TPropertyContainer>
-    {
     }
 }

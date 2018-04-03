@@ -14,11 +14,7 @@ namespace GremlinSample
             {
                 var g = graphClient.CreateTraversalSource();
 
-                //var bindings = new Dictionary<string, object>
-                //{
-                //    { "UserId", "\").drop(\"" }
-                //};
-                var query = g.V<PersonVertex>("0205c68e-c2cd-4cc2-b4f0-adcc791041ac").Out(v => v.Purchased).In(v => v.PurchasedBy);
+                var query = g.V<PersonVertex>("1").Out(v => v.Purchased);
                 Console.WriteLine(query.ToGremlinQuery());
                 var response = await graphClient.SubmitAsync(query);
 

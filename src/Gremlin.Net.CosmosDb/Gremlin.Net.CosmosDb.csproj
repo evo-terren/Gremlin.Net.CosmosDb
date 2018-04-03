@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Helper library to use Gremlin.Net with a Cosmos DB graph instance</Description>
     <Copyright>© 2001-2018 evo - All rights reserved, all wrongs reversed</Copyright>
-    <Version>0.1.0.1-alpha</Version>
+    <Version>0.1.0.2-alpha</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

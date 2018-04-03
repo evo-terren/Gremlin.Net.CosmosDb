@@ -1,12 +1,10 @@
-﻿using Gremlin.Net.CosmosDb.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Gremlin.Net.CosmosDb.Structure
 {
     /// <summary>
     /// Base class for data elements within a graph
     /// </summary>
-    [JsonConverter(typeof(ElementJsonConverter))]
     public abstract class Element
     {
         /// <summary>

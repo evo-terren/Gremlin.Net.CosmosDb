@@ -3,7 +3,7 @@
 namespace GremlinSample.Schema
 {
     [Label("person")]
-    public sealed class PersonVertex
+    public sealed class PersonVertex : Vertex
     {
         public PersonPurchasedProductEdge Purchased { get; private set; }
     }
