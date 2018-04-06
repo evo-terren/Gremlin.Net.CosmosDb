@@ -10,19 +10,19 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
-        [JsonProperty("id", Order = 1)]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the label.
         /// </summary>
-        [JsonProperty("label", Order = 2)]
+        [JsonProperty("label")]
         public string Label { get; set; }
 
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        [JsonProperty("value", Order = 2)]
+        [JsonProperty("value")]
         public object Value { get; set; }
     }
 }

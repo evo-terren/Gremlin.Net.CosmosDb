@@ -33,6 +33,19 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GraphClient"/> class.
+        /// </summary>
+        /// <param name="gremlinClient">The gremlin client.</param>
+        /// <exception cref="ArgumentNullException">gremlinClient</exception>
+        internal GraphClient(IGremlinClient gremlinClient)
+        {
+            if (gremlinClient == null)
+                throw new ArgumentNullException(nameof(gremlinClient));
+
+            _gremlinClient = gremlinClient;
+        }
+
+        /// <summary>
         /// Creates the traversal source (g).
         /// </summary>
         /// <returns>Returns the traversal source</returns>
