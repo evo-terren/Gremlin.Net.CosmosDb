@@ -122,6 +122,15 @@ namespace Gremlin.Net.CosmosDb.Serialization
         }
 
         /// <summary>
+        /// Serializes the specified cardinality.
+        /// </summary>
+        /// <param name="cardinality">The cardinality.</param>
+        private void Serialize(Cardinality cardinality)
+        {
+            _writer.Write(cardinality.ToString().ToLowerInvariant());
+        }
+
+        /// <summary>
         /// Serializes the specified enum.
         /// </summary>
         /// <param name="enum">The enum.</param>

@@ -454,7 +454,7 @@ namespace Gremlin.Net.CosmosDb
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
             //if the property is an enumerable, we need to specify the cardinality to be list
-            if (TYPE_OF_ENUMERABLE.IsAssignableFrom(typeof(TProperty)))
+            if (TYPE_OF_ENUMERABLE.IsAssignableFrom(typeof(TProperty)) && typeof(TProperty) != typeof(string))
             {
                 var enumerator = ((IEnumerable)value).GetEnumerator();
                 var result = traversal;
