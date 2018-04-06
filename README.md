@@ -114,9 +114,7 @@ foreach (ProductVertex product in response)
 
 ## Vertex and Edge With Property Containers
 
-This is a TBD, but my main goal is to enable the ability to specify the model for each of your vertex and edge objects' "properties" bag.
-
-Something like this (DOES NOT WORK YET):
+This is part is definitely a work in progress, but my main goal is to enable the ability to specify the model for each of your vertex and edge objects' "properties" bag.
 
 ```c#
 public class Person
@@ -135,5 +133,5 @@ public class PersonVertex : Vertex<Person>
 //usage in application
 ...
 
-var query = g.V<PersonVertex>().has(p => p.Name, "Todd");
+var query = g.V<PersonVertex>().has(v => v.Properties.Name, "Todd").property(v => v.Properties.Birthdate, DateTimeOffset.Now);
 ```
