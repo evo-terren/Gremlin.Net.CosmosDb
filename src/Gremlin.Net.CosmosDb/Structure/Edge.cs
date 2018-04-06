@@ -6,56 +6,15 @@ using System.Linq;
 namespace Gremlin.Net.CosmosDb.Structure
 {
     /// <summary>
-    /// Simple edge-piece interface for schema to represent an edge that has an "in" vertex
-    /// </summary>
-    /// <typeparam name="TinV">The type of the in v.</typeparam>
-    public interface IEdgeIn<TinV>
-    {
-    }
-
-    /// <summary>
-    /// Simple edge-piece interface for schema to represent an edge that has an "out" vertex
-    /// </summary>
-    /// <typeparam name="ToutV">The type of the out v.</typeparam>
-    public interface IEdgeOut<ToutV>
-    {
-    }
-
-    /// <summary>
     /// Represents an edge on a graph
     /// </summary>
-    /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element"/>
-    public class Edge : Element
+    public class Edge : Edge<IReadOnlyDictionary<string, object>>
     {
-        /// <summary>
-        /// Gets or sets the id of the "in" vertex.
-        /// </summary>
-        [JsonProperty("inV", Order = 3)]
-        public virtual string InV { get; set; }
-
-        /// <summary>
-        /// Gets or sets the "in" vertex label.
-        /// </summary>
-        [JsonProperty("inVLabel", Order = 4)]
-        public virtual string InVLabel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the id of the "out" vertex.
-        /// </summary>
-        [JsonProperty("outV", Order = 5)]
-        public virtual string OutV { get; set; }
-
-        /// <summary>
-        /// Gets or sets the "out" vertex label.
-        /// </summary>
-        [JsonProperty("outVLabel", Order = 6)]
-        public virtual string OutVLabel { get; set; }
-
         /// <summary>
         /// Gets or sets the properties.
         /// </summary>
-        [JsonProperty("properties", Order = 7)]
-        public virtual IReadOnlyDictionary<string, object> Properties
+        [JsonProperty("properties")]
+        public override IReadOnlyDictionary<string, object> Properties
         {
             get { return _properties; }
             set { _properties = value ?? new Dictionary<string, object>(); }
@@ -67,12 +26,71 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// Gets a value indicating whether the Properties property should be serialized.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual bool ShouldSerializeProperties() => Properties.Any();
+        public override bool ShouldSerializeProperties() => Properties.Any();
+    }
 
-        /// <inheritdoc/>
+    /// <summary>
+    /// Represents an edge on a graph
+    /// </summary>
+    /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Element{TPropertiesModel}"/>
+    public class Edge<TPropertiesModel> : Element<TPropertiesModel>
+        where TPropertiesModel : class
+    {
+        /// <summary>
+        /// Gets or sets the id of the "in" vertex.
+        /// </summary>
+        [JsonProperty("inV")]
+        public virtual string InV { get; set; }
+
+        /// <summary>
+        /// Gets or sets the "in" vertex label.
+        /// </summary>
+        [JsonProperty("inVLabel")]
+        public virtual string InVLabel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the id of the "out" vertex.
+        /// </summary>
+        [JsonProperty("outV")]
+        public virtual string OutV { get; set; }
+
+        /// <summary>
+        /// Gets or sets the "out" vertex label.
+        /// </summary>
+        [JsonProperty("outVLabel")]
+        public virtual string OutVLabel { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Edge{TPropertiesModel}"/> class.
+        /// </summary>
+        protected Edge()
+        {
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             return $"e[{Id}][{OutV}-{Label}->{InV}]";
+        }
+    }
+
+    /// <summary>
+    /// Schema-bound container of a graph's edge that has a specific model for its properties
+    /// </summary>
+    /// <typeparam name="ToutV">The type of the "out"/source vertex.</typeparam>
+    /// <typeparam name="TinV">The type of the "in"/target vertex.</typeparam>
+    /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
+    public abstract class Edge<ToutV, TinV, TPropertiesModel> : Edge<TPropertiesModel>, IEdgeOut<ToutV>, IEdgeIn<TinV>
+        where TPropertiesModel : class
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Edge{ToutV, TinV, TPropertiesModel}"/> class.
+        /// </summary>
+        protected Edge()
+        {
         }
     }
 
@@ -82,7 +100,31 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// <typeparam name="ToutV">The type of the "out"/source vertex.</typeparam>
     /// <typeparam name="TinV">The type of the "in"/target vertex.</typeparam>
     /// <seealso cref="Gremlin.Net.CosmosDb.Structure.Edge"/>
-    public abstract class Edge<ToutV, TinV> : Edge, IEdgeOut<ToutV>, IEdgeIn<TinV>
+    public abstract class Edge<ToutV, TinV> : Edge<ToutV, TinV, IReadOnlyDictionary<string, object>>
     {
+        /// <summary>
+        /// Gets or sets the properties.
+        /// </summary>
+        [JsonProperty("properties")]
+        public override IReadOnlyDictionary<string, object> Properties
+        {
+            get { return _properties; }
+            set { _properties = value ?? new Dictionary<string, object>(); }
+        }
+
+        private IReadOnlyDictionary<string, object> _properties = new Dictionary<string, object>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Edge{ToutV, TinV}"/> class.
+        /// </summary>
+        protected Edge()
+        {
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the Properties property should be serialized.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override bool ShouldSerializeProperties() => Properties.Any();
     }
 }

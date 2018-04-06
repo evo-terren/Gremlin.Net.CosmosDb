@@ -13,13 +13,13 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Gets or sets the property value identifier.
         /// </summary>
-        [JsonProperty("id", Order = 1)]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the properties (if any).
         /// </summary>
-        [JsonProperty("properties", Order = 3)]
+        [JsonProperty("properties")]
         public IReadOnlyDictionary<string, object> Properties
         {
             get { return _properties; }
@@ -29,7 +29,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        [JsonProperty("value", Order = 2)]
+        [JsonProperty("value")]
         public object Value { get; set; }
 
         private IReadOnlyDictionary<string, object> _properties = new Dictionary<string, object>();

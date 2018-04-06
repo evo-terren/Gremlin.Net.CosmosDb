@@ -1,6 +1,7 @@
 ﻿using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +15,8 @@ namespace Gremlin.Net.CosmosDb
     public static class GraphTraversalExtensions
     {
         private static readonly ConcurrentDictionary<Type, string> _labelLookup = new ConcurrentDictionary<Type, string>();
+        private static readonly Type TYPE_OF_ELEMENT = typeof(Element<>);
+        private static readonly Type TYPE_OF_ENUMERABLE = typeof(IEnumerable);
 
         /// <summary>
         /// Adds the "both()" step to the traversal, returning both adjacent vertices of the given edge
@@ -21,10 +24,12 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="ToutVertex">The type of the out vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Both<S, TVertex, ToutVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<ToutVertex, TVertex>>> edgeSelector)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Both<S, TVertex, ToutVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<ToutVertex, TVertex, TPropertiesModel>>> edgeSelector)
+            where TPropertiesModel : class
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -37,10 +42,12 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="TinVertex">The type of the in vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Both<S, TVertex, TinVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex>>> edgeSelector)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Both<S, TVertex, TinVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex, TPropertiesModel>>> edgeSelector)
+            where TPropertiesModel : class
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -90,16 +97,106 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
+        /// Adds the "has()" step to the traversal, removing traversers that do not have a value
+        /// defined for the given property
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector)
+        {
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+
+            return traversal.Has(propName);
+        }
+
+        /// <summary>
+        /// Adds the "has()" step to the traversal, removing traversers that do not have a specific
+        /// value defined for the given property
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <param name="value">The value to compare.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TProperty value)
+        {
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+
+            return traversal.Has(propName, value);
+        }
+
+        /// <summary>
+        /// Adds the "has()" step to the traversal, removing traversers that do not satisfy the given
+        /// traversal for the given property
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <param name="propertyTraversal">The value to compare.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, ITraversal propertyTraversal)
+        {
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+
+            return traversal.Has(propName, propertyTraversal);
+        }
+
+        /// <summary>
+        /// Adds the "has()" step to the traversal, removing traversers that do not satisfy the given
+        /// predicate for the property selected
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <param name="predicate">The value predicate to test.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TraversalPredicate predicate)
+        {
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+
+            return traversal.Has(propName, predicate);
+        }
+
+        /// <summary>
+        /// Adds the "hasNot()" step to the traversal, removing traversers that define a value for
+        /// the selected property
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static GraphTraversal<S, TElement> HasNot<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector)
+        {
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+
+            return traversal.HasNot(propName);
+        }
+
+        /// <summary>
         /// Adds the "in()" step to the traversal, returning all inbound adjacent vertices with the
         /// given label
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="ToutVertex">The type of the out vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, ToutVertex> In<S, TVertex, ToutVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<ToutVertex, TVertex>>> edgeSelector)
+        public static GraphTraversal<S, ToutVertex> In<S, TVertex, ToutVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<ToutVertex, TVertex, TPropertiesModel>>> edgeSelector)
+            where TPropertiesModel : class
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -215,10 +312,12 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="TinVertex">The type of the "in"/destination vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TinVertex> Out<S, TVertex, TinVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex>>> edgeSelector)
+        public static GraphTraversal<S, TinVertex> Out<S, TVertex, TinVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex, TPropertiesModel>>> edgeSelector)
+            where TPropertiesModel : class
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -232,12 +331,16 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="TinVertex1">The first type of "in" vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel1">The type of the first properties model.</typeparam>
         /// <typeparam name="TinVertex2">The second type of "in" vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel2">The type of the second properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector1">The first edge selector.</param>
         /// <param name="edgeSelector2">The second edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex, TinVertex1, TinVertex2>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex1>>> edgeSelector1, Expression<Func<TVertex, Edge<TVertex, TinVertex2>>> edgeSelector2)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex, TinVertex1, TPropertiesModel1, TinVertex2, TPropertiesModel2>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex1, TPropertiesModel1>>> edgeSelector1, Expression<Func<TVertex, Edge<TVertex, TinVertex2, TPropertiesModel2>>> edgeSelector2)
+            where TPropertiesModel1 : class
+            where TPropertiesModel2 : class
         {
             return traversal.In(GetLabelName(typeof(TVertex), edgeSelector1), GetLabelName(typeof(TVertex), edgeSelector2));
         }
@@ -249,14 +352,20 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="TinVertex1">The first type of "in" vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel1">The type of the first properties model.</typeparam>
         /// <typeparam name="TinVertex2">The second type of "in" vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel2">The type of the second properties model.</typeparam>
         /// <typeparam name="TinVertex3">The third type of "in" vertex.</typeparam>
+        /// <typeparam name="TPropertiesModel3">The type of the third properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector1">The first edge selector.</param>
         /// <param name="edgeSelector2">The second edge selector.</param>
         /// <param name="edgeSelector3">The third edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex, TinVertex1, TinVertex2, TinVertex3>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex1>>> edgeSelector1, Expression<Func<TVertex, Edge<TVertex, TinVertex2>>> edgeSelector2, Expression<Func<TVertex, Edge<TVertex, TinVertex3>>> edgeSelector3)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex, TinVertex1, TPropertiesModel1, TinVertex2, TPropertiesModel2, TinVertex3, TPropertiesModel3>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex1, TPropertiesModel1>>> edgeSelector1, Expression<Func<TVertex, Edge<TVertex, TinVertex2, TPropertiesModel2>>> edgeSelector2, Expression<Func<TVertex, Edge<TVertex, TinVertex3, TPropertiesModel3>>> edgeSelector3)
+            where TPropertiesModel1 : class
+            where TPropertiesModel2 : class
+            where TPropertiesModel3 : class
         {
             return traversal.In(GetLabelName(typeof(TVertex), edgeSelector1), GetLabelName(typeof(TVertex), edgeSelector2), GetLabelName(typeof(TVertex), edgeSelector3));
         }
@@ -331,7 +440,36 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Gets the name of the label.
+        /// Adds the "property()" step to the traversal, updating a property on an element
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <param name="value">The value to set.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static GraphTraversal<S, TElement> Property<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TProperty value)
+        {
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+
+            //if the property is an enumerable, we need to specify the cardinality to be list
+            if (TYPE_OF_ENUMERABLE.IsAssignableFrom(typeof(TProperty)))
+            {
+                var enumerator = ((IEnumerable)value).GetEnumerator();
+                var result = traversal;
+                while (enumerator.MoveNext())
+                    result = result.Property(Cardinality.List, propName, enumerator.Current);
+                return result;
+            }
+            else
+            {
+                return traversal.Property(propName, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the label of the property's type.
         /// </summary>
         /// <param name="sourceType">Type of the source object from which the lambda started.</param>
         /// <param name="lambda">The lambda.</param>
@@ -340,16 +478,7 @@ namespace Gremlin.Net.CosmosDb
         /// <exception cref="ArgumentException"></exception>
         private static string GetLabelName(Type sourceType, LambdaExpression lambda)
         {
-            if (lambda == null)
-                throw new ArgumentNullException(nameof(lambda));
-
-            var member = lambda.Body as MemberExpression;
-            if (member == null)
-                throw new ArgumentException($"Expression '{lambda}' refers to a method, not a property.");
-
-            var propInfo = member.Member as PropertyInfo;
-            if (propInfo == null)
-                throw new ArgumentException($"Expression '{lambda}' refers to a field, not a property.");
+            var propInfo = GetPropertyInfo(lambda);
 
             if (sourceType != propInfo.ReflectedType && !sourceType.IsSubclassOf(propInfo.ReflectedType))
                 throw new ArgumentException($"Expression '{lambda}' refers to a property that is not from type {sourceType}.");
@@ -370,6 +499,59 @@ namespace Gremlin.Net.CosmosDb
 
                 return attr?.Name;
             });
+        }
+
+        /// <summary>
+        /// Gets the property information from the given lambda expression.
+        /// </summary>
+        /// <param name="lambda">The lambda.</param>
+        /// <returns>Returns the property info being selected</returns>
+        /// <exception cref="ArgumentNullException">lambda</exception>
+        /// <exception cref="ArgumentException"></exception>
+        private static PropertyInfo GetPropertyInfo(LambdaExpression lambda)
+        {
+            if (lambda == null)
+                throw new ArgumentNullException(nameof(lambda));
+
+            var member = lambda.Body as MemberExpression;
+            if (member == null)
+                throw new ArgumentException($"Expression '{lambda}' refers to a method, not a property.");
+
+            var propInfo = member.Member as PropertyInfo;
+            if (propInfo == null)
+                throw new ArgumentException($"Expression '{lambda}' refers to a field, not a property.");
+
+            return propInfo;
+        }
+
+        /// <summary>
+        /// Gets the name of the property the lambda expression is selecting.
+        /// </summary>
+        /// <param name="elementType">Type of the source.</param>
+        /// <param name="lambda">The lambda.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">lambda</exception>
+        /// <exception cref="ArgumentException"></exception>
+        private static string GetPropertyName(Type elementType, LambdaExpression lambda)
+        {
+            //first ensure that the element type is a true "Element<>"
+            Type genericElementType = elementType;
+            while (genericElementType != null)
+            {
+                genericElementType = genericElementType.BaseType;
+                if (genericElementType.GetGenericTypeDefinition() == TYPE_OF_ELEMENT)
+                    break;
+            }
+            if (genericElementType == null)
+                throw new ArgumentException($"'{elementType}' does not inherit from '{TYPE_OF_ELEMENT}'.");
+
+            var propInfo = GetPropertyInfo(lambda);
+
+            var propertiesModelType = genericElementType.GetGenericArguments().Single();
+            if (propertiesModelType != propInfo.ReflectedType && !propertiesModelType.IsSubclassOf(propInfo.ReflectedType))
+                throw new ArgumentException($"Expression '{lambda}' refers to a property that is not from type {propertiesModelType}.");
+
+            return propInfo.Name;
         }
     }
 }
