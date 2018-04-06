@@ -11,10 +11,6 @@ namespace GremlinSample
         private static void Main(string[] args)
         {
             Run().Wait();
-
-            Console.WriteLine();
-            Console.WriteLine("All done...");
-            Console.ReadKey();
         }
 
         private static async Task Run()
