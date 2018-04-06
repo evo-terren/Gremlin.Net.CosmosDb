@@ -113,6 +113,15 @@ namespace Gremlin.Net.CosmosDb.Serialization
         }
 
         /// <summary>
+        /// Serializes the specified order.
+        /// </summary>
+        /// <param name="order">The order.</param>
+        private void Serialize(Order order)
+        {
+            _writer.Write(order.ToString().ToLowerInvariant());
+        }
+
+        /// <summary>
         /// Serializes the specified enum.
         /// </summary>
         /// <param name="enum">The enum.</param>
