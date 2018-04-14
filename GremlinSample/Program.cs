@@ -14,9 +14,10 @@ namespace GremlinSample
             {
                 var g = graphClient.CreateTraversalSource();
 
-                var query = g.V<PersonVertex>("1")
+                var query = g.V("1").AsVertex<PersonVertex>()
                              .Out(s => s.Purchases)
-                             .In(s => s.People)
+                             .InE(s => s.People)
+                             .OutV()
                              .Property(v => v.Name, "test").Property(v => v.Ages, new[] { 5, 6 });
                 Console.WriteLine(query.ToGremlinQuery());
                 var response = await graphClient.SubmitAsync(query);

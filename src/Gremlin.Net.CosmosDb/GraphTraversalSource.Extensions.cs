@@ -1,5 +1,4 @@
 ﻿using Gremlin.Net.CosmosDb.Structure;
-using Gremlin.Net.Process.Traversal;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -15,9 +14,9 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="graphTraversalSource">The graph traversal source.</param>
         /// <param name="edgeIds">The edge id(s).</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<Edge, TEdge> E<TEdge>(this IGraphTraversalSource graphTraversalSource, params object[] edgeIds)
+        public static ISchemaBoundTraversal<Edge, TEdge> E<TEdge>(this IGraphTraversalSource graphTraversalSource, params object[] edgeIds)
         {
-            return graphTraversalSource.E(edgeIds).Cast<Edge, TEdge>();
+            return graphTraversalSource.E(edgeIds).AsSchemaBound<Edge, TEdge>();
         }
 
         /// <summary>
@@ -27,9 +26,9 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="graphTraversalSource">The graph traversal source.</param>
         /// <param name="vertexIds">The vertex id(s).</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<Vertex, TVertex> V<TVertex>(this IGraphTraversalSource graphTraversalSource, params object[] vertexIds)
+        public static ISchemaBoundTraversal<Vertex, TVertex> V<TVertex>(this IGraphTraversalSource graphTraversalSource, params object[] vertexIds)
         {
-            return graphTraversalSource.V(vertexIds).Cast<Vertex, TVertex>();
+            return graphTraversalSource.V(vertexIds).AsSchemaBound<Vertex, TVertex>();
         }
     }
 }

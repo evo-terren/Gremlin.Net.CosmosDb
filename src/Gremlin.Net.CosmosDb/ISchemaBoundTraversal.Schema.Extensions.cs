@@ -2,7 +2,6 @@
 using Gremlin.Net.Process.Traversal;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,23 +9,38 @@ using System.Reflection;
 namespace Gremlin.Net.CosmosDb
 {
     /// <summary>
-    /// Helper extension methods for <see cref="Gremlin.Net.Process.Traversal.GraphTraversal{S, E}"/> objects
+    /// Helper extension methods for <see cref="Gremlin.Net.CosmosDb.ISchemaBoundTraversal{S, E}"/> objects
     /// </summary>
-    public static class GraphTraversalExtensions
+    public static partial class ISchemaBoundTraversalExtensions
     {
-        private static readonly ConcurrentDictionary<Type, string> _labelLookup = new ConcurrentDictionary<Type, string>();
         private static readonly Type TYPE_OF_ENUMERABLE = typeof(IEnumerable);
 
         /// <summary>
-        /// Helper type-casting method that converts the given traversal to a new wrapped traversal type.
+        /// Adds the "addE()" step to the traversal, creating a new edge in the graph.
         /// </summary>
-        /// <typeparam name="S">The source traversal type</typeparam>
-        /// <typeparam name="E">The current traversal type</typeparam>
+        /// <typeparam name="TEdge">The type of the edge.</typeparam>
         /// <param name="traversal">The traversal.</param>
-        /// <returns>Returns the wrapped traversal</returns>
-        public static GraphTraversal<S, E> Cast<S, E>(this ITraversal traversal)
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this ISchemaBoundTraversal traversal)
+            where TEdge : EdgeBase
         {
-            return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
+            var label = LabelNameResolver.GetLabelName(typeof(TEdge));
+
+            return traversal.ToGraphTraversal<object, object>().AddE(label).AsSchemaBound<object, TEdge>();
+        }
+
+        /// <summary>
+        /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
+        /// </summary>
+        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this ISchemaBoundTraversal traversal)
+            where TVertex : VertexBase
+        {
+            var label = LabelNameResolver.GetLabelName(typeof(TVertex));
+
+            return traversal.ToGraphTraversal<object, object>().AddV(label).AsSchemaBound<object, TVertex>();
         }
 
         /// <summary>
@@ -39,11 +53,11 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="propertySelector">The property selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector)
+        public static ISchemaBoundTraversal<S, TElement> Has<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.Has(propName);
+            return traversal.ToGraphTraversal().Has(propName).AsSchemaBound();
         }
 
         /// <summary>
@@ -57,11 +71,11 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="propertySelector">The property selector.</param>
         /// <param name="value">The value to compare.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TProperty value)
+        public static ISchemaBoundTraversal<S, TElement> Has<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TProperty value)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.Has(propName, value);
+            return traversal.ToGraphTraversal().Has(propName, value).AsSchemaBound();
         }
 
         /// <summary>
@@ -75,11 +89,11 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="propertySelector">The property selector.</param>
         /// <param name="propertyTraversal">The value to compare.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, ITraversal propertyTraversal)
+        public static ISchemaBoundTraversal<S, TElement> Has<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, ITraversal propertyTraversal)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.Has(propName, propertyTraversal);
+            return traversal.ToGraphTraversal().Has(propName, propertyTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -93,11 +107,11 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="propertySelector">The property selector.</param>
         /// <param name="predicate">The value predicate to test.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TElement> Has<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TraversalPredicate predicate)
+        public static ISchemaBoundTraversal<S, TElement> Has<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TraversalPredicate predicate)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.Has(propName, predicate);
+            return traversal.ToGraphTraversal().Has(propName, predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -110,11 +124,11 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="propertySelector">The property selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TElement> HasNot<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector)
+        public static ISchemaBoundTraversal<S, TElement> HasNot<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.HasNot(propName);
+            return traversal.ToGraphTraversal().HasNot(propName).AsSchemaBound();
         }
 
         /// <summary>
@@ -127,11 +141,12 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, ToutVertex> In<S, TVertex, ToutVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<ToutVertex, TVertex>>> edgeSelector)
+        public static ISchemaBoundTraversal<S, ToutVertex> In<S, TVertex, ToutVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<ToutVertex, TVertex>>> edgeSelector)
+            where TVertex : VertexBase
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
-            return traversal.In(labelName).Cast<S, ToutVertex>();
+            return traversal.ToGraphTraversal().In(labelName).AsSchemaBound<S, ToutVertex>();
         }
 
         /// <summary>
@@ -143,7 +158,8 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> In<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> In<S, TVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
+            where TVertex : VertexBase
         {
             if (edgeSelectors == null)
                 throw new ArgumentNullException(nameof(edgeSelectors));
@@ -151,7 +167,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.In(edgeLabels);
+            return traversal.ToGraphTraversal().In(edgeLabels);
         }
 
         /// <summary>
@@ -164,12 +180,13 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TEdge> InE<S, TVertex, TEdge>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
+        public static ISchemaBoundTraversal<S, TEdge> InE<S, TVertex, TEdge>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
+            where TVertex : VertexBase
             where TEdge : IHasInVertex<TVertex>
         {
-            var labelName = GetLabelName(typeof(TEdge));
+            var labelName = LabelNameResolver.GetLabelName(typeof(TEdge));
 
-            return traversal.InE(labelName).Cast<S, TEdge>();
+            return traversal.ToGraphTraversal().InE(labelName).AsSchemaBound<S, TEdge>();
         }
 
         /// <summary>
@@ -181,7 +198,8 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> InE<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> InE<S, TVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
+            where TVertex : VertexBase
         {
             if (edgeSelectors == null)
                 throw new ArgumentNullException(nameof(edgeSelectors));
@@ -189,7 +207,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.InE(edgeLabels);
+            return traversal.ToGraphTraversal().InE(edgeLabels);
         }
 
         /// <summary>
@@ -199,9 +217,9 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="TinVertex">The type of the vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TinVertex> InV<S, TinVertex>(this GraphTraversal<S, IHasInVertex<TinVertex>> traversal)
+        public static ISchemaBoundTraversal<S, TinVertex> InV<S, TinVertex>(this ISchemaBoundTraversal<S, IHasInVertex<TinVertex>> traversal)
         {
-            return traversal.InV().Cast<S, TinVertex>();
+            return traversal.ToGraphTraversal().InV().AsSchemaBound<S, TinVertex>();
         }
 
         /// <summary>
@@ -214,11 +232,12 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TinVertex> Out<S, TVertex, TinVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<TVertex, TinVertex>>> edgeSelector)
+        public static ISchemaBoundTraversal<S, TinVertex> Out<S, TVertex, TinVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<TVertex, TinVertex>>> edgeSelector)
+            where TVertex : VertexBase
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
-            return traversal.Out(labelName).Cast<S, TinVertex>();
+            return traversal.ToGraphTraversal().Out(labelName).AsSchemaBound<S, TinVertex>();
         }
 
         /// <summary>
@@ -230,7 +249,8 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasOutVertex<TVertex>>>[] edgeSelectors)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasOutVertex<TVertex>>>[] edgeSelectors)
+            where TVertex : VertexBase
         {
             if (edgeSelectors == null)
                 throw new ArgumentNullException(nameof(edgeSelectors));
@@ -238,7 +258,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.In(edgeLabels);
+            return traversal.ToGraphTraversal().In(edgeLabels);
         }
 
         /// <summary>
@@ -251,12 +271,13 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TEdge> OutE<S, TVertex, TEdge, TinVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
+        public static ISchemaBoundTraversal<S, TEdge> OutE<S, TVertex, TEdge, TinVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
+            where TVertex : VertexBase
             where TEdge : IHasInVertex<TVertex>
         {
-            var labelName = GetLabelName(typeof(TEdge));
+            var labelName = LabelNameResolver.GetLabelName(typeof(TEdge));
 
-            return traversal.OutE(labelName).Cast<S, TEdge>();
+            return traversal.ToGraphTraversal().OutE(labelName).AsSchemaBound<S, TEdge>();
         }
 
         /// <summary>
@@ -267,7 +288,8 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> OutE<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> OutE<S, TVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
+            where TVertex : VertexBase
         {
             if (edgeSelectors == null)
                 throw new ArgumentNullException(nameof(edgeSelectors));
@@ -275,7 +297,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.OutE(edgeLabels);
+            return traversal.ToGraphTraversal().OutE(edgeLabels);
         }
 
         /// <summary>
@@ -285,9 +307,9 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="ToutVertex">The type of the vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, ToutVertex> OutV<S, ToutVertex>(this GraphTraversal<S, IHasInVertex<ToutVertex>> traversal)
+        public static ISchemaBoundTraversal<S, ToutVertex> OutV<S, ToutVertex>(this ISchemaBoundTraversal<S, IHasOutVertex<ToutVertex>> traversal)
         {
-            return traversal.InV().Cast<S, ToutVertex>();
+            return traversal.ToGraphTraversal().InV().AsSchemaBound<S, ToutVertex>();
         }
 
         /// <summary>
@@ -300,7 +322,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="propertySelector">The property selector.</param>
         /// <param name="value">The value to set.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TElement> Property<S, TElement, TProperty>(this GraphTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TProperty value)
+        public static ISchemaBoundTraversal<S, TElement> Property<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TProperty value)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
@@ -310,12 +332,12 @@ namespace Gremlin.Net.CosmosDb
                 var enumerator = ((IEnumerable)value).GetEnumerator();
                 var result = traversal;
                 while (enumerator.MoveNext())
-                    result = result.Property(Cardinality.List, propName, enumerator.Current);
+                    result = result.ToGraphTraversal().Property(Cardinality.List, propName, enumerator.Current).AsSchemaBound();
                 return result;
             }
             else
             {
-                return traversal.Property(propName, value);
+                return traversal.ToGraphTraversal().Property(propName, value).AsSchemaBound();
             }
         }
 
@@ -334,22 +356,7 @@ namespace Gremlin.Net.CosmosDb
             if (sourceType != propInfo.ReflectedType && !sourceType.IsSubclassOf(propInfo.ReflectedType))
                 throw new ArgumentException($"Expression '{lambda}' refers to a property that is not from type {sourceType}.");
 
-            return GetLabelName(propInfo.PropertyType);
-        }
-
-        /// <summary>
-        /// Gets the name of the label.
-        /// </summary>
-        /// <param name="targetType">Type of the target.</param>
-        /// <returns></returns>
-        private static string GetLabelName(Type targetType)
-        {
-            return _labelLookup.GetOrAdd(targetType, t =>
-            {
-                var attr = targetType.GetCustomAttributes(typeof(LabelAttribute), false).OfType<LabelAttribute>().FirstOrDefault();
-
-                return attr?.Name;
-            });
+            return LabelNameResolver.GetLabelName(propInfo.PropertyType);
         }
 
         /// <summary>

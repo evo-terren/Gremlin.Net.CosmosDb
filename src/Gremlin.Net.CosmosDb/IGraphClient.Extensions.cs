@@ -50,6 +50,21 @@ namespace Gremlin.Net.CosmosDb
         /// and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="graphClient">The graph client.</param>
+        /// <param name="traversal">The traversal.</param>
+        /// <returns>Returns the result</returns>
+        /// <exception cref="ArgumentNullException">traversal</exception>
+        public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal)
+        {
+            return graphClient.SubmitAsync(traversal, BuildDefaultSerializerSettings());
+        }
+
+        /// <summary>
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
+        /// and returns the result
+        /// </summary>
+        /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the result</returns>
@@ -101,6 +116,22 @@ namespace Gremlin.Net.CosmosDb
         public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
         {
             return graphClient.SubmitAsync<E>(traversal, serializerSettings);
+        }
+
+        /// <summary>
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
+        /// and returns the result
+        /// </summary>
+        /// <typeparam name="S"></typeparam>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="graphClient">The graph client.</param>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <returns>Returns the result</returns>
+        /// <exception cref="ArgumentNullException">traversal</exception>
+        public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
+        {
+            return graphClient.SubmitAsync<E>(traversal.ToGraphTraversal(), serializerSettings);
         }
 
         /// <summary>

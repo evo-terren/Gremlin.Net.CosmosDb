@@ -5,9 +5,7 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// <summary>
     /// Schema-bound container of a graph's edge that has specified in/out vertices
     /// </summary>
-    /// <typeparam name="ToutV">The type of the "out"/source vertex.</typeparam>
-    /// <typeparam name="TinV">The type of the "in"/target vertex.</typeparam>
-    public abstract class EdgeBase<ToutV, TinV> : Element, IHasOutVertex<ToutV>, IHasInVertex<TinV>
+    public abstract class EdgeBase : Element
     {
         /// <summary>
         /// Gets or sets the id of the "in" vertex.
@@ -36,7 +34,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Initializes a new instance of the <see cref="EdgeBase{ToutV, TinV}"/> class.
         /// </summary>
-        protected EdgeBase()
+        protected internal EdgeBase()
         {
         }
 
@@ -47,6 +45,21 @@ namespace Gremlin.Net.CosmosDb.Structure
         public override string ToString()
         {
             return $"e[{Id}][{OutV}-{Label}->{InV}]";
+        }
+    }
+
+    /// <summary>
+    /// Schema-bound container of a graph's edge that has specified in/out vertices
+    /// </summary>
+    /// <typeparam name="ToutV">The type of the "out"/source vertex.</typeparam>
+    /// <typeparam name="TinV">The type of the "in"/target vertex.</typeparam>
+    public abstract class EdgeBase<ToutV, TinV> : EdgeBase, IHasOutVertex<ToutV>, IHasInVertex<TinV>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EdgeBase{ToutV, TinV}"/> class.
+        /// </summary>
+        protected EdgeBase()
+        {
         }
     }
 }
