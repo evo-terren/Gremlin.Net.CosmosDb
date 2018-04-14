@@ -15,74 +15,7 @@ namespace Gremlin.Net.CosmosDb
     public static class GraphTraversalExtensions
     {
         private static readonly ConcurrentDictionary<Type, string> _labelLookup = new ConcurrentDictionary<Type, string>();
-        private static readonly Type TYPE_OF_ELEMENT = typeof(Element<>);
         private static readonly Type TYPE_OF_ENUMERABLE = typeof(IEnumerable);
-
-        /// <summary>
-        /// Adds the "both()" step to the traversal, returning both adjacent vertices of the given edge
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="ToutVertex">The type of the out vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector">The edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Both<S, TVertex, ToutVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<ToutVertex, TVertex, TPropertiesModel>>> edgeSelector)
-            where TPropertiesModel : class
-        {
-            var labelName = GetLabelName(typeof(TVertex), edgeSelector);
-
-            return traversal.Both(labelName);
-        }
-
-        /// <summary>
-        /// Adds the "both()" step to the traversal, returning both adjacent vertices of the given edge
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="TinVertex">The type of the in vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector">The edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Both<S, TVertex, TinVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex, TPropertiesModel>>> edgeSelector)
-            where TPropertiesModel : class
-        {
-            var labelName = GetLabelName(typeof(TVertex), edgeSelector);
-
-            return traversal.Both(labelName);
-        }
-
-        /// <summary>
-        /// Adds the "bothE()" step to the traversal, returning all adjacent edges of the given vertex
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector">The edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> BothE<S, TVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, IEdgeOut<TVertex>>> edgeSelector)
-        {
-            var labelName = GetLabelName(typeof(TVertex), edgeSelector);
-
-            return traversal.BothE(labelName);
-        }
-
-        /// <summary>
-        /// Adds the "bothE()" step to the traversal, returning all adjacent edges of the given vertex
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector">The edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> BothE<S, TVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, IEdgeIn<TVertex>>> edgeSelector)
-        {
-            var labelName = GetLabelName(typeof(TVertex), edgeSelector);
-
-            return traversal.BothE(labelName);
-        }
 
         /// <summary>
         /// Helper type-casting method that converts the given traversal to a new wrapped traversal type.
@@ -191,12 +124,10 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="ToutVertex">The type of the out vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, ToutVertex> In<S, TVertex, ToutVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<ToutVertex, TVertex, TPropertiesModel>>> edgeSelector)
-            where TPropertiesModel : class
+        public static GraphTraversal<S, ToutVertex> In<S, TVertex, ToutVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<ToutVertex, TVertex>>> edgeSelector)
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -210,28 +141,17 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
+        /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> In<S, TVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, IEdgeIn<TVertex>>> edgeSelector1, Expression<Func<TVertex, IEdgeIn<TVertex>>> edgeSelector2)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> In<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
         {
-            return traversal.In(GetLabelName(typeof(TVertex), edgeSelector1), GetLabelName(typeof(TVertex), edgeSelector2));
-        }
+            if (edgeSelectors == null)
+                throw new ArgumentNullException(nameof(edgeSelectors));
 
-        /// <summary>
-        /// Adds the "in()" step to the traversal, returning all inbound adjacent vertices with the
-        /// given label
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
-        /// <param name="edgeSelector3">The third edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> In<S, TVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, IEdgeIn<TVertex>>> edgeSelector1, Expression<Func<TVertex, IEdgeIn<TVertex>>> edgeSelector2, Expression<Func<TVertex, IEdgeIn<TVertex>>> edgeSelector3)
-        {
-            return traversal.In(GetLabelName(typeof(TVertex), edgeSelector1), GetLabelName(typeof(TVertex), edgeSelector2), GetLabelName(typeof(TVertex), edgeSelector3));
+            var vertexType = typeof(TVertex);
+            var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
+
+            return traversal.In(edgeLabels);
         }
 
         /// <summary>
@@ -245,7 +165,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static GraphTraversal<S, TEdge> InE<S, TVertex, TEdge>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
-            where TEdge : IEdgeIn<TVertex>
+            where TEdge : IHasInVertex<TVertex>
         {
             var labelName = GetLabelName(typeof(TEdge));
 
@@ -258,39 +178,18 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="TEdge1">The first type of edge.</typeparam>
-        /// <typeparam name="TEdge2">The second type of edge.</typeparam>
         /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
+        /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> InE<S, TVertex, TEdge1, TEdge2>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge1>> edgeSelector1, Expression<Func<TVertex, TEdge2>> edgeSelector2)
-            where TEdge1 : IEdgeIn<TVertex>
-            where TEdge2 : IEdgeIn<TVertex>
+        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> InE<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
         {
-            return traversal.InE(GetLabelName(typeof(TEdge1)), GetLabelName(typeof(TEdge2)));
-        }
+            if (edgeSelectors == null)
+                throw new ArgumentNullException(nameof(edgeSelectors));
 
-        /// <summary>
-        /// Adds the "inE()" step to the traversal, returning all inbound adjacent edges with the
-        /// given labels
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="TEdge1">The first type of edge.</typeparam>
-        /// <typeparam name="TEdge2">The second type of edge.</typeparam>
-        /// <typeparam name="TEdge3">The third type of edge.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
-        /// <param name="edgeSelector3">The third edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> InE<S, TVertex, TEdge1, TEdge2, TEdge3>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge1>> edgeSelector1, Expression<Func<TVertex, TEdge2>> edgeSelector2, Expression<Func<TVertex, TEdge3>> edgeSelector3)
-            where TEdge1 : IEdgeIn<TVertex>
-            where TEdge2 : IEdgeIn<TVertex>
-            where TEdge3 : IEdgeIn<TVertex>
-        {
-            return traversal.InE(GetLabelName(typeof(TEdge1)), GetLabelName(typeof(TEdge2)), GetLabelName(typeof(TEdge3)));
+            var vertexType = typeof(TVertex);
+            var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
+
+            return traversal.InE(edgeLabels);
         }
 
         /// <summary>
@@ -300,7 +199,7 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="TinVertex">The type of the vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TinVertex> InV<S, TinVertex>(this GraphTraversal<S, IEdgeIn<TinVertex>> traversal)
+        public static GraphTraversal<S, TinVertex> InV<S, TinVertex>(this GraphTraversal<S, IHasInVertex<TinVertex>> traversal)
         {
             return traversal.InV().Cast<S, TinVertex>();
         }
@@ -312,12 +211,10 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="TinVertex">The type of the "in"/destination vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel">The type of the properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, TinVertex> Out<S, TVertex, TinVertex, TPropertiesModel>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex, TPropertiesModel>>> edgeSelector)
-            where TPropertiesModel : class
+        public static GraphTraversal<S, TinVertex> Out<S, TVertex, TinVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<TVertex, TinVertex>>> edgeSelector)
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -330,44 +227,18 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="TinVertex1">The first type of "in" vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel1">The type of the first properties model.</typeparam>
-        /// <typeparam name="TinVertex2">The second type of "in" vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel2">The type of the second properties model.</typeparam>
         /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
+        /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex, TinVertex1, TPropertiesModel1, TinVertex2, TPropertiesModel2>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex1, TPropertiesModel1>>> edgeSelector1, Expression<Func<TVertex, Edge<TVertex, TinVertex2, TPropertiesModel2>>> edgeSelector2)
-            where TPropertiesModel1 : class
-            where TPropertiesModel2 : class
+        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasOutVertex<TVertex>>>[] edgeSelectors)
         {
-            return traversal.In(GetLabelName(typeof(TVertex), edgeSelector1), GetLabelName(typeof(TVertex), edgeSelector2));
-        }
+            if (edgeSelectors == null)
+                throw new ArgumentNullException(nameof(edgeSelectors));
 
-        /// <summary>
-        /// Adds the "out()" step to the traversal, returning all adjacent vertices connected via
-        /// outbount edges
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="TinVertex1">The first type of "in" vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel1">The type of the first properties model.</typeparam>
-        /// <typeparam name="TinVertex2">The second type of "in" vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel2">The type of the second properties model.</typeparam>
-        /// <typeparam name="TinVertex3">The third type of "in" vertex.</typeparam>
-        /// <typeparam name="TPropertiesModel3">The type of the third properties model.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
-        /// <param name="edgeSelector3">The third edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Vertex> Out<S, TVertex, TinVertex1, TPropertiesModel1, TinVertex2, TPropertiesModel2, TinVertex3, TPropertiesModel3>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, Edge<TVertex, TinVertex1, TPropertiesModel1>>> edgeSelector1, Expression<Func<TVertex, Edge<TVertex, TinVertex2, TPropertiesModel2>>> edgeSelector2, Expression<Func<TVertex, Edge<TVertex, TinVertex3, TPropertiesModel3>>> edgeSelector3)
-            where TPropertiesModel1 : class
-            where TPropertiesModel2 : class
-            where TPropertiesModel3 : class
-        {
-            return traversal.In(GetLabelName(typeof(TVertex), edgeSelector1), GetLabelName(typeof(TVertex), edgeSelector2), GetLabelName(typeof(TVertex), edgeSelector3));
+            var vertexType = typeof(TVertex);
+            var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
+
+            return traversal.In(edgeLabels);
         }
 
         /// <summary>
@@ -381,7 +252,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static GraphTraversal<S, TEdge> OutE<S, TVertex, TEdge, TinVertex>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
-            where TEdge : IEdgeOut<TVertex>
+            where TEdge : IHasInVertex<TVertex>
         {
             var labelName = GetLabelName(typeof(TEdge));
 
@@ -393,38 +264,18 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="TEdge1">The first type of edge.</typeparam>
-        /// <typeparam name="TEdge2">The second type of edge.</typeparam>
         /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
+        /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> OutE<S, TVertex, TEdge1, TEdge2>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge1>> edgeSelector1, Expression<Func<TVertex, TEdge2>> edgeSelector2)
-            where TEdge1 : IEdgeIn<TVertex>
-            where TEdge2 : IEdgeIn<TVertex>
+        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> OutE<S, TVertex>(this GraphTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
         {
-            return traversal.OutE(GetLabelName(typeof(TEdge1)), GetLabelName(typeof(TEdge2)));
-        }
+            if (edgeSelectors == null)
+                throw new ArgumentNullException(nameof(edgeSelectors));
 
-        /// <summary>
-        /// Adds the "outE()" step to the traversal, returning all adjacent outbound edges
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <typeparam name="TEdge1">The first type of edge.</typeparam>
-        /// <typeparam name="TEdge2">The second type of edge.</typeparam>
-        /// <typeparam name="TEdge3">The third type of edge.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <param name="edgeSelector1">The first edge selector.</param>
-        /// <param name="edgeSelector2">The second edge selector.</param>
-        /// <param name="edgeSelector3">The third edge selector.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> OutE<S, TVertex, TEdge1, TEdge2, TEdge3>(this GraphTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge1>> edgeSelector1, Expression<Func<TVertex, TEdge2>> edgeSelector2, Expression<Func<TVertex, TEdge3>> edgeSelector3)
-            where TEdge1 : IEdgeOut<TVertex>
-            where TEdge2 : IEdgeOut<TVertex>
-            where TEdge3 : IEdgeOut<TVertex>
-        {
-            return traversal.OutE(GetLabelName(typeof(TEdge1)), GetLabelName(typeof(TEdge2)), GetLabelName(typeof(TEdge3)));
+            var vertexType = typeof(TVertex);
+            var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
+
+            return traversal.OutE(edgeLabels);
         }
 
         /// <summary>
@@ -434,7 +285,7 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="ToutVertex">The type of the vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, ToutVertex> OutV<S, ToutVertex>(this GraphTraversal<S, IEdgeOut<ToutVertex>> traversal)
+        public static GraphTraversal<S, ToutVertex> OutV<S, ToutVertex>(this GraphTraversal<S, IHasInVertex<ToutVertex>> traversal)
         {
             return traversal.InV().Cast<S, ToutVertex>();
         }
@@ -534,22 +385,13 @@ namespace Gremlin.Net.CosmosDb
         /// <exception cref="ArgumentException"></exception>
         private static string GetPropertyName(Type elementType, LambdaExpression lambda)
         {
-            //first ensure that the element type is a true "Element<>"
-            Type genericElementType = elementType;
-            while (genericElementType != null)
-            {
-                genericElementType = genericElementType.BaseType;
-                if (genericElementType.GetGenericTypeDefinition() == TYPE_OF_ELEMENT)
-                    break;
-            }
-            if (genericElementType == null)
-                throw new ArgumentException($"'{elementType}' does not inherit from '{TYPE_OF_ELEMENT}'.");
+            if (lambda == null)
+                throw new ArgumentNullException(nameof(lambda));
 
             var propInfo = GetPropertyInfo(lambda);
 
-            var propertiesModelType = genericElementType.GetGenericArguments().Single();
-            if (propertiesModelType != propInfo.ReflectedType && !propertiesModelType.IsSubclassOf(propInfo.ReflectedType))
-                throw new ArgumentException($"Expression '{lambda}' refers to a property that is not from type {propertiesModelType}.");
+            if (elementType != propInfo.ReflectedType && !elementType.IsSubclassOf(propInfo.ReflectedType))
+                throw new ArgumentException($"Expression '{lambda}' refers to a property that is not from type {elementType}.");
 
             return propInfo.Name;
         }

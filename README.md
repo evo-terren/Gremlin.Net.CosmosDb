@@ -80,19 +80,19 @@ You can utilize the types defined in Gremlin.Net.CosmosDb.Structure to further u
 using Gremlin.Net.CosmosDb.Structure;
 
 [Label("person")]
-public class PersonVertex : Vertex
+public class PersonVertex : VertexBase
 {
     public PersonPurchasedProductEdge Purchased { get; }
 }
 
 [Label("product")]
-public class ProductVertex : Vertex
+public class ProductVertex : VertexBase
 {
     public PersonPurchasedProductEdge PurchasedBy { get; }
 }
 
 [Label("purchased")]
-public class PersonPurchasedProductEdge : Edge<Person, Product>
+public class PersonPurchasedProductEdge : EdgeBase<Person, Product>
 {
 
 }
@@ -117,21 +117,16 @@ foreach (ProductVertex product in response)
 This is part is definitely a work in progress, but my main goal is to enable the ability to specify the model for each of your vertex and edge objects' "properties" bag.
 
 ```c#
-public class Person
+public class PersonVertex : VertexBase
 {
 	public string Name { get; set; }
 
 	public DateTimeOffset Birthdate { get; set; }
 }
 
-public class PersonVertex : Vertex<Person>
-{
-
-}
-
 ...
 //usage in application
 ...
 
-var query = g.V<PersonVertex>().has(v => v.Properties.Name, "Todd").property(v => v.Properties.Birthdate, DateTimeOffset.Now);
+var query = g.V<PersonVertex>().has(v => v.Name, "Todd").property(v => v.Birthdate, DateTimeOffset.Now);
 ```

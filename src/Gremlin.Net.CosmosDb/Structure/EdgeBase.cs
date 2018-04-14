@@ -1,14 +1,13 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 
 namespace Gremlin.Net.CosmosDb.Structure
 {
     /// <summary>
-    /// Represents an schema-less edge on a graph
+    /// Schema-bound container of a graph's edge that has specified in/out vertices
     /// </summary>
-    public class Edge : Element
+    /// <typeparam name="ToutV">The type of the "out"/source vertex.</typeparam>
+    /// <typeparam name="TinV">The type of the "in"/target vertex.</typeparam>
+    public abstract class EdgeBase<ToutV, TinV> : Element, IHasOutVertex<ToutV>, IHasInVertex<TinV>
     {
         /// <summary>
         /// Gets or sets the id of the "in" vertex.
@@ -35,22 +34,11 @@ namespace Gremlin.Net.CosmosDb.Structure
         public virtual string OutVLabel { get; set; }
 
         /// <summary>
-        /// Gets or sets the properties.
+        /// Initializes a new instance of the <see cref="EdgeBase{ToutV, TinV}"/> class.
         /// </summary>
-        [JsonProperty("properties")]
-        public virtual IReadOnlyDictionary<string, object> Properties
+        protected EdgeBase()
         {
-            get { return _properties; }
-            set { _properties = value ?? new Dictionary<string, object>(); }
         }
-
-        private IReadOnlyDictionary<string, object> _properties = new Dictionary<string, object>();
-
-        /// <summary>
-        /// Gets a value indicating whether the Properties property should be serialized.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual bool ShouldSerializeProperties() => Properties.Any();
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

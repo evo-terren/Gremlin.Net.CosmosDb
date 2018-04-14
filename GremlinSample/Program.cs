@@ -8,18 +8,16 @@ namespace GremlinSample
 {
     internal class Program
     {
-        private static void Main(string[] args)
-        {
-            Run().Wait();
-        }
-
-        private static async Task Run()
+        internal static async Task Main()
         {
             using (var graphClient = new GraphClient("your-gremlin-host-name", "your-db-name", "your-graph-name", "your-access-key"))
             {
                 var g = graphClient.CreateTraversalSource();
 
-                var query = g.V<PersonVertex>("1").Property(v => v.Properties.Name, "test").Property(v => v.Properties.Ages, new[] { 5, 6 });
+                var query = g.V<PersonVertex>("1")
+                             .Out(s => s.Purchases)
+                             .In(s => s.People)
+                             .Property(v => v.Name, "test").Property(v => v.Ages, new[] { 5, 6 });
                 Console.WriteLine(query.ToGremlinQuery());
                 var response = await graphClient.SubmitAsync(query);
 

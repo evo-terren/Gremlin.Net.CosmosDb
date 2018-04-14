@@ -3,8 +3,12 @@
 namespace GremlinSample.Schema
 {
     [Label("person")]
-    public class PersonVertex : Vertex<PersonModel>
+    public class PersonVertex : VertexBase
     {
-        public PersonPurchasedProductEdge Purchased { get; private set; }
+        public int[] Ages { get; set; }
+
+        public string Name { get; set; }
+
+        public PersonPurchasedProductEdge Purchases { get; }
     }
 }

@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D801341C-62E8-4F8C-9BBE-8F8D32824D18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gremlin.Net.CosmosDb.Tests", "test\Gremlin.Net.CosmosDb.Tests\Gremlin.Net.CosmosDb.Tests.csproj", "{152CE7DA-7C9C-4878-B01C-DB829AD20692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gremlin.Net.CosmosDb.Tests", "test\Gremlin.Net.CosmosDb.Tests\Gremlin.Net.CosmosDb.Tests.csproj", "{152CE7DA-7C9C-4878-B01C-DB829AD20692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{57E3A906-DCD2-4CCA-BF83-26890672CCB9} = {21CCBA67-BD21-4693-B1E7-A1B17A8AA762}
 		{5B9A41F5-3312-4C19-9FD9-0D7B0158D1E2} = {21CCBA67-BD21-4693-B1E7-A1B17A8AA762}
+		{152CE7DA-7C9C-4878-B01C-DB829AD20692} = {D801341C-62E8-4F8C-9BBE-8F8D32824D18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43E88192-1430-491B-8D2C-1CF6647B18B4}
