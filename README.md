@@ -92,7 +92,7 @@ public class ProductVertex : VertexBase
 }
 
 [Label("purchased")]
-public class PersonPurchasedProductEdge : EdgeBase<Person, Product>
+public class PersonPurchasedProductEdge : EdgeBase<PersonVertex, ProductVertex>
 {
 
 }
@@ -114,9 +114,12 @@ foreach (ProductVertex product in response)
 
 ## Vertex and Edge With Property Containers
 
-This is part is definitely a work in progress, but my main goal is to enable the ability to specify the model for each of your vertex and edge objects' "properties" bag.
+Create strongly-typed vertex and edge objects to define properties and help with deserialization.
 
 ```c#
+using Gremlin.Net.CosmosDb.Structure;
+
+[Label("person")]
 public class PersonVertex : VertexBase
 {
 	public string Name { get; set; }
@@ -129,4 +132,11 @@ public class PersonVertex : VertexBase
 ...
 
 var query = g.V<PersonVertex>().has(v => v.Name, "Todd").property(v => v.Birthdate, DateTimeOffset.Now);
+var response = await graphClient.SubmitAsync(query);
+
+foreach (var vertex in response)
+{
+	Console.WriteLine(vertex.Birthdate.ToString());
+	Console.WriteLine(vertex.Name);
+}
 ```
