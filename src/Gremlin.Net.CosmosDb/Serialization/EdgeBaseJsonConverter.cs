@@ -6,10 +6,10 @@ using System;
 namespace Gremlin.Net.CosmosDb.Serialization
 {
     /// <summary>
-    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.Element"/> objects
+    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.EdgeBase"/> objects
     /// </summary>
     /// <seealso cref="Newtonsoft.Json.JsonConverter"/>
-    internal sealed class ElementJsonConverter : JsonConverter
+    internal sealed class EdgeBaseJsonConverter : JsonConverter
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can
@@ -33,7 +33,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Element);
+            return typeof(EdgeBase).IsAssignableFrom(objectType);
         }
 
         /// <summary>
@@ -52,25 +52,13 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 throw new ArgumentNullException(nameof(reader));
 
             var jo = JObject.Load(reader);
-            var elementType = jo[PropertyNames.Type].Value<string>();
-            Element element;
-            switch (elementType)
-            {
-                case "edge":
-                    element = new Edge();
-                    break;
+            var edge = jo.ToObject(objectType);
+            var propertiesObj = jo[PropertyNames.Properties];
 
-                case "vertex":
-                    element = new Vertex();
-                    break;
+            if (propertiesObj != null)
+                serializer.Populate(propertiesObj.CreateReader(), edge);
 
-                default:
-                    throw new NotImplementedException($"Unable to deserialize type '{elementType}'");
-            }
-
-            serializer.Populate(jo.CreateReader(), element);
-
-            return element;
+            return edge;
         }
 
         /// <summary>

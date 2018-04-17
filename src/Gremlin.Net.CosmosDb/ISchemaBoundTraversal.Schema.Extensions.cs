@@ -267,13 +267,12 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <typeparam name="TEdge">The type of the edge.</typeparam>
-        /// <typeparam name="TinVertex">The type of the "in"/destination vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelector">The edge selector.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static ISchemaBoundTraversal<S, TEdge> OutE<S, TVertex, TEdge, TinVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
+        public static ISchemaBoundTraversal<S, TEdge> OutE<S, TVertex, TEdge>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, TEdge>> edgeSelector)
             where TVertex : VertexBase
-            where TEdge : IHasInVertex<TVertex>
+            where TEdge : IHasOutVertex<TVertex>
         {
             var labelName = LabelNameResolver.GetLabelName(typeof(TEdge));
 
@@ -288,7 +287,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <param name="edgeSelectors">The edge selectors.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> OutE<S, TVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasInVertex<TVertex>>>[] edgeSelectors)
+        public static GraphTraversal<S, Gremlin.Net.Structure.Edge> OutE<S, TVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, params Expression<Func<TVertex, IHasOutVertex<TVertex>>>[] edgeSelectors)
             where TVertex : VertexBase
         {
             if (edgeSelectors == null)

@@ -14,7 +14,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Gets or sets the properties.
         /// </summary>
-        [JsonProperty("properties")]
+        [JsonProperty(PropertyNames.Properties)]
         public virtual IReadOnlyDictionary<string, IReadOnlyCollection<VertexPropertyValue>> Properties
         {
             get { return _properties; }

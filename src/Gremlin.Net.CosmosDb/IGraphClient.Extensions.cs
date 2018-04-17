@@ -166,7 +166,9 @@ namespace Gremlin.Net.CosmosDb
             {
                 Converters = new JsonConverter[]
                 {
+                    new EdgeBaseJsonConverter(),
                     new ElementJsonConverter(),
+                    new VertexBaseJsonConverter(),
                     new IsoDateTimeConverter
                     {
                         DateTimeStyles = DateTimeStyles.AdjustToUniversal

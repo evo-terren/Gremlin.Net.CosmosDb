@@ -10,13 +10,13 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
-        [JsonProperty("id")]
+        [JsonProperty(PropertyNames.Id)]
         public virtual string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the label.
         /// </summary>
-        [JsonProperty("label")]
+        [JsonProperty(PropertyNames.Label)]
         public virtual string Label { get; set; }
 
         /// <summary>

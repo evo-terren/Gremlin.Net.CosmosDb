@@ -10,25 +10,25 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// Gets or sets the id of the "in" vertex.
         /// </summary>
-        [JsonProperty("inV")]
+        [JsonProperty(PropertyNames.InVertexId)]
         public virtual string InV { get; set; }
 
         /// <summary>
         /// Gets or sets the "in" vertex label.
         /// </summary>
-        [JsonProperty("inVLabel")]
+        [JsonProperty(PropertyNames.InVertexLabel)]
         public virtual string InVLabel { get; set; }
 
         /// <summary>
         /// Gets or sets the id of the "out" vertex.
         /// </summary>
-        [JsonProperty("outV")]
+        [JsonProperty(PropertyNames.OutVertexId)]
         public virtual string OutV { get; set; }
 
         /// <summary>
         /// Gets or sets the "out" vertex label.
         /// </summary>
-        [JsonProperty("outVLabel")]
+        [JsonProperty(PropertyNames.OutVertexLabel)]
         public virtual string OutVLabel { get; set; }
 
         /// <summary>
