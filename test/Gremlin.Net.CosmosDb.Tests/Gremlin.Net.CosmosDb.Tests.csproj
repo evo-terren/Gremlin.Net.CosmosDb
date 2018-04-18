@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>Gremlin.Net.CosmosDb</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>gremlintests.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +13,7 @@
     <PackageReference Include="AutoFixture.AutoMoq" Version="4.2.0" />
     <PackageReference Include="AutoFixture.Xunit2" Version="4.2.0" />
     <PackageReference Include="FluentAssertions" Version="5.2.0" />
-    <PackageReference Include="Gremlin.Net" Version="3.3.1" />
+    <PackageReference Include="Gremlin.Net" Version="3.3.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="xunit" Version="2.3.1" />

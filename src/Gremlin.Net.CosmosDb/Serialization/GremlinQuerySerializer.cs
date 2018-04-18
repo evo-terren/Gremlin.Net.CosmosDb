@@ -103,7 +103,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// Serializes the specified predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
-        private void Serialize(TraversalPredicate predicate)
+        private void Serialize(P predicate)
         {
             _writer.Write(predicate.OperatorName);
             _writer.Write('(');
