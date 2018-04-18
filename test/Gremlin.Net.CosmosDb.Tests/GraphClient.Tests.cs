@@ -12,7 +12,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var result = sut.CreateTraversalSource();
 
-            result.Should().BeOfType<GraphTraversalSource>();
+            result.Should().BeOfType<IGraphTraversalSource>();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Gremlin.Net.CosmosDb
     /// A graph traversal source (g)
     /// </summary>
     /// <seealso cref="Gremlin.Net.CosmosDb.IGraphTraversalSource"/>
-    public sealed class GraphTraversalSource : IGraphTraversalSource
+    internal sealed class GraphTraversalSource : IGraphTraversalSource
     {
         private readonly Process.Traversal.GraphTraversalSource _graphTraversalSource;
 
