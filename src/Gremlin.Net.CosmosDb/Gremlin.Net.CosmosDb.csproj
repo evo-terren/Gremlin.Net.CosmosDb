@@ -11,6 +11,9 @@
     <Version>0.3.1.0-alpha</Version>
     <PackageProjectUrl>https://github.com/evo-terren/Gremlin.Net.CosmosDb</PackageProjectUrl>
     <RepositoryUrl>https://github.com/evo-terren/Gremlin.Net.CosmosDb</RepositoryUrl>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>gremlincosmos.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gremlin.Net" Version="3.3.1" />
+    <PackageReference Include="Gremlin.Net" Version="3.3.2" />
   </ItemGroup>
 
 </Project>

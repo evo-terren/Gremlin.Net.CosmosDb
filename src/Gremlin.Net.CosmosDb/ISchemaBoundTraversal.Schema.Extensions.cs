@@ -107,7 +107,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="propertySelector">The property selector.</param>
         /// <param name="predicate">The value predicate to test.</param>
         /// <returns>Returns the resulting traversal</returns>
-        public static ISchemaBoundTraversal<S, TElement> Has<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TraversalPredicate predicate)
+        public static ISchemaBoundTraversal<S, TElement> Has<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, P predicate)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
