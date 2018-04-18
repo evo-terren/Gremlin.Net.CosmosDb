@@ -17,6 +17,20 @@ namespace Gremlin.Net.CosmosDb
     public static class IGraphClientExensions
     {
         /// <summary>
+        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
+        /// and returns the result
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphClient">The graph client.</param>
+        /// <param name="gremlinQuery">The traversal query.</param>
+        /// <returns>Returns the result</returns>
+        /// <exception cref="ArgumentNullException">traversal</exception>
+        public static Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, string gremlinQuery)
+        {
+            return graphClient.SubmitAsync<T>(gremlinQuery, BuildDefaultSerializerSettings());
+        }
+
+        /// <summary>
         /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
         /// and returns the result
         /// </summary>
@@ -106,6 +120,24 @@ namespace Gremlin.Net.CosmosDb
         /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
         /// and returns the result
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphClient">The graph client.</param>
+        /// <param name="gremlinQuery">The traversal query.</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <returns>Returns the result</returns>
+        /// <exception cref="ArgumentNullException">traversal</exception>
+        public static async Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, string gremlinQuery, JsonSerializerSettings serializerSettings)
+        {
+            var result = await graphClient.SubmitAsync(gremlinQuery);
+            var serializer = JsonSerializer.Create(serializerSettings);
+
+            return result.Select(token => token.ToObject<T>(serializer)).ToList();
+        }
+
+        /// <summary>
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
+        /// and returns the result
+        /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -144,16 +176,14 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializerSettings">The serializer settings.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static async Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, ITraversal traversal, JsonSerializerSettings serializerSettings)
+        public static Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, ITraversal traversal, JsonSerializerSettings serializerSettings)
         {
             if (traversal == null)
                 throw new ArgumentNullException(nameof(traversal));
 
             var gremlinQuery = traversal.ToGremlinQuery();
-            var result = await graphClient.SubmitAsync(gremlinQuery);
-            var serializer = JsonSerializer.Create(serializerSettings);
 
-            return result.Select(token => token.ToObject<T>(serializer)).ToList();
+            return graphClient.SubmitAsync<T>(gremlinQuery, serializerSettings);
         }
 
         /// <summary>
