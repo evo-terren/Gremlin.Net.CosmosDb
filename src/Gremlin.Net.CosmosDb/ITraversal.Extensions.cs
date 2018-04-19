@@ -1,6 +1,7 @@
 ﻿using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
+using System;
 using System.IO;
 using System.Text;
 
@@ -45,6 +46,7 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="TEdge">The type of the edge.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the traversal</returns>
+        [Obsolete("Use Cast<T>() instead")]
         public static ISchemaBoundTraversal<object, TEdge> AsEdge<TEdge>(this ITraversal traversal)
             where TEdge : EdgeBase
         {
@@ -57,10 +59,22 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the traversal</returns>
+        [Obsolete("Use Cast<T>() instead")]
         public static ISchemaBoundTraversal<object, TVertex> AsVertex<TVertex>(this ITraversal traversal)
             where TVertex : VertexBase
         {
             return traversal.AsSchemaBound<object, TVertex>();
+        }
+
+        /// <summary>
+        /// Returns the schema-bound equivalent traversal for a specific type.
+        /// </summary>
+        /// <typeparam name="T">The type to cast the traversal to.</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <returns>Returns the traversal</returns>
+        public static ISchemaBoundTraversal<object, T> Cast<T>(this ITraversal traversal)
+        {
+            return traversal.AsSchemaBound<object, T>();
         }
 
         /// <summary>

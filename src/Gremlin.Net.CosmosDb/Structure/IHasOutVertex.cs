@@ -5,6 +5,7 @@
     /// </summary>
     /// <typeparam name="TVertex">The type of the vertex.</typeparam>
     public interface IHasOutVertex<out TVertex>
+        where TVertex : VertexBase
     {
     }
 }

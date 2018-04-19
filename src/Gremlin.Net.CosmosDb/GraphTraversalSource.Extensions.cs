@@ -8,6 +8,34 @@ namespace Gremlin.Net.CosmosDb
     public static class GraphTraversalSourceExtensions
     {
         /// <summary>
+        /// Adds the "addE()" step to the traversal, creating a new edge in the graph.
+        /// </summary>
+        /// <typeparam name="TEdge">The type of the edge.</typeparam>
+        /// <param name="graphTraversalSource">The graph traversal source.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this IGraphTraversalSource graphTraversalSource)
+            where TEdge : EdgeBase
+        {
+            var label = LabelNameResolver.GetLabelName(typeof(TEdge));
+
+            return graphTraversalSource.AddE(label).AsSchemaBound<object, TEdge>();
+        }
+
+        /// <summary>
+        /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
+        /// </summary>
+        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
+        /// <param name="graphTraversalSource">The graph traversal source.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this IGraphTraversalSource graphTraversalSource)
+            where TVertex : VertexBase
+        {
+            var label = LabelNameResolver.GetLabelName(typeof(TVertex));
+
+            return graphTraversalSource.AddV(label).AsSchemaBound<object, TVertex>();
+        }
+
+        /// <summary>
         /// Adds the "E()" step to the traversal.
         /// </summary>
         /// <typeparam name="TEdge">The type of the edge.</typeparam>

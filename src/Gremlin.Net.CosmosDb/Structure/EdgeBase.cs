@@ -54,6 +54,8 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// <typeparam name="ToutV">The type of the "out"/source vertex.</typeparam>
     /// <typeparam name="TinV">The type of the "in"/target vertex.</typeparam>
     public abstract class EdgeBase<ToutV, TinV> : EdgeBase, IHasOutVertex<ToutV>, IHasInVertex<TinV>
+        where ToutV : VertexBase
+        where TinV : VertexBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EdgeBase{ToutV, TinV}"/> class.

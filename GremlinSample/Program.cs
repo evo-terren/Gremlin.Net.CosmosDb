@@ -14,7 +14,7 @@ namespace GremlinSample
             {
                 var g = graphClient.CreateTraversalSource();
 
-                var query = g.V("1").AsVertex<PersonVertex>()
+                var query = g.V("1").Cast<PersonVertex>()
                              .Out(s => s.Purchases)
                              .InE(s => s.People)
                              .OutV()

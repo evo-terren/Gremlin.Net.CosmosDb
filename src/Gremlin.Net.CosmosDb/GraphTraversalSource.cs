@@ -18,13 +18,13 @@ namespace Gremlin.Net.CosmosDb
         {
             _graphTraversalSource = new Graph().Traversal();
         }
-
+        
         /// <summary>
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the addE step to that traversal.
         /// </summary>
-        /// <param name="label"></param>
-        /// <returns></returns>
+        /// <param name="label">The edge label</param>
+        /// <returns>Returns the traversal</returns>
         public GraphTraversal<Gremlin.Net.Structure.Edge, Gremlin.Net.Structure.Edge> AddE(string label)
         {
             return _graphTraversalSource.AddE(label);
@@ -34,8 +34,8 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the addE step to that traversal.
         /// </summary>
-        /// <param name="edgeLabelTraversal"></param>
-        /// <returns></returns>
+        /// <param name="edgeLabelTraversal">The traversal edge to add</param>
+        /// <returns>Returns the traversal</returns>
         public GraphTraversal<Gremlin.Net.Structure.Edge, Gremlin.Net.Structure.Edge> AddE(ITraversal edgeLabelTraversal)
         {
             return _graphTraversalSource.AddE(edgeLabelTraversal);
@@ -45,7 +45,7 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the addV step to that traversal.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the traversal</returns>
         public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> AddV()
         {
             return _graphTraversalSource.AddV();
@@ -55,8 +55,8 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the addV step to that traversal.
         /// </summary>
-        /// <param name="label"></param>
-        /// <returns></returns>
+        /// <param name="label">The vertex label</param>
+        /// <returns>Returns the traversal</returns>
         public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> AddV(string label)
         {
             return _graphTraversalSource.AddV(label);
@@ -66,8 +66,8 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the addV step to that traversal.
         /// </summary>
-        /// <param name="vertexLabelTraversal"></param>
-        /// <returns></returns>
+        /// <param name="vertexLabelTraversal">The vertex label traversal</param>
+        /// <returns>Returns the traversal</returns>
         public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> AddV(ITraversal vertexLabelTraversal)
         {
             return _graphTraversalSource.AddV(vertexLabelTraversal);
@@ -77,8 +77,8 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the E step to that traversal.
         /// </summary>
-        /// <param name="edgesIds"></param>
-        /// <returns></returns>
+        /// <param name="edgesIds">Unique Identifiers of edges to start the traversal with</param>
+        /// <returns>Returns the traversal</returns>
         public GraphTraversal<Gremlin.Net.Structure.Edge, Gremlin.Net.Structure.Edge> E(params object[] edgesIds)
         {
             return _graphTraversalSource.E(edgesIds);
@@ -88,7 +88,7 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the V step to that traversal.
         /// </summary>
-        /// <param name="vertexIds"></param>
+        /// <param name="vertexIds">Unique Identifiers of vertices to start the traversal with</param>
         /// <returns></returns>
         public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V(params object[] vertexIds)
         {

@@ -143,6 +143,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<S, ToutVertex> In<S, TVertex, ToutVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<ToutVertex, TVertex>>> edgeSelector)
             where TVertex : VertexBase
+            where ToutVertex : VertexBase
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -218,6 +219,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<S, TinVertex> InV<S, TinVertex>(this ISchemaBoundTraversal<S, IHasInVertex<TinVertex>> traversal)
+        where TinVertex : VertexBase
         {
             return traversal.ToGraphTraversal().InV().AsSchemaBound<S, TinVertex>();
         }
@@ -234,6 +236,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<S, TinVertex> Out<S, TVertex, TinVertex>(this ISchemaBoundTraversal<S, TVertex> traversal, Expression<Func<TVertex, EdgeBase<TVertex, TinVertex>>> edgeSelector)
             where TVertex : VertexBase
+            where TinVertex : VertexBase
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
@@ -307,6 +310,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<S, ToutVertex> OutV<S, ToutVertex>(this ISchemaBoundTraversal<S, IHasOutVertex<ToutVertex>> traversal)
+            where ToutVertex : VertexBase
         {
             return traversal.ToGraphTraversal().InV().AsSchemaBound<S, ToutVertex>();
         }

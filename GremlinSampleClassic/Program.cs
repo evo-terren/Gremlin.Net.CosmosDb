@@ -2,22 +2,19 @@
 using GremlinSampleClassic.Schema;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GremlinSampleClassic
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             using (var graphClient = new GraphClient("your-gremlin-host-name", "your-db-name", "your-graph-name", "your-access-key"))
             {
                 var g = graphClient.CreateTraversalSource();
 
-                var query = g.V("1").AsVertex<PersonVertex>()
+                var query = g.V("1").Cast<PersonVertex>()
                              .Out(s => s.Purchases)
                              .InE(s => s.People)
                              .OutV()
