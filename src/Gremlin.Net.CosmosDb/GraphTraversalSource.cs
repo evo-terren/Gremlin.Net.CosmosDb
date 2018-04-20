@@ -17,8 +17,9 @@ namespace Gremlin.Net.CosmosDb
         public GraphTraversalSource()
         {
             _graphTraversalSource = new Graph().Traversal();
+            _graphTraversalSource.Bytecode.AddSource("g");
         }
-        
+
         /// <summary>
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the addE step to that traversal.

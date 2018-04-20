@@ -69,13 +69,62 @@ namespace Gremlin.Net.CosmosDb.Serialization
             if (traversal == null)
                 throw new ArgumentNullException(nameof(traversal));
 
-            _writer.Write("g");
+            Serialize(traversal.Bytecode);
+        }
 
-            foreach (var instr in traversal.Bytecode.StepInstructions)
+        /// <summary>
+        /// Serializes the specified bytecode.
+        /// </summary>
+        /// <param name="bytecode">The bytecode.</param>
+        private void Serialize(Bytecode bytecode)
+        {
+            var first = true;
+            foreach (var instr in bytecode.SourceInstructions)
             {
-                _writer.Write('.');
-                Serialize(instr);
+                if (!first)
+                    _writer.Write('.');
+
+                _writer.Write(instr.OperatorName);
+
+                first = false;
             }
+
+            foreach (var instr in bytecode.StepInstructions)
+            {
+                if (!first)
+                    _writer.Write('.');
+
+                Serialize(instr);
+
+                first = false;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the specified cardinality.
+        /// </summary>
+        /// <param name="cardinality">The cardinality.</param>
+        private void Serialize(Cardinality cardinality)
+        {
+            _writer.Write(cardinality.EnumValue);
+        }
+
+        /// <summary>
+        /// Serializes the specified enum.
+        /// </summary>
+        /// <param name="enum">The enum.</param>
+        private void Serialize(Enum @enum)
+        {
+            Serialize(@enum.ToString().ToLowerInvariant());
+        }
+
+        /// <summary>
+        /// Serializes the specified unique identifier.
+        /// </summary>
+        /// <param name="guid">The unique identifier.</param>
+        private void Serialize(Guid guid)
+        {
+            Serialize(guid.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -100,6 +149,15 @@ namespace Gremlin.Net.CosmosDb.Serialization
         }
 
         /// <summary>
+        /// Serializes the specified order.
+        /// </summary>
+        /// <param name="order">The order.</param>
+        private void Serialize(Order order)
+        {
+            _writer.Write(order.ToString().ToLowerInvariant());
+        }
+
+        /// <summary>
         /// Serializes the specified predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -110,42 +168,6 @@ namespace Gremlin.Net.CosmosDb.Serialization
             if (predicate.Value != null)
                 Serialize(predicate.Value);
             _writer.Write(')');
-        }
-
-        /// <summary>
-        /// Serializes the specified order.
-        /// </summary>
-        /// <param name="order">The order.</param>
-        private void Serialize(Order order)
-        {
-            _writer.Write(order.ToString().ToLowerInvariant());
-        }
-
-        /// <summary>
-        /// Serializes the specified cardinality.
-        /// </summary>
-        /// <param name="cardinality">The cardinality.</param>
-        private void Serialize(Cardinality cardinality)
-        {
-            _writer.Write(cardinality.ToString().ToLowerInvariant());
-        }
-
-        /// <summary>
-        /// Serializes the specified enum.
-        /// </summary>
-        /// <param name="enum">The enum.</param>
-        private void Serialize(Enum @enum)
-        {
-            Serialize(@enum.ToString().ToLowerInvariant());
-        }
-
-        /// <summary>
-        /// Serializes the specified unique identifier.
-        /// </summary>
-        /// <param name="guid">The unique identifier.</param>
-        private void Serialize(Guid guid)
-        {
-            Serialize(guid.ToString().ToLowerInvariant());
         }
 
         /// <summary>

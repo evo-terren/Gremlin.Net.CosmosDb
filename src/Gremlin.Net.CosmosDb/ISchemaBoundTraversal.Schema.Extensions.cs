@@ -2,6 +2,7 @@
 using Gremlin.Net.Process.Traversal;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,6 +15,7 @@ namespace Gremlin.Net.CosmosDb
     public static partial class ISchemaBoundTraversalExtensions
     {
         private static readonly Type TYPE_OF_ENUMERABLE = typeof(IEnumerable);
+        private static readonly Type TYPE_OF_STRING = typeof(string);
 
         /// <summary>
         /// Adds the "addE()" step to the traversal, creating a new edge in the graph.
@@ -328,20 +330,76 @@ namespace Gremlin.Net.CosmosDb
         public static ISchemaBoundTraversal<S, TElement> Property<S, TElement, TProperty>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, TProperty>> propertySelector, TProperty value)
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
+            var propType = typeof(TProperty);
+            var graphTraversal = traversal.ToGraphTraversal();
 
-            //if the property is an enumerable, we need to specify the cardinality to be list
-            if (TYPE_OF_ENUMERABLE.IsAssignableFrom(typeof(TProperty)) && typeof(TProperty) != typeof(string))
+            //if the property is an enumerable, use sideEffect() to drop existing values before adding the new ones
+            //also, strings need to be special cased since most people don't think of strings as an enumerable of chars
+            if (TYPE_OF_ENUMERABLE.IsAssignableFrom(propType) && propType != TYPE_OF_STRING)
             {
                 var enumerator = ((IEnumerable)value).GetEnumerator();
-                var result = traversal;
+                graphTraversal = graphTraversal.SideEffect(__.Properties<TElement>(propName).Drop());
                 while (enumerator.MoveNext())
-                    result = result.ToGraphTraversal().Property(Cardinality.List, propName, enumerator.Current).AsSchemaBound();
-                return result;
+                    graphTraversal = graphTraversal.Property(Cardinality.List, propName, enumerator.Current);
             }
             else
             {
-                return traversal.ToGraphTraversal().Property(propName, value).AsSchemaBound();
+                graphTraversal = graphTraversal.Property(propName, value);
             }
+
+            return graphTraversal.AsSchemaBound();
+        }
+
+        /// <summary>
+        /// Adds the "property()" step to the traversal, updating an enumerable property on an element
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TValue">The type of the value being added</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <param name="value">The value to set.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<S, TElement> Property<S, TElement, TValue>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, IEnumerable<TValue>>> propertySelector, IEnumerable<TValue> value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+            var graphTraversal = traversal.ToGraphTraversal();
+
+            //special case for strings - most people don't think of strings as an array of chars
+            //so, don't treat them as enumerable properties
+            if (value.GetType() == TYPE_OF_STRING)
+            {
+                graphTraversal = graphTraversal.Property(propName, value);
+            }
+            else
+            {
+                //use sideEffect() to drop any existing value before adding new ones
+                graphTraversal = graphTraversal.SideEffect(__.Properties<TElement>(propName).Drop());
+                foreach (var val in value)
+                    graphTraversal = graphTraversal.Property(Cardinality.List, propName, val);
+            }
+
+            return graphTraversal.AsSchemaBound();
+        }
+
+        /// <summary>
+        /// Adds the "property()" step to the traversal, adding a new value to an enumerable property list
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="TElement">The type of the element.</typeparam>
+        /// <typeparam name="TValue">The type of the value being added</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="propertySelector">The property selector.</param>
+        /// <param name="value">The value to set.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<S, TElement> Property<S, TElement, TValue>(this ISchemaBoundTraversal<S, TElement> traversal, Expression<Func<TElement, IEnumerable<TValue>>> propertySelector, TValue value)
+        {
+            var propName = GetPropertyName(typeof(TElement), propertySelector);
+
+            return traversal.ToGraphTraversal().Property(Cardinality.List, propName, value).AsSchemaBound();
         }
 
         /// <summary>

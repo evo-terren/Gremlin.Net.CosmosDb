@@ -18,7 +18,9 @@ namespace GremlinSample
                              .Out(s => s.Purchases)
                              .InE(s => s.People)
                              .OutV()
-                             .Property(v => v.Name, "test").Property(v => v.Ages, new[] { 5, 6 });
+                             .Property(v => v.Name, "test")
+                             .Property(v => v.Ages, new[] { 5, 6 })
+                             .Property(v => v.Ages, 7);
                 Console.WriteLine(query.ToGremlinQuery());
                 var response = await graphClient.SubmitAsync(query);
 

@@ -112,7 +112,7 @@ foreach (ProductVertex product in response)
 }
 ```
 
-## Vertex and Edge With Property Containers
+## Strongly-Typed Vertex and Edge Objects
 
 Create strongly-typed vertex and edge objects to define properties and help with deserialization.
 
@@ -122,21 +122,66 @@ using Gremlin.Net.CosmosDb.Structure;
 [Label("person")]
 public class PersonVertex : VertexBase
 {
-	public string Name { get; set; }
+    public string Name { get; set; }
 
-	public DateTimeOffset Birthdate { get; set; }
+    public DateTimeOffset Birthdate { get; set; }
 }
 
 ...
 //usage in application
 ...
 
-var query = g.V<PersonVertex>().has(v => v.Name, "Todd").property(v => v.Birthdate, DateTimeOffset.Now);
+var query = g.V<PersonVertex>().Has(v => v.Name, "Todd").Property(v => v.Birthdate, DateTimeOffset.Now);
 var response = await graphClient.SubmitAsync(query);
 
 foreach (var vertex in response)
 {
-	Console.WriteLine(vertex.Birthdate.ToString());
-	Console.WriteLine(vertex.Name);
+    Console.WriteLine(vertex.Birthdate.ToString());
+    Console.WriteLine(vertex.Name);
 }
+```
+
+### A Note on IEnumerable Properties
+
+In order to specify that a property has an array of values instead of just one, you normally must specify the Cardinality to be List (read more about graph properties here: http://tinkerpop.apache.org/docs/current/reference/#vertex-properties). However, there are certain things about the usage of cardinality that aren't as inuitive to the user as I would like. For example, `g.V('some-id').property(list, 'some-property', 'some-value')` ALWAYS adds the value to the existing list no matter what. Updating the array of values becomes non-intuitive, especially if you are trying to update the properties in one query.
+
+What does all of this mean to you?
+
+When using the schema-bound `Property()` method with an enumerable property, this will likely add more gremlin query than you may initially expect, but this is to your benefit (hopefully).
+
+Assuming you have an object defined as such:
+
+```c#
+using Gremlin.Net.CosmosDb.Structure;
+
+public class YourVertex : VertexBase
+{
+    public IEnumerable<int> Numbers { get; set; }
+}
+```
+
+Performing this traversal:
+
+```c#
+var query = g.V<YourVertex>('some-id').Property(v => v.Numbers, new [] { 4, 5, 6 });
+```
+
+Results in the following gremlin query:
+
+```
+g.V('some-id').sideEffect(properties('Numbers').drop()).property(list, 'Numbers', 4).property(list, 'Numbers', 5).property(list, 'Numbers', 6)
+```
+
+This will effectively drop the existing set of values and add 4, then 5, then 6.
+
+If you would like to simply add a single value, you can use this syntax:
+
+```c#
+g.V<YourVertex>('some-id').Property(v => v.Numbers, 8);
+```
+
+This results in the following gremlin query:
+
+```
+g.V('some-id').property(list, 'Numbers', 8)
 ```
