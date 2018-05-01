@@ -686,17 +686,17 @@ namespace Gremlin.Net.CosmosDb
         /// <summary>
         /// Adds the limit step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
-        public static GraphTraversal<object, E2> Limit<E2>(this ISchemaBoundTraversal traversal, Scope scope, long limit)
+        public static ISchemaBoundTraversal<S, E> Limit<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope, long limit)
         {
-            return traversal.ToGraphTraversal<object, E2>().Limit<E2>(scope, limit);
+            return traversal.ToGraphTraversal().Limit<E>(scope, limit).AsSchemaBound();
         }
 
         /// <summary>
         /// Adds the limit step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
-        public static GraphTraversal<object, E2> Limit<E2>(this ISchemaBoundTraversal traversal, long limit)
+        public static ISchemaBoundTraversal<S, E> Limit<S, E>(this ISchemaBoundTraversal<S, E> traversal, long limit)
         {
-            return traversal.ToGraphTraversal<object, E2>().Limit<E2>(limit);
+            return traversal.ToGraphTraversal().Limit<E>(limit).AsSchemaBound();
         }
 
         /// <summary>
