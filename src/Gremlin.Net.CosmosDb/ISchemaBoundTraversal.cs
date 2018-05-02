@@ -12,18 +12,7 @@ namespace Gremlin.Net.CosmosDb
     /// vertex/edge types. <see cref="Gremlin.Net.Process.Traversal.GraphTraversal{S, E}"/> is not
     /// covariant, yet defines all the traversal methods (unfortunately for me)...
     /// </remarks>
-    public interface ISchemaBoundTraversal<S, out E> : ISchemaBoundTraversal
+    public interface ISchemaBoundTraversal<S, out E> : ITraversal
     {
-    }
-
-    /// <summary>
-    /// Traversal that is bound to a specific schema
-    /// </summary>
-    public interface ISchemaBoundTraversal
-    {
-        /// <summary>
-        /// Gets the <see cref="Gremlin.Net.Process.Traversal.Bytecode"/> representation of this traversal.
-        /// </summary>
-        Bytecode Bytecode { get; }
     }
 }

@@ -18,34 +18,6 @@ namespace Gremlin.Net.CosmosDb
         private static readonly Type TYPE_OF_STRING = typeof(string);
 
         /// <summary>
-        /// Adds the "addE()" step to the traversal, creating a new edge in the graph.
-        /// </summary>
-        /// <typeparam name="TEdge">The type of the edge.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this ISchemaBoundTraversal traversal)
-            where TEdge : EdgeBase
-        {
-            var label = LabelNameResolver.GetLabelName(typeof(TEdge));
-
-            return traversal.ToGraphTraversal<object, object>().AddE(label).AsSchemaBound<object, TEdge>();
-        }
-
-        /// <summary>
-        /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
-        /// </summary>
-        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <returns>Returns the resulting traversal</returns>
-        public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this ISchemaBoundTraversal traversal)
-            where TVertex : VertexBase
-        {
-            var label = LabelNameResolver.GetLabelName(typeof(TVertex));
-
-            return traversal.ToGraphTraversal<object, object>().AddV(label).AsSchemaBound<object, TVertex>();
-        }
-
-        /// <summary>
         /// Adds the "has()" step to the traversal, removing traversers that do not have a value
         /// defined for the given property
         /// </summary>
@@ -59,7 +31,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.ToGraphTraversal().Has(propName).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propName).AsSchemaBound();
         }
 
         /// <summary>
@@ -77,7 +49,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.ToGraphTraversal().Has(propName, value).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propName, value).AsSchemaBound();
         }
 
         /// <summary>
@@ -95,7 +67,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.ToGraphTraversal().Has(propName, propertyTraversal).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propName, propertyTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -113,7 +85,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.ToGraphTraversal().Has(propName, predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propName, predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -130,7 +102,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.ToGraphTraversal().HasNot(propName).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasNot(propName).AsSchemaBound();
         }
 
         /// <summary>
@@ -149,7 +121,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
-            return traversal.ToGraphTraversal().In(labelName).AsSchemaBound<S, ToutVertex>();
+            return traversal.AsGraphTraversal().In(labelName).AsSchemaBound<S, ToutVertex>();
         }
 
         /// <summary>
@@ -170,7 +142,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.ToGraphTraversal().In(edgeLabels);
+            return traversal.AsGraphTraversal().In(edgeLabels);
         }
 
         /// <summary>
@@ -189,7 +161,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var labelName = LabelNameResolver.GetLabelName(typeof(TEdge));
 
-            return traversal.ToGraphTraversal().InE(labelName).AsSchemaBound<S, TEdge>();
+            return traversal.AsGraphTraversal().InE(labelName).AsSchemaBound<S, TEdge>();
         }
 
         /// <summary>
@@ -210,7 +182,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.ToGraphTraversal().InE(edgeLabels);
+            return traversal.AsGraphTraversal().InE(edgeLabels);
         }
 
         /// <summary>
@@ -223,7 +195,7 @@ namespace Gremlin.Net.CosmosDb
         public static ISchemaBoundTraversal<S, TinVertex> InV<S, TinVertex>(this ISchemaBoundTraversal<S, IHasInVertex<TinVertex>> traversal)
         where TinVertex : VertexBase
         {
-            return traversal.ToGraphTraversal().InV().AsSchemaBound<S, TinVertex>();
+            return traversal.AsGraphTraversal().InV().AsSchemaBound<S, TinVertex>();
         }
 
         /// <summary>
@@ -242,7 +214,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
-            return traversal.ToGraphTraversal().Out(labelName).AsSchemaBound<S, TinVertex>();
+            return traversal.AsGraphTraversal().Out(labelName).AsSchemaBound<S, TinVertex>();
         }
 
         /// <summary>
@@ -263,7 +235,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.ToGraphTraversal().In(edgeLabels);
+            return traversal.AsGraphTraversal().In(edgeLabels);
         }
 
         /// <summary>
@@ -281,7 +253,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var labelName = LabelNameResolver.GetLabelName(typeof(TEdge));
 
-            return traversal.ToGraphTraversal().OutE(labelName).AsSchemaBound<S, TEdge>();
+            return traversal.AsGraphTraversal().OutE(labelName).AsSchemaBound<S, TEdge>();
         }
 
         /// <summary>
@@ -301,7 +273,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.ToGraphTraversal().OutE(edgeLabels);
+            return traversal.AsGraphTraversal().OutE(edgeLabels);
         }
 
         /// <summary>
@@ -314,7 +286,7 @@ namespace Gremlin.Net.CosmosDb
         public static ISchemaBoundTraversal<S, ToutVertex> OutV<S, ToutVertex>(this ISchemaBoundTraversal<S, IHasOutVertex<ToutVertex>> traversal)
             where ToutVertex : VertexBase
         {
-            return traversal.ToGraphTraversal().InV().AsSchemaBound<S, ToutVertex>();
+            return traversal.AsGraphTraversal().InV().AsSchemaBound<S, ToutVertex>();
         }
 
         /// <summary>
@@ -331,7 +303,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
             var propType = typeof(TProperty);
-            var graphTraversal = traversal.ToGraphTraversal();
+            var graphTraversal = traversal.AsGraphTraversal();
 
             //if the property is an enumerable, use sideEffect() to drop existing values before adding the new ones
             //also, strings need to be special cased since most people don't think of strings as an enumerable of chars
@@ -366,7 +338,7 @@ namespace Gremlin.Net.CosmosDb
                 throw new ArgumentNullException(nameof(value));
 
             var propName = GetPropertyName(typeof(TElement), propertySelector);
-            var graphTraversal = traversal.ToGraphTraversal();
+            var graphTraversal = traversal.AsGraphTraversal();
 
             //special case for strings - most people don't think of strings as an array of chars
             //so, don't treat them as enumerable properties
@@ -399,7 +371,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var propName = GetPropertyName(typeof(TElement), propertySelector);
 
-            return traversal.ToGraphTraversal().Property(Cardinality.List, propName, value).AsSchemaBound();
+            return traversal.AsGraphTraversal().Property(Cardinality.List, propName, value).AsSchemaBound();
         }
 
         /// <summary>

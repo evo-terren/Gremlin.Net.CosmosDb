@@ -163,7 +163,7 @@ namespace Gremlin.Net.CosmosDb
         /// <exception cref="ArgumentNullException">traversal</exception>
         public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
         {
-            return graphClient.SubmitAsync<E>(traversal.ToGraphTraversal(), serializerSettings);
+            return graphClient.SubmitAsync<E>(traversal.AsGraphTraversal(), serializerSettings);
         }
 
         /// <summary>

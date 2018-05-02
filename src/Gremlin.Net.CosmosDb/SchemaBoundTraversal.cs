@@ -1,5 +1,5 @@
 ﻿using Gremlin.Net.Process.Traversal;
-using System;
+using System.Collections.Generic;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -11,21 +11,71 @@ namespace Gremlin.Net.CosmosDb
     internal sealed class SchemaBoundTraversal<S, E> : ISchemaBoundTraversal<S, E>
     {
         /// <summary>
-        /// Gets the <see cref="T:Gremlin.Net.Process.Traversal.Bytecode"/> representation of this traversal.
+        /// Gets the bytecode.
         /// </summary>
-        public Bytecode Bytecode { get; private set; }
+        public Bytecode Bytecode
+        {
+            get { return _traversal.Bytecode; }
+        }
+
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
+        public object Current => _traversal.Current;
+
+        /// <summary>
+        /// Gets or sets the <see cref="ITraversalSideEffects"/> of this traversal.
+        /// </summary>
+        public ITraversalSideEffects SideEffects
+        {
+            get { return _traversal.SideEffects; }
+            set { _traversal.SideEffects = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Traverser"/>'s of this traversal that hold the results of the traversal.
+        /// </summary>
+        public IEnumerable<Traverser> Traversers
+        {
+            get { return _traversal.Traversers; }
+            set { _traversal.Traversers = value; }
+        }
+
+        private readonly GraphTraversal<S, E> _traversal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SchemaBoundTraversal{S, E}"/> class.
         /// </summary>
         /// <param name="bytecode">The bytecode.</param>
-        /// <exception cref="ArgumentNullException">bytecode</exception>
         public SchemaBoundTraversal(Bytecode bytecode)
         {
-            if (bytecode == null)
-                throw new ArgumentNullException(nameof(bytecode));
+            _traversal = new GraphTraversal<S, E>(new ITraversalStrategy[0], bytecode);
+        }
 
-            Bytecode = bytecode;
+        /// <summary>
+        /// Iterates this instance.
+        /// </summary>
+        /// <returns></returns>
+        public ITraversal Iterate()
+        {
+            return _traversal.Iterate();
+        }
+
+        /// <summary>
+        /// Moves the next.
+        /// </summary>
+        /// <returns></returns>
+        public bool MoveNext()
+        {
+            return _traversal.MoveNext();
+        }
+
+        /// <summary>
+        /// Resets this instance.
+        /// </summary>
+        public void Reset()
+        {
+            _traversal.Reset();
         }
     }
 }

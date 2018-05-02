@@ -14,7 +14,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Edge> AddE<S, E>(this ISchemaBoundTraversal<S, E> traversal, string edgeLabel)
         {
-            return traversal.ToGraphTraversal().AddE(edgeLabel);
+            return traversal.AsGraphTraversal().AddE(edgeLabel);
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Edge> AddE<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal edgeLabelTraversal)
         {
-            return traversal.ToGraphTraversal().AddE(edgeLabelTraversal);
+            return traversal.AsGraphTraversal().AddE(edgeLabelTraversal);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> AddV<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().AddV();
+            return traversal.AsGraphTraversal().AddV();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> AddV<S, E>(this ISchemaBoundTraversal<S, E> traversal, string vertexLabel)
         {
-            return traversal.ToGraphTraversal().AddV(vertexLabel);
+            return traversal.AsGraphTraversal().AddV(vertexLabel);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> AddV<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal vertexLabelTraversal)
         {
-            return traversal.ToGraphTraversal().AddV(vertexLabelTraversal);
+            return traversal.AsGraphTraversal().AddV(vertexLabelTraversal);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Aggregate<S, E>(this ISchemaBoundTraversal<S, E> traversal, string sideEffectKey)
         {
-            return traversal.ToGraphTraversal().Aggregate(sideEffectKey).AsSchemaBound();
+            return traversal.AsGraphTraversal().Aggregate(sideEffectKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> And<S, E>(this ISchemaBoundTraversal<S, E> traversal, params ITraversal[] andTraversals)
         {
-            return traversal.ToGraphTraversal().And(andTraversals).AsSchemaBound();
+            return traversal.AsGraphTraversal().And(andTraversals).AsSchemaBound();
         }
 
         /// <summary>
@@ -70,7 +70,19 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> As<S, E>(this ISchemaBoundTraversal<S, E> traversal, string stepLabel, params string[] stepLabels)
         {
-            return traversal.ToGraphTraversal().As(stepLabel, stepLabels).AsSchemaBound();
+            return traversal.AsGraphTraversal().As(stepLabel, stepLabels).AsSchemaBound();
+        }
+
+        /// <summary>
+        /// Casts the schema-bound traversal to a gremlin graph traversal.
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="E">The type of the current element</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <returns>Returns the traversal</returns>
+        public static GraphTraversal<S, E> AsGraphTraversal<S, E>(this ISchemaBoundTraversal<S, E> traversal)
+        {
+            return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
         }
 
         /// <summary>
@@ -78,7 +90,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Barrier<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Barrier().AsSchemaBound();
+            return traversal.AsGraphTraversal().Barrier().AsSchemaBound();
         }
 
         /// <summary>
@@ -86,7 +98,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Barrier<S, E>(this ISchemaBoundTraversal<S, E> traversal, IConsumer barrierConsumer)
         {
-            return traversal.ToGraphTraversal().Barrier(barrierConsumer).AsSchemaBound();
+            return traversal.AsGraphTraversal().Barrier(barrierConsumer).AsSchemaBound();
         }
 
         /// <summary>
@@ -94,7 +106,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Barrier<S, E>(this ISchemaBoundTraversal<S, E> traversal, int maxBarrierSize)
         {
-            return traversal.ToGraphTraversal().Barrier(maxBarrierSize).AsSchemaBound();
+            return traversal.AsGraphTraversal().Barrier(maxBarrierSize).AsSchemaBound();
         }
 
         /// <summary>
@@ -102,7 +114,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> Both<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
         {
-            return traversal.ToGraphTraversal().Both(edgeLabels);
+            return traversal.AsGraphTraversal().Both(edgeLabels);
         }
 
         /// <summary>
@@ -110,7 +122,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Edge> BothE<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
         {
-            return traversal.ToGraphTraversal().BothE(edgeLabels);
+            return traversal.AsGraphTraversal().BothE(edgeLabels);
         }
 
         /// <summary>
@@ -118,23 +130,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> BothV<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().BothV();
-        }
-
-        /// <summary>
-        /// Adds the branch step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Branch<E2>(this ISchemaBoundTraversal traversal, IFunction function)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Branch<E2>(function);
-        }
-
-        /// <summary>
-        /// Adds the branch step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Branch<E2>(this ISchemaBoundTraversal traversal, ITraversal branchTraversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Branch<E2>(branchTraversal);
+            return traversal.AsGraphTraversal().BothV();
         }
 
         /// <summary>
@@ -142,7 +138,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().By().AsSchemaBound();
+            return traversal.AsGraphTraversal().By().AsSchemaBound();
         }
 
         /// <summary>
@@ -150,7 +146,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, IComparator comparator)
         {
-            return traversal.ToGraphTraversal().By(comparator).AsSchemaBound();
+            return traversal.AsGraphTraversal().By(comparator).AsSchemaBound();
         }
 
         /// <summary>
@@ -158,7 +154,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, IFunction function, IComparator comparator)
         {
-            return traversal.ToGraphTraversal().By(function, comparator).AsSchemaBound();
+            return traversal.AsGraphTraversal().By(function, comparator).AsSchemaBound();
         }
 
         /// <summary>
@@ -166,7 +162,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, Order order)
         {
-            return traversal.ToGraphTraversal().By(order).AsSchemaBound();
+            return traversal.AsGraphTraversal().By(order).AsSchemaBound();
         }
 
         /// <summary>
@@ -174,7 +170,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, string key)
         {
-            return traversal.ToGraphTraversal().By(key).AsSchemaBound();
+            return traversal.AsGraphTraversal().By(key).AsSchemaBound();
         }
 
         /// <summary>
@@ -182,7 +178,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, string key, IComparator comparator)
         {
-            return traversal.ToGraphTraversal().By(key, comparator).AsSchemaBound();
+            return traversal.AsGraphTraversal().By(key, comparator).AsSchemaBound();
         }
 
         /// <summary>
@@ -190,7 +186,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, T token)
         {
-            return traversal.ToGraphTraversal().By(token).AsSchemaBound();
+            return traversal.AsGraphTraversal().By(token).AsSchemaBound();
         }
 
         /// <summary>
@@ -198,7 +194,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal byTraversal)
         {
-            return traversal.ToGraphTraversal().By(byTraversal).AsSchemaBound();
+            return traversal.AsGraphTraversal().By(byTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -206,71 +202,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> By<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal byTraversal, IComparator comparator)
         {
-            return traversal.ToGraphTraversal().By(byTraversal, comparator).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the cap step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Cap<E2>(this ISchemaBoundTraversal traversal, string sideEffectKey, params string[] sideEffectKeys)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Cap<E2>(sideEffectKey, sideEffectKeys);
-        }
-
-        /// <summary>
-        /// Adds the choose step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Choose<E2>(this ISchemaBoundTraversal traversal, IFunction choiceFunction)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Choose<E2>(choiceFunction);
-        }
-
-        /// <summary>
-        /// Adds the choose step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Choose<E2>(this ISchemaBoundTraversal traversal, P choosePredicate, ITraversal trueChoice)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Choose<E2>(choosePredicate, trueChoice);
-        }
-
-        /// <summary>
-        /// Adds the choose step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Choose<E2>(this ISchemaBoundTraversal traversal, P choosePredicate, ITraversal trueChoice, ITraversal falseChoice)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Choose<E2>(choosePredicate, trueChoice, falseChoice);
-        }
-
-        /// <summary>
-        /// Adds the choose step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Choose<E2>(this ISchemaBoundTraversal traversal, ITraversal choiceTraversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Choose<E2>(choiceTraversal);
-        }
-
-        /// <summary>
-        /// Adds the choose step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Choose<E2>(this ISchemaBoundTraversal traversal, ITraversal traversalPredicate, ITraversal trueChoice)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Choose<E2>(traversalPredicate, trueChoice);
-        }
-
-        /// <summary>
-        /// Adds the choose step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Choose<E2>(this ISchemaBoundTraversal traversal, ITraversal traversalPredicate, ITraversal trueChoice, ITraversal falseChoice)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Choose<E2>(traversalPredicate, trueChoice, falseChoice);
-        }
-
-        /// <summary>
-        /// Adds the coalesce step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Coalesce<E2>(this ISchemaBoundTraversal traversal, params ITraversal[] coalesceTraversals)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Coalesce<E2>(coalesceTraversals);
+            return traversal.AsGraphTraversal().By(byTraversal, comparator).AsSchemaBound();
         }
 
         /// <summary>
@@ -278,15 +210,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Coin<S, E>(this ISchemaBoundTraversal<S, E> traversal, double probability)
         {
-            return traversal.ToGraphTraversal().Coin(probability).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the constant step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Constant<E2>(this ISchemaBoundTraversal traversal, E2 e)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Constant<E2>(e);
+            return traversal.AsGraphTraversal().Coin(probability).AsSchemaBound();
         }
 
         /// <summary>
@@ -294,7 +218,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, long> Count<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Count();
+            return traversal.AsGraphTraversal().Count();
         }
 
         /// <summary>
@@ -302,7 +226,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, long> Count<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope)
         {
-            return traversal.ToGraphTraversal().Count(scope);
+            return traversal.AsGraphTraversal().Count(scope);
         }
 
         /// <summary>
@@ -310,7 +234,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> CyclicPath<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().CyclicPath().AsSchemaBound();
+            return traversal.AsGraphTraversal().CyclicPath().AsSchemaBound();
         }
 
         /// <summary>
@@ -318,7 +242,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Dedup<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope, params string[] dedupLabels)
         {
-            return traversal.ToGraphTraversal().Dedup(scope, dedupLabels).AsSchemaBound();
+            return traversal.AsGraphTraversal().Dedup(scope, dedupLabels).AsSchemaBound();
         }
 
         /// <summary>
@@ -326,7 +250,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Dedup<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] dedupLabels)
         {
-            return traversal.ToGraphTraversal().Dedup(dedupLabels).AsSchemaBound();
+            return traversal.AsGraphTraversal().Dedup(dedupLabels).AsSchemaBound();
         }
 
         /// <summary>
@@ -334,7 +258,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Drop<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Drop().AsSchemaBound();
+            return traversal.AsGraphTraversal().Drop().AsSchemaBound();
         }
 
         /// <summary>
@@ -342,7 +266,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Emit<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Emit().AsSchemaBound();
+            return traversal.AsGraphTraversal().Emit().AsSchemaBound();
         }
 
         /// <summary>
@@ -350,7 +274,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Emit<S, E>(this ISchemaBoundTraversal<S, E> traversal, P emitPredicate)
         {
-            return traversal.ToGraphTraversal().Emit(emitPredicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Emit(emitPredicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -358,7 +282,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Emit<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal emitTraversal)
         {
-            return traversal.ToGraphTraversal().Emit(emitTraversal).AsSchemaBound();
+            return traversal.AsGraphTraversal().Emit(emitTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -366,7 +290,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Filter<S, E>(this ISchemaBoundTraversal<S, E> traversal, P predicate)
         {
-            return traversal.ToGraphTraversal().Filter(predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Filter(predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -374,23 +298,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Filter<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal filterTraversal)
         {
-            return traversal.ToGraphTraversal().Filter(filterTraversal).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the flatMap step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> FlatMap<E2>(this ISchemaBoundTraversal traversal, IFunction function)
-        {
-            return traversal.ToGraphTraversal<object, E2>().FlatMap<E2>(function);
-        }
-
-        /// <summary>
-        /// Adds the flatMap step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> FlatMap<E2>(this ISchemaBoundTraversal traversal, ITraversal flatMapTraversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().FlatMap<E2>(flatMapTraversal);
+            return traversal.AsGraphTraversal().Filter(filterTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -398,15 +306,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, IList<E>> Fold<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Fold();
-        }
-
-        /// <summary>
-        /// Adds the fold step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Fold<E2>(this ISchemaBoundTraversal traversal, E2 seed, IBiFunction foldFunction)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Fold(seed, foldFunction);
+            return traversal.AsGraphTraversal().Fold();
         }
 
         /// <summary>
@@ -414,7 +314,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> From<S, E>(this ISchemaBoundTraversal<S, E> traversal, string fromStepLabel)
         {
-            return traversal.ToGraphTraversal().From(fromStepLabel).AsSchemaBound();
+            return traversal.AsGraphTraversal().From(fromStepLabel).AsSchemaBound();
         }
 
         /// <summary>
@@ -422,7 +322,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> From<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal fromVertex)
         {
-            return traversal.ToGraphTraversal().From(fromVertex).AsSchemaBound();
+            return traversal.AsGraphTraversal().From(fromVertex).AsSchemaBound();
         }
 
         /// <summary>
@@ -430,15 +330,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> From<S, E>(this ISchemaBoundTraversal<S, E> traversal, Vertex fromVertex)
         {
-            return traversal.ToGraphTraversal().From(fromVertex).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the group step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<K, V>> Group<K, V>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, IDictionary<K, V>>().Group<K, V>();
+            return traversal.AsGraphTraversal().From(fromVertex).AsSchemaBound();
         }
 
         /// <summary>
@@ -446,15 +338,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Group<S, E>(this ISchemaBoundTraversal<S, E> traversal, string sideEffectKey)
         {
-            return traversal.ToGraphTraversal().Group(sideEffectKey).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the groupCount step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<K, long>> GroupCount<K>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, IDictionary<K, long>>().GroupCount<K>();
+            return traversal.AsGraphTraversal().Group(sideEffectKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -462,7 +346,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> GroupCount<S, E>(this ISchemaBoundTraversal<S, E> traversal, string sideEffectKey)
         {
-            return traversal.ToGraphTraversal().GroupCount(sideEffectKey).AsSchemaBound();
+            return traversal.AsGraphTraversal().GroupCount(sideEffectKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -470,7 +354,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, string propertyKey)
         {
-            return traversal.ToGraphTraversal().Has(propertyKey).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propertyKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -478,7 +362,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, string propertyKey, object value)
         {
-            return traversal.ToGraphTraversal().Has(propertyKey, value).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propertyKey, value).AsSchemaBound();
         }
 
         /// <summary>
@@ -486,7 +370,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, string propertyKey, P predicate)
         {
-            return traversal.ToGraphTraversal().Has(propertyKey, predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propertyKey, predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -494,7 +378,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, string label, string propertyKey, object value)
         {
-            return traversal.ToGraphTraversal().Has(label, propertyKey, value).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(label, propertyKey, value).AsSchemaBound();
         }
 
         /// <summary>
@@ -502,7 +386,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, string label, string propertyKey, P predicate)
         {
-            return traversal.ToGraphTraversal().Has(label, propertyKey, predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(label, propertyKey, predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -510,7 +394,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, string propertyKey, ITraversal propertyTraversal)
         {
-            return traversal.ToGraphTraversal().Has(propertyKey, propertyTraversal).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(propertyKey, propertyTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -518,7 +402,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, T accessor, object value)
         {
-            return traversal.ToGraphTraversal().Has(accessor, value).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(accessor, value).AsSchemaBound();
         }
 
         /// <summary>
@@ -526,7 +410,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, T accessor, P predicate)
         {
-            return traversal.ToGraphTraversal().Has(accessor, predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(accessor, predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -534,7 +418,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Has<S, E>(this ISchemaBoundTraversal<S, E> traversal, T accessor, ITraversal propertyTraversal)
         {
-            return traversal.ToGraphTraversal().Has(accessor, propertyTraversal).AsSchemaBound();
+            return traversal.AsGraphTraversal().Has(accessor, propertyTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -542,7 +426,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasId<S, E>(this ISchemaBoundTraversal<S, E> traversal, object id, params object[] otherIds)
         {
-            return traversal.ToGraphTraversal().HasId(id, otherIds).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasId(id, otherIds).AsSchemaBound();
         }
 
         /// <summary>
@@ -550,7 +434,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasId<S, E>(this ISchemaBoundTraversal<S, E> traversal, P predicate)
         {
-            return traversal.ToGraphTraversal().HasId(predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasId(predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -558,7 +442,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasKey<S, E>(this ISchemaBoundTraversal<S, E> traversal, P predicate)
         {
-            return traversal.ToGraphTraversal().HasKey(predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasKey(predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -566,7 +450,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasKey<S, E>(this ISchemaBoundTraversal<S, E> traversal, string label, params string[] otherLabels)
         {
-            return traversal.ToGraphTraversal().HasLabel(label, otherLabels).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasLabel(label, otherLabels).AsSchemaBound();
         }
 
         /// <summary>
@@ -574,7 +458,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasLabel<S, E>(this ISchemaBoundTraversal<S, E> traversal, P predicate)
         {
-            return traversal.ToGraphTraversal().HasLabel(predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasLabel(predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -582,7 +466,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasLabel<S, E>(this ISchemaBoundTraversal<S, E> traversal, string label, params string[] otherLabels)
         {
-            return traversal.ToGraphTraversal().HasLabel(label, otherLabels).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasLabel(label, otherLabels).AsSchemaBound();
         }
 
         /// <summary>
@@ -590,7 +474,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasNot<S, E>(this ISchemaBoundTraversal<S, E> traversal, string propertyKey)
         {
-            return traversal.ToGraphTraversal().HasNot(propertyKey).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasNot(propertyKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -598,7 +482,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasValue<S, E>(this ISchemaBoundTraversal<S, E> traversal, object value, params object[] otherValues)
         {
-            return traversal.ToGraphTraversal().HasValue(value, otherValues).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasValue(value, otherValues).AsSchemaBound();
         }
 
         /// <summary>
@@ -606,7 +490,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> HasValue<S, E>(this ISchemaBoundTraversal<S, E> traversal, P predicate)
         {
-            return traversal.ToGraphTraversal().HasValue(predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().HasValue(predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -614,7 +498,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, object> Id<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Id();
+            return traversal.AsGraphTraversal().Id();
         }
 
         /// <summary>
@@ -622,7 +506,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Identity<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Identity().AsSchemaBound();
+            return traversal.AsGraphTraversal().Identity().AsSchemaBound();
         }
 
         /// <summary>
@@ -631,7 +515,7 @@ namespace Gremlin.Net.CosmosDb
         public static GraphTraversal<S, Vertex> In<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
             where E : Gremlin.Net.CosmosDb.Structure.VertexBase
         {
-            return traversal.ToGraphTraversal().In(edgeLabels);
+            return traversal.AsGraphTraversal().In(edgeLabels);
         }
 
         /// <summary>
@@ -640,7 +524,7 @@ namespace Gremlin.Net.CosmosDb
         public static GraphTraversal<S, Edge> InE<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
             where E : Gremlin.Net.CosmosDb.Structure.VertexBase
         {
-            return traversal.ToGraphTraversal().InE(edgeLabels);
+            return traversal.AsGraphTraversal().InE(edgeLabels);
         }
 
         /// <summary>
@@ -648,7 +532,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Inject<S, E>(this ISchemaBoundTraversal<S, E> traversal, params E[] injections)
         {
-            return traversal.ToGraphTraversal().Inject(injections).AsSchemaBound();
+            return traversal.AsGraphTraversal().Inject(injections).AsSchemaBound();
         }
 
         /// <summary>
@@ -656,7 +540,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Is<S, E>(this ISchemaBoundTraversal<S, E> traversal, object value)
         {
-            return traversal.ToGraphTraversal().Is(value).AsSchemaBound();
+            return traversal.AsGraphTraversal().Is(value).AsSchemaBound();
         }
 
         /// <summary>
@@ -664,7 +548,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Is<S, E>(this ISchemaBoundTraversal<S, E> traversal, P predicate)
         {
-            return traversal.ToGraphTraversal().Is(predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Is(predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -672,7 +556,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, string> Key<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Key();
+            return traversal.AsGraphTraversal().Key();
         }
 
         /// <summary>
@@ -680,7 +564,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, string> Label<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Label();
+            return traversal.AsGraphTraversal().Label();
         }
 
         /// <summary>
@@ -688,7 +572,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Limit<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope, long limit)
         {
-            return traversal.ToGraphTraversal().Limit<E>(scope, limit).AsSchemaBound();
+            return traversal.AsGraphTraversal().Limit<E>(scope, limit).AsSchemaBound();
         }
 
         /// <summary>
@@ -696,15 +580,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Limit<S, E>(this ISchemaBoundTraversal<S, E> traversal, long limit)
         {
-            return traversal.ToGraphTraversal().Limit<E>(limit).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the local step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Local<E2>(this ISchemaBoundTraversal traversal, ITraversal localTraversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Local<E2>(localTraversal);
+            return traversal.AsGraphTraversal().Limit<E>(limit).AsSchemaBound();
         }
 
         /// <summary>
@@ -712,31 +588,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, int> Loops<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Loops();
-        }
-
-        /// <summary>
-        /// Adds the map step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Map<E2>(this ISchemaBoundTraversal traversal, IFunction function)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Map<E2>(function);
-        }
-
-        /// <summary>
-        /// Adds the map step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Map<E2>(this ISchemaBoundTraversal traversal, ITraversal mapTraversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Map<E2>(mapTraversal);
-        }
-
-        /// <summary>
-        /// Adds the match step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<string, E2>> Match<E2>(this ISchemaBoundTraversal traversal, params ITraversal[] matchTraversals)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Match<E2>(matchTraversals);
+            return traversal.AsGraphTraversal().Loops();
         }
 
         /// <summary>
@@ -744,55 +596,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, double> Math<S, E>(this ISchemaBoundTraversal<S, E> traversal, string expression)
         {
-            return traversal.ToGraphTraversal().Math(expression);
-        }
-
-        /// <summary>
-        /// Adds the max step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Max<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Max<E2>();
-        }
-
-        /// <summary>
-        /// Adds the max step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Max<E2>(this ISchemaBoundTraversal traversal, Scope scope)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Max<E2>(scope);
-        }
-
-        /// <summary>
-        /// Adds the mean step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Mean<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Mean<E2>();
-        }
-
-        /// <summary>
-        /// Adds the mean step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Mean<E2>(this ISchemaBoundTraversal traversal, Scope scope)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Mean<E2>(scope);
-        }
-
-        /// <summary>
-        /// Adds the min step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Min<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Min<E2>();
-        }
-
-        /// <summary>
-        /// Adds the min step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Min<E2>(this ISchemaBoundTraversal traversal, Scope scope)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Min<E2>(scope);
+            return traversal.AsGraphTraversal().Math(expression);
         }
 
         /// <summary>
@@ -800,7 +604,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Not<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal notTraversal)
         {
-            return traversal.ToGraphTraversal().Not(notTraversal).AsSchemaBound();
+            return traversal.AsGraphTraversal().Not(notTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -808,7 +612,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Option<S, E>(this ISchemaBoundTraversal<S, E> traversal, object pickToken, ITraversal traversalOption)
         {
-            return traversal.ToGraphTraversal().Option(pickToken, traversalOption).AsSchemaBound();
+            return traversal.AsGraphTraversal().Option(pickToken, traversalOption).AsSchemaBound();
         }
 
         /// <summary>
@@ -816,15 +620,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Option<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal traversalOption)
         {
-            return traversal.ToGraphTraversal().Option(traversalOption).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the optional step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Optional<E2>(this ISchemaBoundTraversal traversal, ITraversal optionalTraversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Optional<E2>(optionalTraversal);
+            return traversal.AsGraphTraversal().Option(traversalOption).AsSchemaBound();
         }
 
         /// <summary>
@@ -832,7 +628,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Or<S, E>(this ISchemaBoundTraversal<S, E> traversal, params ITraversal[] orTraversals)
         {
-            return traversal.ToGraphTraversal().Or(orTraversals).AsSchemaBound();
+            return traversal.AsGraphTraversal().Or(orTraversals).AsSchemaBound();
         }
 
         /// <summary>
@@ -840,7 +636,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Order<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Order().AsSchemaBound();
+            return traversal.AsGraphTraversal().Order().AsSchemaBound();
         }
 
         /// <summary>
@@ -848,7 +644,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Order<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope)
         {
-            return traversal.ToGraphTraversal().Order(scope).AsSchemaBound();
+            return traversal.AsGraphTraversal().Order(scope).AsSchemaBound();
         }
 
         /// <summary>
@@ -856,7 +652,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> OtherV<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().OtherV();
+            return traversal.AsGraphTraversal().OtherV();
         }
 
         /// <summary>
@@ -865,7 +661,7 @@ namespace Gremlin.Net.CosmosDb
         public static GraphTraversal<S, Vertex> Out<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
             where E : Gremlin.Net.CosmosDb.Structure.VertexBase
         {
-            return traversal.ToGraphTraversal().Out(edgeLabels);
+            return traversal.AsGraphTraversal().Out(edgeLabels);
         }
 
         /// <summary>
@@ -874,7 +670,7 @@ namespace Gremlin.Net.CosmosDb
         public static GraphTraversal<S, Edge> OutE<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
             where E : Gremlin.Net.CosmosDb.Structure.VertexBase
         {
-            return traversal.ToGraphTraversal().OutE(edgeLabels);
+            return traversal.AsGraphTraversal().OutE(edgeLabels);
         }
 
         /// <summary>
@@ -882,7 +678,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> PageRank<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().PageRank().AsSchemaBound();
+            return traversal.AsGraphTraversal().PageRank().AsSchemaBound();
         }
 
         /// <summary>
@@ -890,7 +686,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> PageRank<S, E>(this ISchemaBoundTraversal<S, E> traversal, double alpha)
         {
-            return traversal.ToGraphTraversal().PageRank(alpha).AsSchemaBound();
+            return traversal.AsGraphTraversal().PageRank(alpha).AsSchemaBound();
         }
 
         /// <summary>
@@ -898,7 +694,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Path> Path<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().Path();
+            return traversal.AsGraphTraversal().Path();
         }
 
         /// <summary>
@@ -906,15 +702,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> PeerPressure<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().PeerPressure().AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the profile step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Profile<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Profile<E2>();
+            return traversal.AsGraphTraversal().PeerPressure().AsSchemaBound();
         }
 
         /// <summary>
@@ -922,7 +710,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Profile<S, E>(this ISchemaBoundTraversal<S, E> traversal, string sideEffectKey)
         {
-            return traversal.ToGraphTraversal().Profile(sideEffectKey).AsSchemaBound();
+            return traversal.AsGraphTraversal().Profile(sideEffectKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -930,23 +718,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Program<S, E>(this ISchemaBoundTraversal<S, E> traversal, object vertexProgram)
         {
-            return traversal.ToGraphTraversal().Program(vertexProgram).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the project step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<string, E2>> Project<E2>(this ISchemaBoundTraversal traversal, string projectKey, params string[] otherProjectKeys)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Project<E2>(projectKey, otherProjectKeys);
-        }
-
-        /// <summary>
-        /// Adds the properties step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Properties<E2>(this ISchemaBoundTraversal traversal, params string[] propertyKeys)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Properties<E2>(propertyKeys);
+            return traversal.AsGraphTraversal().Program(vertexProgram).AsSchemaBound();
         }
 
         /// <summary>
@@ -954,7 +726,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Property<S, E>(this ISchemaBoundTraversal<S, E> traversal, Cardinality cardinality, object key, object value, params object[] keyValues)
         {
-            return traversal.ToGraphTraversal().Property(cardinality, key, value, keyValues).AsSchemaBound();
+            return traversal.AsGraphTraversal().Property(cardinality, key, value, keyValues).AsSchemaBound();
         }
 
         /// <summary>
@@ -962,31 +734,23 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Property<S, E>(this ISchemaBoundTraversal<S, E> traversal, object key, object value, params object[] keyValues)
         {
-            return traversal.ToGraphTraversal().Property(key, value, keyValues).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the propertyMap step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<string, E2>> PropertyMap<E2>(this ISchemaBoundTraversal traversal, params string[] propertyKeys)
-        {
-            return traversal.ToGraphTraversal<object, E2>().PropertyMap<E2>(propertyKeys);
+            return traversal.AsGraphTraversal().Property(key, value, keyValues).AsSchemaBound();
         }
 
         /// <summary>
         /// Adds the range step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
-        public static GraphTraversal<object, E2> Range<E2>(this ISchemaBoundTraversal traversal, Scope scope, long low, long high)
+        public static ISchemaBoundTraversal<S, E> Range<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope, long low, long high)
         {
-            return traversal.ToGraphTraversal<object, E2>().Range<E2>(scope, low, high);
+            return traversal.AsGraphTraversal().Range<E>(scope, low, high).AsSchemaBound();
         }
 
         /// <summary>
         /// Adds the range step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
-        public static GraphTraversal<object, E2> Range<E2>(this ISchemaBoundTraversal traversal, long low, long high)
+        public static ISchemaBoundTraversal<S, E> Range<S, E>(this ISchemaBoundTraversal<S, E> traversal, long low, long high)
         {
-            return traversal.ToGraphTraversal<object, E2>().Range<E2>(low, high);
+            return traversal.AsGraphTraversal().Range<E>(low, high).AsSchemaBound();
         }
 
         /// <summary>
@@ -994,15 +758,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Repeat<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal repeatTraversal)
         {
-            return traversal.ToGraphTraversal().Repeat(repeatTraversal).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the sack step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Sack<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Sack<E2>();
+            return traversal.AsGraphTraversal().Repeat(repeatTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -1010,7 +766,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Sack<S, E>(this ISchemaBoundTraversal<S, E> traversal, IBiFunction sackOperator)
         {
-            return traversal.ToGraphTraversal().Sack(sackOperator).AsSchemaBound();
+            return traversal.AsGraphTraversal().Sack(sackOperator).AsSchemaBound();
         }
 
         /// <summary>
@@ -1018,7 +774,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Sample<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope, int amountToSample)
         {
-            return traversal.ToGraphTraversal().Sample(scope, amountToSample).AsSchemaBound();
+            return traversal.AsGraphTraversal().Sample(scope, amountToSample).AsSchemaBound();
         }
 
         /// <summary>
@@ -1026,47 +782,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Sample<S, E>(this ISchemaBoundTraversal<S, E> traversal, int amountToSample)
         {
-            return traversal.ToGraphTraversal().Sample(amountToSample).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the select step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, ICollection<E2>> Select<E2>(this ISchemaBoundTraversal traversal, Column column)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Select<E2>(column);
-        }
-
-        /// <summary>
-        /// Adds the select step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Select<E2>(this ISchemaBoundTraversal traversal, Pop pop, string selectKey)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Select<E2>(pop, selectKey);
-        }
-
-        /// <summary>
-        /// Adds the select step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<string, E2>> Select<E2>(this ISchemaBoundTraversal traversal, Pop pop, string selectKey1, string selectKey2, params string[] otherSelectKeys)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Select<E2>(pop, selectKey1, selectKey2, otherSelectKeys);
-        }
-
-        /// <summary>
-        /// Adds the select step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Select<E2>(this ISchemaBoundTraversal traversal, string selectKey)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Select<E2>(selectKey);
-        }
-
-        /// <summary>
-        /// Adds the select step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<string, E2>> Select<E2>(this ISchemaBoundTraversal traversal, string selectKey1, string selectKey2, params string[] otherSelectKeys)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Select<E2>(selectKey1, selectKey2, otherSelectKeys);
+            return traversal.AsGraphTraversal().Sample(amountToSample).AsSchemaBound();
         }
 
         /// <summary>
@@ -1074,7 +790,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> SideEffect<S, E>(this ISchemaBoundTraversal<S, E> traversal, IConsumer consumer)
         {
-            return traversal.ToGraphTraversal().SideEffect(consumer).AsSchemaBound();
+            return traversal.AsGraphTraversal().SideEffect(consumer).AsSchemaBound();
         }
 
         /// <summary>
@@ -1082,7 +798,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> SideEffect<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal sideEffectTraversal)
         {
-            return traversal.ToGraphTraversal().SideEffect(sideEffectTraversal).AsSchemaBound();
+            return traversal.AsGraphTraversal().SideEffect(sideEffectTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -1090,23 +806,23 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> SimplePath<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().SimplePath().AsSchemaBound();
+            return traversal.AsGraphTraversal().SimplePath().AsSchemaBound();
         }
 
         /// <summary>
         /// Adds the skip step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
-        public static GraphTraversal<object, E2> Skip<E2>(this ISchemaBoundTraversal traversal, Scope scope, long skip)
+        public static ISchemaBoundTraversal<S, E> Skip<S, E>(this ISchemaBoundTraversal<S, E> traversal, Scope scope, long skip)
         {
-            return traversal.ToGraphTraversal<object, E2>().Skip<E2>(scope, skip);
+            return traversal.AsGraphTraversal().Skip<E>(scope, skip).AsSchemaBound();
         }
 
         /// <summary>
         /// Adds the skip step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
-        public static GraphTraversal<object, E2> Skip<E2>(this ISchemaBoundTraversal traversal, long skip)
+        public static ISchemaBoundTraversal<S, E> Skip<S, E>(this ISchemaBoundTraversal<S, E> traversal, long skip)
         {
-            return traversal.ToGraphTraversal<object, E2>().Skip<E2>(skip);
+            return traversal.AsGraphTraversal().Skip<E>(skip).AsSchemaBound();
         }
 
         /// <summary>
@@ -1114,7 +830,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Store<S, E>(this ISchemaBoundTraversal<S, E> traversal, string sideEffectKey)
         {
-            return traversal.ToGraphTraversal().Store(sideEffectKey).AsSchemaBound();
+            return traversal.AsGraphTraversal().Store(sideEffectKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -1122,55 +838,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Edge> Subgraph<S, E>(this ISchemaBoundTraversal<S, E> traversal, string sideEffectKey)
         {
-            return traversal.ToGraphTraversal().Subgraph(sideEffectKey);
-        }
-
-        /// <summary>
-        /// Adds the sum step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Sum<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Sum<E2>();
-        }
-
-        /// <summary>
-        /// Adds the sum step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Sum<E2>(this ISchemaBoundTraversal traversal, Scope scope)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Sum<E2>(scope);
-        }
-
-        /// <summary>
-        /// Adds the tail step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Tail<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Tail<E2>();
-        }
-
-        /// <summary>
-        /// Adds the tail step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Tail<E2>(this ISchemaBoundTraversal traversal, Scope scope)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Tail<E2>(scope);
-        }
-
-        /// <summary>
-        /// Adds the tail step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Tail<E2>(this ISchemaBoundTraversal traversal, Scope scope, long limit)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Tail<E2>(scope, limit);
-        }
-
-        /// <summary>
-        /// Adds the tail step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Tail<E2>(this ISchemaBoundTraversal traversal, long limit)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Tail<E2>(limit);
+            return traversal.AsGraphTraversal().Subgraph(sideEffectKey);
         }
 
         /// <summary>
@@ -1178,7 +846,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> TimeLimit<S, E>(this ISchemaBoundTraversal<S, E> traversal, long timeLimit)
         {
-            return traversal.ToGraphTraversal().TimeLimit(timeLimit).AsSchemaBound();
+            return traversal.AsGraphTraversal().TimeLimit(timeLimit).AsSchemaBound();
         }
 
         /// <summary>
@@ -1186,7 +854,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Times<S, E>(this ISchemaBoundTraversal<S, E> traversal, int maxLoops)
         {
-            return traversal.ToGraphTraversal().Times(maxLoops).AsSchemaBound();
+            return traversal.AsGraphTraversal().Times(maxLoops).AsSchemaBound();
         }
 
         /// <summary>
@@ -1194,7 +862,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> To<S, E>(this ISchemaBoundTraversal<S, E> traversal, Direction direction, params string[] edgeLabels)
         {
-            return traversal.ToGraphTraversal().To(direction, edgeLabels);
+            return traversal.AsGraphTraversal().To(direction, edgeLabels);
         }
 
         /// <summary>
@@ -1202,7 +870,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> To<S, E>(this ISchemaBoundTraversal<S, E> traversal, string toStepLabel)
         {
-            return traversal.ToGraphTraversal().To(toStepLabel).AsSchemaBound();
+            return traversal.AsGraphTraversal().To(toStepLabel).AsSchemaBound();
         }
 
         /// <summary>
@@ -1210,7 +878,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> To<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal toVertex)
         {
-            return traversal.ToGraphTraversal().To(toVertex).AsSchemaBound();
+            return traversal.AsGraphTraversal().To(toVertex).AsSchemaBound();
         }
 
         /// <summary>
@@ -1218,7 +886,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> To<S, E>(this ISchemaBoundTraversal<S, E> traversal, Vertex toVertex)
         {
-            return traversal.ToGraphTraversal().To(toVertex).AsSchemaBound();
+            return traversal.AsGraphTraversal().To(toVertex).AsSchemaBound();
         }
 
         /// <summary>
@@ -1226,7 +894,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Edge> ToE<S, E>(this ISchemaBoundTraversal<S, E> traversal, Direction direction, params string[] edgeLabels)
         {
-            return traversal.ToGraphTraversal().ToE(direction, edgeLabels);
+            return traversal.AsGraphTraversal().ToE(direction, edgeLabels);
         }
 
         /// <summary>
@@ -1236,7 +904,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the string query</returns>
         public static string ToGremlinQuery<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
-            return traversal.ToGraphTraversal().ToGremlinQuery();
+            return traversal.AsGraphTraversal().ToGremlinQuery();
         }
 
         /// <summary>
@@ -1244,15 +912,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static GraphTraversal<S, Vertex> ToV<S, E>(this ISchemaBoundTraversal<S, E> traversal, Direction direction)
         {
-            return traversal.ToGraphTraversal().ToV(direction);
-        }
-
-        /// <summary>
-        /// Adds the tree step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Tree<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Tree<E2>();
+            return traversal.AsGraphTraversal().ToV(direction);
         }
 
         /// <summary>
@@ -1260,23 +920,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Tree<S, E>(this ISchemaBoundTraversal<S, E> traversal, string sideEffectKey)
         {
-            return traversal.ToGraphTraversal().Tree(sideEffectKey).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the unfold step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Unfold<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Unfold<E2>();
-        }
-
-        /// <summary>
-        /// Adds the union step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Union<E2>(this ISchemaBoundTraversal traversal, params ITraversal[] unionTraversals)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Union<E2>(unionTraversals);
+            return traversal.AsGraphTraversal().Tree(sideEffectKey).AsSchemaBound();
         }
 
         /// <summary>
@@ -1284,7 +928,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Until<S, E>(this ISchemaBoundTraversal<S, E> traversal, P untilPredicate)
         {
-            return traversal.ToGraphTraversal().Until(untilPredicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Until(untilPredicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -1292,39 +936,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Until<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal untilTraversal)
         {
-            return traversal.ToGraphTraversal().Until(untilTraversal).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Adds the value step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Value<E2>(this ISchemaBoundTraversal traversal)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Value<E2>();
-        }
-
-        /// <summary>
-        /// Adds the valueMap step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<TKey, TValue>> ValueMap<TKey, TValue>(this ISchemaBoundTraversal traversal, params string[] propertyKeys)
-        {
-            return traversal.ToGraphTraversal<object, object>().ValueMap<TKey, TValue>(propertyKeys);
-        }
-
-        /// <summary>
-        /// Adds the valueMap step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, IDictionary<TKey, TValue>> ValueMap<TKey, TValue>(this ISchemaBoundTraversal traversal, bool includeTokens, params string[] propertyKeys)
-        {
-            return traversal.ToGraphTraversal<object, object>().ValueMap<TKey, TValue>(includeTokens, propertyKeys);
-        }
-
-        /// <summary>
-        /// Adds the values step to this <see cref="GraphTraversal{SType, EType}"/>.
-        /// </summary>
-        public static GraphTraversal<object, E2> Values<E2>(this ISchemaBoundTraversal traversal, params string[] propertyKeys)
-        {
-            return traversal.ToGraphTraversal<object, E2>().Values<E2>(propertyKeys);
+            return traversal.AsGraphTraversal().Until(untilTraversal).AsSchemaBound();
         }
 
         /// <summary>
@@ -1332,7 +944,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Where<S, E>(this ISchemaBoundTraversal<S, E> traversal, P predicate)
         {
-            return traversal.ToGraphTraversal().Where(predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Where(predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -1340,7 +952,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Where<S, E>(this ISchemaBoundTraversal<S, E> traversal, string startKey, P predicate)
         {
-            return traversal.ToGraphTraversal().Where(startKey, predicate).AsSchemaBound();
+            return traversal.AsGraphTraversal().Where(startKey, predicate).AsSchemaBound();
         }
 
         /// <summary>
@@ -1348,31 +960,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Where<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal whereTraversal)
         {
-            return traversal.ToGraphTraversal().Where(whereTraversal).AsSchemaBound();
-        }
-
-        /// <summary>
-        /// Casts the schema-bound traversal to a gremlin graph traversal.
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="E">The type of the current element</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <returns>Returns the traversal</returns>
-        internal static GraphTraversal<S, E> ToGraphTraversal<S, E>(this ISchemaBoundTraversal traversal)
-        {
-            return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
-        }
-
-        /// <summary>
-        /// Casts the schema-bound traversal to a gremlin graph traversal.
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="E">The type of the current element</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <returns>Returns the traversal</returns>
-        internal static GraphTraversal<S, E> ToGraphTraversal<S, E>(this ISchemaBoundTraversal<S, E> traversal)
-        {
-            return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
+            return traversal.AsGraphTraversal().Where(whereTraversal).AsSchemaBound();
         }
     }
 }
