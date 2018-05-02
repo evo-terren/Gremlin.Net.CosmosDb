@@ -74,18 +74,6 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Casts the schema-bound traversal to a gremlin graph traversal.
-        /// </summary>
-        /// <typeparam name="S">The source of the traversal</typeparam>
-        /// <typeparam name="E">The type of the current element</typeparam>
-        /// <param name="traversal">The traversal.</param>
-        /// <returns>Returns the traversal</returns>
-        public static GraphTraversal<S, E> AsGraphTraversal<S, E>(this ISchemaBoundTraversal<S, E> traversal)
-        {
-            return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
-        }
-
-        /// <summary>
         /// Adds the barrier step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
         public static ISchemaBoundTraversal<S, E> Barrier<S, E>(this ISchemaBoundTraversal<S, E> traversal)
@@ -961,6 +949,18 @@ namespace Gremlin.Net.CosmosDb
         public static ISchemaBoundTraversal<S, E> Where<S, E>(this ISchemaBoundTraversal<S, E> traversal, ITraversal whereTraversal)
         {
             return traversal.AsGraphTraversal().Where(whereTraversal).AsSchemaBound();
+        }
+
+        /// <summary>
+        /// Casts the schema-bound traversal to a gremlin graph traversal.
+        /// </summary>
+        /// <typeparam name="S">The source of the traversal</typeparam>
+        /// <typeparam name="E">The type of the current element</typeparam>
+        /// <param name="traversal">The traversal.</param>
+        /// <returns>Returns the traversal</returns>
+        internal static GraphTraversal<S, E> AsGraphTraversal<S, E>(this ISchemaBoundTraversal<S, E> traversal)
+        {
+            return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
         }
     }
 }

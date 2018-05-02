@@ -14,6 +14,29 @@ namespace GremlinSample
             {
                 var g = graphClient.CreateTraversalSource();
 
+                //add vertices/edges using strongly-typed objects
+                var personV = new PersonVertex
+                {
+                    Ages = new[] { 4, 6, 23 },
+                    Id = "person-12345",
+                    Label = "some-label",
+                    Name = "my name"
+                };
+                var purchasedE = new PersonPurchasedProductEdge
+                {
+                    Id = "person-12345_purchased_product-12345"
+                };
+                var productV = new ProductVertex
+                {
+                    Id = "product-12345"
+                };
+                var test = g.AddV(personV).As("person")
+                            .AddV(productV).As("product")
+                            .AddE(purchasedE).From("person").To("product");
+
+                Console.WriteLine(test.ToGremlinQuery());
+
+                //traverse vertices/edges with strongly-typed objects
                 var query = g.V("1").Cast<PersonVertex>()
                              .Out(s => s.Purchases)
                              .InE(s => s.People)

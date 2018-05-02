@@ -22,28 +22,6 @@ namespace Gremlin.Net.CosmosDb
 
         /// <summary>
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the addE step to that traversal.
-        /// </summary>
-        /// <param name="label">The edge label</param>
-        /// <returns>Returns the traversal</returns>
-        public GraphTraversal<Gremlin.Net.Structure.Edge, Gremlin.Net.Structure.Edge> AddE(string label)
-        {
-            return _graphTraversalSource.AddE(label);
-        }
-
-        /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the addE step to that traversal.
-        /// </summary>
-        /// <param name="edgeLabelTraversal">The traversal edge to add</param>
-        /// <returns>Returns the traversal</returns>
-        public GraphTraversal<Gremlin.Net.Structure.Edge, Gremlin.Net.Structure.Edge> AddE(ITraversal edgeLabelTraversal)
-        {
-            return _graphTraversalSource.AddE(edgeLabelTraversal);
-        }
-
-        /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the addV step to that traversal.
         /// </summary>
         /// <returns>Returns the traversal</returns>

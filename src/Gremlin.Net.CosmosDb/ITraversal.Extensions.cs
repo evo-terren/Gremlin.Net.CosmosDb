@@ -1,6 +1,7 @@
 ﻿using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,38 @@ namespace Gremlin.Net.CosmosDb
         /// <summary>
         /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
         /// </summary>
+        /// <typeparam name="TEdge">The type of the edge.</typeparam>
+        /// <param name="traversal">The graph traversal.</param>
+        /// <param name="edge">The edge to add.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this ITraversal traversal, TEdge edge)
+            where TEdge : EdgeBase
+        {
+            return AddE(traversal, edge, new JsonSerializerSettings { ContractResolver = new ElementContractResolver() });
+        }
+
+        /// <summary>
+        /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
+        /// </summary>
+        /// <typeparam name="TEdge">The type of the edge.</typeparam>
+        /// <param name="traversal">The graph traversal.</param>
+        /// <param name="edge">The edge to add.</param>
+        /// <param name="serializationSettings">The serialization settings.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this ITraversal traversal, TEdge edge, JsonSerializerSettings serializationSettings)
+            where TEdge : EdgeBase
+        {
+            var label = LabelNameResolver.GetLabelName(typeof(TEdge));
+            var t = traversal.AsGraphTraversal().AddE(label);
+
+            t = TraversalHelper.AddObjectProperties(t, edge, serializationSettings);
+
+            return t.AsSchemaBound<object, TEdge>();
+        }
+
+        /// <summary>
+        /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
+        /// </summary>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
@@ -39,6 +72,38 @@ namespace Gremlin.Net.CosmosDb
             var label = LabelNameResolver.GetLabelName(typeof(TVertex));
 
             return traversal.AsGraphTraversal().AddV(label).AsSchemaBound<object, TVertex>();
+        }
+
+        /// <summary>
+        /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
+        /// </summary>
+        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
+        /// <param name="traversal">The graph traversal.</param>
+        /// <param name="vertex">The vertex to add.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this ITraversal traversal, TVertex vertex)
+            where TVertex : VertexBase
+        {
+            return AddV(traversal, vertex, new JsonSerializerSettings { ContractResolver = new ElementContractResolver() });
+        }
+
+        /// <summary>
+        /// Adds the "addV()" step to the traversal, creating a new vertex in the graph.
+        /// </summary>
+        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
+        /// <param name="traversal">The graph traversal.</param>
+        /// <param name="vertex">The vertex to add.</param>
+        /// <param name="serializationSettings">The serialization settings.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this ITraversal traversal, TVertex vertex, JsonSerializerSettings serializationSettings)
+            where TVertex : VertexBase
+        {
+            var label = LabelNameResolver.GetLabelName(typeof(TVertex));
+            var t = traversal.AsGraphTraversal().AddV(label);
+
+            t = TraversalHelper.AddObjectProperties(t, vertex, serializationSettings);
+
+            return t.AsSchemaBound<object, TVertex>();
         }
 
         /// <summary>
