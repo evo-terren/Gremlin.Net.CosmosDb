@@ -305,9 +305,14 @@ namespace Gremlin.Net.CosmosDb
             var propType = typeof(TProperty);
             var graphTraversal = traversal.AsGraphTraversal();
 
+            //special case for null value - drop the property via side effect
+            if (value == null)
+            {
+                graphTraversal = graphTraversal.SideEffect(__.Properties<TElement>(propName).Drop());
+            }
             //if the property is an enumerable, use sideEffect() to drop existing values before adding the new ones
             //also, strings need to be special cased since most people don't think of strings as an enumerable of chars
-            if (TYPE_OF_ENUMERABLE.IsAssignableFrom(propType) && propType != TYPE_OF_STRING)
+            else if (TYPE_OF_ENUMERABLE.IsAssignableFrom(propType) && propType != TYPE_OF_STRING)
             {
                 var enumerator = ((IEnumerable)value).GetEnumerator();
                 graphTraversal = graphTraversal.SideEffect(__.Properties<TElement>(propName).Drop());
@@ -340,9 +345,14 @@ namespace Gremlin.Net.CosmosDb
             var propName = GetPropertyName(typeof(TElement), propertySelector);
             var graphTraversal = traversal.AsGraphTraversal();
 
+            //special case for null value - drop the property via side effect
+            if (value == null)
+            {
+                graphTraversal = graphTraversal.SideEffect(__.Properties<TElement>(propName).Drop());
+            }
             //special case for strings - most people don't think of strings as an array of chars
             //so, don't treat them as enumerable properties
-            if (value.GetType() == TYPE_OF_STRING)
+            else if (value.GetType() == TYPE_OF_STRING)
             {
                 graphTraversal = graphTraversal.Property(propName, value);
             }
