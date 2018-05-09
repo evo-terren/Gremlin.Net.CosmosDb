@@ -58,8 +58,10 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 throw new ArgumentNullException(nameof(reader));
 
             var jo = JObject.Load(reader);
-            var vertex = jo.ToObject(objectType);
             var propertiesObj = jo[PropertyNames.Properties] as JObject;
+            if (propertiesObj != null)
+                jo.Remove(PropertyNames.Properties);
+            var vertex = jo.ToObject(objectType);
 
             if (propertiesObj != null)
             {

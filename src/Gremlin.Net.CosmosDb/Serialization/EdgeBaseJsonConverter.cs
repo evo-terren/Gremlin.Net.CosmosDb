@@ -52,8 +52,10 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 throw new ArgumentNullException(nameof(reader));
 
             var jo = JObject.Load(reader);
-            var edge = jo.ToObject(objectType);
             var propertiesObj = jo[PropertyNames.Properties];
+            if (propertiesObj != null)
+                jo.Remove(PropertyNames.Properties);
+            var edge = jo.ToObject(objectType);
 
             if (propertiesObj != null)
                 serializer.Populate(propertiesObj.CreateReader(), edge);
