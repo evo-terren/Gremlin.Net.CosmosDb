@@ -110,15 +110,6 @@ namespace Gremlin.Net.CosmosDb.Serialization
         }
 
         /// <summary>
-        /// Serializes the specified enum.
-        /// </summary>
-        /// <param name="enum">The enum.</param>
-        private void Serialize(Enum @enum)
-        {
-            Serialize(@enum.ToString().ToLowerInvariant());
-        }
-
-        /// <summary>
         /// Serializes the specified unique identifier.
         /// </summary>
         /// <param name="guid">The unique identifier.</param>
