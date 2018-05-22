@@ -70,7 +70,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "V().HasLabel(label_for_type_of_edge)" step to the traversal.
+        /// Adds the "V().HasLabel(label_for_type_of_node)" step to the traversal.
         /// </summary>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <param name="graphTraversalSource">The graph traversal source.</param>
