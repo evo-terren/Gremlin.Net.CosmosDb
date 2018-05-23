@@ -66,7 +66,7 @@ namespace Gremlin.Net.CosmosDb
         {
             var label = LabelNameResolver.GetLabelName(typeof(TEdge));
             var traversal = graphTraversalSource.E(edgeIds).HasLabel(label);
-            return graphTraversalSource.E(edgeIds).AsSchemaBound<Edge, TEdge>();
+            return traversal.AsSchemaBound<Edge, TEdge>();
         }
 
         /// <summary>
