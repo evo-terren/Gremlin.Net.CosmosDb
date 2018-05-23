@@ -56,7 +56,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "E()" step to the traversal.
+        /// Adds the "E().HasLabel(label_for_type_of_edge)" step to the traversal.
         /// </summary>
         /// <typeparam name="TEdge">The type of the edge.</typeparam>
         /// <param name="graphTraversalSource">The graph traversal source.</param>
@@ -64,11 +64,13 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<Edge, TEdge> E<TEdge>(this IGraphTraversalSource graphTraversalSource, params object[] edgeIds)
         {
-            return graphTraversalSource.E(edgeIds).AsSchemaBound<Edge, TEdge>();
+            var label = LabelNameResolver.GetLabelName(typeof(TEdge));
+            var traversal = graphTraversalSource.E(edgeIds).HasLabel(label);
+            return traversal.AsSchemaBound<Edge, TEdge>();
         }
 
         /// <summary>
-        /// Adds the "V()" step to the traversal.
+        /// Adds the "V().HasLabel(label_for_type_of_node)" step to the traversal.
         /// </summary>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <param name="graphTraversalSource">The graph traversal source.</param>
@@ -76,7 +78,9 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<Vertex, TVertex> V<TVertex>(this IGraphTraversalSource graphTraversalSource, params object[] vertexIds)
         {
-            return graphTraversalSource.V(vertexIds).AsSchemaBound<Vertex, TVertex>();
+            var label = LabelNameResolver.GetLabelName(typeof(TVertex));
+            var traversal = graphTraversalSource.V(vertexIds).HasLabel(label);
+            return traversal.AsSchemaBound<Vertex, TVertex>();
         }
     }
 }
