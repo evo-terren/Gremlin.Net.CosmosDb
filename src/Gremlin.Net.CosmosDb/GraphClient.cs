@@ -22,15 +22,25 @@ namespace Gremlin.Net.CosmosDb
         /// Initializes a new instance of the <see cref="GraphClient"/> class.
         /// </summary>
         /// <param name="gremlinHostname">The hostname.</param>
+        /// <param name="port">The port.</param>
         /// <param name="databaseName">Name of the database (case-sensitive).</param>
         /// <param name="graphName">Name of the graph.</param>
         /// <param name="accessKey">The access key.</param>
-        public GraphClient(string gremlinHostname, string databaseName, string graphName, string accessKey)
+        public GraphClient(string gremlinHostname, int port, string databaseName, string graphName, string accessKey)
         {
-            var server = new GremlinServer(gremlinHostname, 443, true, $"/dbs/{databaseName}/colls/{graphName}", accessKey);
+            var server = new GremlinServer(gremlinHostname, port, true, $"/dbs/{databaseName}/colls/{graphName}", accessKey);
 
             _gremlinClient = new GremlinClient(server, new GraphSONJTokenReader(), mimeType: GremlinClient.GraphSON2MimeType);
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphClient"/> class.
+        /// </summary>
+        /// <param name="gremlinHostname">The hostname.</param>
+        /// <param name="databaseName">Name of the database (case-sensitive).</param>
+        /// <param name="graphName">Name of the graph.</param>
+        /// <param name="accessKey">The access key.</param>
+        public GraphClient(string gremlinHostname, string databaseName, string graphName, string accessKey) : this(gremlinHostname, 443, databaseName, graphName, accessKey) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphClient"/> class.
