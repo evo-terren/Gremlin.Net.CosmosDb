@@ -25,8 +25,8 @@ using (var graphClient = new GraphClient("Your Gremlin Cosmos Db Host", "Your DB
     //build a query using Gremlin.Net traversals
     var query = g.V("some-vertex-id").Out("some-edge-label");
 
-    //use the SubmitAsync(ITraversal traversal) extension methods that accept Gremlin.Net traversals
-    var response = await graphClient.SubmitAsync(query);
+    //use the QueryAsync(ITraversal traversal) extension methods that accept Gremlin.Net traversals
+    var response = await graphClient.QueryAsync(query);
 
     //use the .ToGremlinQuery() extension method if you need the raw query 
     //in string form for any reason (logging, validating this code actually works, etc.)
@@ -51,7 +51,7 @@ var query = g.V(uniqueId).property("some-date', todaysDate);
 
 ## Utlize Newtonsoft.Json De-Serialization
 
-The `SubmitAsync()` method has overloads that allow you to specify the return type as well as optionally setting the Newtonsoft.Json serializer settings if your application requires:
+The `QueryAsync()` method has overloads that allow you to specify the return type as well as optionally setting the Newtonsoft.Json serializer settings if your application requires:
 
 ```c#
 using Gremlin.Net.CosmosDb;
@@ -67,7 +67,7 @@ var serializerSettings = new JsonSerializerSettings
         new YourCustomTypeJsonConverter()
     }
 };
-var response = await graphClient.SubmitAsync<YourCustomType>(query, serializerSettings);
+var response = await graphClient.QueryAsync<YourCustomType>(query, serializerSettings);
 ```
 
 For more information about Newtonsoft.Json, please refer to their documentation: https://www.newtonsoft.com/json.
@@ -104,7 +104,7 @@ var query = g.V<PersonVertex>("person-vertex-id")   //typed to a specific Vertex
              .In(pv => pv.PurchasedBy)              //now we're back to the PersonVertex
              .OutE(pv => pv.Purchased)              //now we're on the edge (still type-specific)
              .InV();                                //back to the product vertex
-var response = await graphClient.SubmitAsync(query);
+var response = await graphClient.QueryAsync(query);
 
 foreach (ProductVertex product in response)
 {
@@ -132,7 +132,7 @@ public class PersonVertex : VertexBase
 ...
 
 var query = g.V<PersonVertex>().Has(v => v.Name, "Todd").Property(v => v.Birthdate, DateTimeOffset.Now);
-var response = await graphClient.SubmitAsync(query);
+var response = await graphClient.QueryAsync(query);
 
 foreach (var vertex in response)
 {
