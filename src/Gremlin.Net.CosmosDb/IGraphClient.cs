@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,10 +17,18 @@ namespace Gremlin.Net.CosmosDb
         IGraphTraversalSource CreateTraversalSource();
 
         /// <summary>
+        /// Submits the given gremlin query to the Cosmos Db instance and returns the results.
+        /// </summary>
+        /// <param name="gremlinQuery">The gremlin query.</param>
+        /// <returns>Returns the results</returns>
+        Task<IReadOnlyCollection<JToken>> QueryAsync(string gremlinQuery);
+
+        /// <summary>
         /// Submits the given gremlin query to the Cosmos Db instance.
         /// </summary>
         /// <param name="gremlinQuery">The gremlin query.</param>
         /// <returns>Returns the results</returns>
+        [Obsolete("Renaming to QueryAsync")]
         Task<IReadOnlyCollection<JToken>> SubmitAsync(string gremlinQuery);
     }
 }

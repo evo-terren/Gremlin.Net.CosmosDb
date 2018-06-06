@@ -2,7 +2,6 @@
 using GremlinSampleClassic.Schema;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 
 namespace GremlinSampleClassic
 {
@@ -20,7 +19,7 @@ namespace GremlinSampleClassic
                              .OutV()
                              .Property(v => v.Name, "test").Property(v => v.Ages, new[] { 5, 6 });
                 Console.WriteLine(query.ToGremlinQuery());
-                var response = graphClient.SubmitAsync(query);
+                var response = graphClient.QueryAsync(query);
                 response.Wait();
                 Console.WriteLine();
                 Console.WriteLine("Response:");

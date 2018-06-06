@@ -45,7 +45,7 @@ namespace GremlinSample
                              .Property(v => v.Ages, new[] { 5, 6 })
                              .Property(v => v.Ages, 7);
                 Console.WriteLine(query.ToGremlinQuery());
-                var response = await graphClient.SubmitAsync(query);
+                var response = await graphClient.QueryAsync(query);
 
                 Console.WriteLine();
                 Console.WriteLine("Response:");
