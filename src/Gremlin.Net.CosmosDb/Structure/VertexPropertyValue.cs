@@ -20,7 +20,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// Gets or sets the properties (if any).
         /// </summary>
         [JsonProperty(PropertyNames.Properties)]
-        public IReadOnlyDictionary<string, object> Properties
+        public IDictionary<string, object> Properties
         {
             get { return _properties; }
             set { _properties = value ?? new Dictionary<string, object>(); }
@@ -32,7 +32,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         [JsonProperty(PropertyNames.Value)]
         public object Value { get; set; }
 
-        private IReadOnlyDictionary<string, object> _properties = new Dictionary<string, object>();
+        private IDictionary<string, object> _properties = new Dictionary<string, object>();
 
         /// <summary>
         /// Gets a value indicating whether the Properties property should be serialized.
