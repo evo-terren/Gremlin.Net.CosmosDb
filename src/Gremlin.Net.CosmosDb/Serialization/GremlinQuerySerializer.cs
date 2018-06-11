@@ -110,6 +110,24 @@ namespace Gremlin.Net.CosmosDb.Serialization
         }
 
         /// <summary>
+        /// Serializes the specified Column enum.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        private void Serialize(Column column)
+        {
+            _writer.Write(column.EnumValue);
+        }
+
+        /// <summary>
+        /// Serializes the specified Pop enum.
+        /// </summary>
+        /// <param name="pop">The pop.</param>
+        private void Serialize(Pop pop)
+        {
+            _writer.Write(pop.EnumValue);
+        }
+
+        /// <summary>
         /// Serializes the specified unique identifier.
         /// </summary>
         /// <param name="guid">The unique identifier.</param>
