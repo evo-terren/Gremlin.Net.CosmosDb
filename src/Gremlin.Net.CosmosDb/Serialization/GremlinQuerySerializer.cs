@@ -163,7 +163,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <param name="order">The order.</param>
         private void Serialize(Order order)
         {
-            _writer.Write(order.ToString().ToLowerInvariant());
+            _writer.Write(order.EnumValue.ToString().ToLowerInvariant());
         }
 
         /// <summary>
