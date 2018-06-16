@@ -235,7 +235,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.AsGraphTraversal().In(edgeLabels);
+            return traversal.AsGraphTraversal().Out(edgeLabels);
         }
 
         /// <summary>
