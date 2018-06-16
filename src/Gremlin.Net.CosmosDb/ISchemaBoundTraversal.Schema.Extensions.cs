@@ -286,7 +286,7 @@ namespace Gremlin.Net.CosmosDb
         public static ISchemaBoundTraversal<S, ToutVertex> OutV<S, ToutVertex>(this ISchemaBoundTraversal<S, IHasOutVertex<ToutVertex>> traversal)
             where ToutVertex : VertexBase
         {
-            return traversal.AsGraphTraversal().InV().AsSchemaBound<S, ToutVertex>();
+            return traversal.AsGraphTraversal().OutV().AsSchemaBound<S, ToutVertex>();
         }
 
         /// <summary>
