@@ -235,7 +235,7 @@ namespace Gremlin.Net.CosmosDb
             var vertexType = typeof(TVertex);
             var edgeLabels = edgeSelectors.Select(es => GetLabelName(vertexType, es)).ToArray();
 
-            return traversal.AsGraphTraversal().In(edgeLabels);
+            return traversal.AsGraphTraversal().Out(edgeLabels);
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Gremlin.Net.CosmosDb
         public static ISchemaBoundTraversal<S, ToutVertex> OutV<S, ToutVertex>(this ISchemaBoundTraversal<S, IHasOutVertex<ToutVertex>> traversal)
             where ToutVertex : VertexBase
         {
-            return traversal.AsGraphTraversal().InV().AsSchemaBound<S, ToutVertex>();
+            return traversal.AsGraphTraversal().OutV().AsSchemaBound<S, ToutVertex>();
         }
 
         /// <summary>
