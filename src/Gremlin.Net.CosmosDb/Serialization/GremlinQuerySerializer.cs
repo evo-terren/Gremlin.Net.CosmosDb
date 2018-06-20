@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Text;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -185,7 +186,30 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <param name="obj">The object.</param>
         private void Serialize(object obj)
         {
-            _serializer.Serialize(_writer, obj);
+            var sb = new StringBuilder();
+            using (var writer = new StringWriter(sb))
+            {
+                _serializer.Serialize(writer, obj);
+            }
+            Serialize(sb.ToString());
+        }
+
+        /// <summary>
+        /// Serializes the specified string.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        private void Serialize(string str)
+        {
+            if (str == null)
+            {
+                _writer.Write("null");
+                return;
+            }
+
+            str = str.Replace("\"", "\\\"").Replace("$", "\\$");
+            _writer.Write('"');
+            _writer.Write(str);
+            _writer.Write('"');
         }
 
         #region IDisposable Support
