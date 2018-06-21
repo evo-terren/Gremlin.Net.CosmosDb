@@ -4,7 +4,6 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Globalization;
 using System.IO;
-using System.Text;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -28,7 +27,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
             DateTimeZoneHandling = DateTimeZoneHandling.Utc
         };
 
-        private readonly JsonSerializer _serializer;
+        private readonly JsonSerializerSettings _serializerSettings;
         private readonly TextWriter _writer;
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
 
-            _serializer = JsonSerializer.Create(DEFAULT_SERIALIZER_SETTINGS);
+            _serializerSettings = DEFAULT_SERIALIZER_SETTINGS;
             _writer = writer;
         }
 
@@ -55,8 +54,10 @@ namespace Gremlin.Net.CosmosDb.Serialization
         {
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
+            if (serializerSettings == null)
+                throw new ArgumentNullException(nameof(serializerSettings));
 
-            _serializer = JsonSerializer.Create(serializerSettings);
+            _serializerSettings = serializerSettings;
             _writer = writer;
         }
 
@@ -186,12 +187,8 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <param name="obj">The object.</param>
         private void Serialize(object obj)
         {
-            var sb = new StringBuilder();
-            using (var writer = new StringWriter(sb))
-            {
-                _serializer.Serialize(writer, obj);
-            }
-            Serialize(sb.ToString());
+            var serializedObj = JsonConvert.SerializeObject(obj, _serializerSettings);
+            Serialize(serializedObj);
         }
 
         /// <summary>
@@ -206,10 +203,22 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 return;
             }
 
+            //double quotes need to be escaped as do dollar signs
+            //dollar signs are escaped to avoid parsing errors on Cosmos'
+            //end since they are used for interpolation in groovy strings
             str = str.Replace("\"", "\\\"").Replace("$", "\\$");
             _writer.Write('"');
             _writer.Write(str);
             _writer.Write('"');
+        }
+
+        /// <summary>
+        /// Serializes the specified string.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        private void Serialize(GroovyString str)
+        {
+            _writer.Write(str?.Value);
         }
 
         #region IDisposable Support
