@@ -187,29 +187,18 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <param name="obj">The object.</param>
         private void Serialize(object obj)
         {
-            var serializedObj = JsonConvert.SerializeObject(obj, _serializerSettings);
-            Serialize(serializedObj);
-        }
+            var serializedObj = JsonConvert.SerializeObject(obj, Formatting.None, _serializerSettings);
 
-        /// <summary>
-        /// Serializes the specified string.
-        /// </summary>
-        /// <param name="str">The string.</param>
-        private void Serialize(string str)
-        {
-            if (str == null)
-            {
-                _writer.Write("null");
-                return;
-            }
+            //make sure objects and arrays are serialized as string values
+            //double-escape double quoted values that could be serialized inside the object as property keys/values
+            if (serializedObj.Length > 0 && (serializedObj[0] == '{' || serializedObj[0] == '['))
+                serializedObj = '"' + serializedObj.Replace("\"", "\\\"").Replace("\\\\\"", "\\\\\\\"") + '"';
 
-            //double quotes need to be escaped as do dollar signs
             //dollar signs are escaped to avoid parsing errors on Cosmos'
             //end since they are used for interpolation in groovy strings
-            str = str.Replace("\"", "\\\"").Replace("$", "\\$");
-            _writer.Write('"');
-            _writer.Write(str);
-            _writer.Write('"');
+            serializedObj = serializedObj.Replace("$", "\\$");
+
+            _writer.Write(serializedObj);
         }
 
         /// <summary>
