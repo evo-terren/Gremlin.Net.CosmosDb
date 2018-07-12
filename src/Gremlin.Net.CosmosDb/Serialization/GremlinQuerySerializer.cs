@@ -2,8 +2,10 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -146,16 +148,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         {
             _writer.Write(instruction.OperatorName);
             _writer.Write('(');
-            var addComma = false;
-            foreach (var arg in instruction.Arguments)
-            {
-                if (addComma)
-                    _writer.Write(',');
-
-                Serialize(arg);
-
-                addComma = true;
-            }
+            SerializeListWithCommas(instruction.Arguments);
             _writer.Write(')');
         }
 
@@ -177,7 +170,13 @@ namespace Gremlin.Net.CosmosDb.Serialization
             _writer.Write(predicate.OperatorName);
             _writer.Write('(');
             if (predicate.Value != null)
-                Serialize(predicate.Value);
+            {
+                var predicateValues = predicate.Value as IEnumerable<dynamic>;
+                if (predicateValues?.Any() ?? false)
+                    SerializeListWithCommas(predicateValues);
+                else
+                    Serialize(predicate.Value);
+            }
             _writer.Write(')');
         }
 
@@ -208,6 +207,24 @@ namespace Gremlin.Net.CosmosDb.Serialization
         private void Serialize(GroovyString str)
         {
             _writer.Write(str?.Value);
+        }
+
+        /// <summary>
+        /// Helper method that serializes a list of things with comma separators.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        private void SerializeListWithCommas(IEnumerable<dynamic> list)
+        {
+            var addComma = false;
+            foreach (var value in list)
+            {
+                if (addComma)
+                    _writer.Write(',');
+
+                Serialize(value);
+
+                addComma = true;
+            }
         }
 
         #region IDisposable Support
