@@ -49,6 +49,24 @@ var todaysDate = DateTimeOffset.Now;
 var query = g.V(uniqueId).property("some-date', todaysDate);
 ```
 
+## Partitioned Graph
+If you're partitioning your CosmosDb graph, you can query look up partitioned vertices like so:
+```c#
+using (var graphClient = new GraphClient(...)
+{
+    var g = graphClient.CreateTraversalSource();
+
+    // lookup by id
+    var slowQuery = g.V("some-vertex-id");
+
+    // lookup by partition key and id
+    var fastQuery = g.V(("some-vertex-partition-key", "some-vertex-id"));
+
+    // multiple vertices
+    var fastQuery = g.V(("some-vertex-partition-key", "some-vertex-id"), ("other-partition-key", "other-id"));
+}
+```
+
 ## Utlize Newtonsoft.Json De-Serialization
 
 The `QueryAsync()` method has overloads that allow you to specify the return type as well as optionally setting the Newtonsoft.Json serializer settings if your application requires:
