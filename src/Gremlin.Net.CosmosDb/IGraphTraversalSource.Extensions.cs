@@ -74,12 +74,39 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
         /// <param name="graphTraversalSource">The graph traversal source.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<Vertex, TVertex> V<TVertex>(this IGraphTraversalSource graphTraversalSource)
+        {
+            var label = LabelNameResolver.GetLabelName(typeof(TVertex));
+            var traversal = graphTraversalSource.V().HasLabel(label);
+            return traversal.AsSchemaBound<Vertex, TVertex>();
+        }
+
+        /// <summary>
+        /// Adds the "V("id").HasLabel(label_for_type_of_node)" step to the traversal.
+        /// </summary>
+        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
+        /// <param name="graphTraversalSource">The graph traversal source.</param>
         /// <param name="vertexIds">The vertex id(s).</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<Vertex, TVertex> V<TVertex>(this IGraphTraversalSource graphTraversalSource, params object[] vertexIds)
         {
             var label = LabelNameResolver.GetLabelName(typeof(TVertex));
             var traversal = graphTraversalSource.V(vertexIds).HasLabel(label);
+            return traversal.AsSchemaBound<Vertex, TVertex>();
+        }
+
+        /// <summary>
+        /// Adds the "V(["partitionKey", "id"]).HasLabel(label_for_type_of_node)" step to the traversal.
+        /// </summary>
+        /// <typeparam name="TVertex">The type of the vertex.</typeparam>
+        /// <param name="graphTraversalSource">The graph traversal source.</param>
+        /// <param name="partitionKeyIdPairs">The pair(s) of vertex partition key and id.</param>
+        /// <returns>Returns the resulting traversal</returns>
+        public static ISchemaBoundTraversal<Vertex, TVertex> V<TVertex>(this IGraphTraversalSource graphTraversalSource, params PartitionKeyIdPair[] partitionKeyIdPairs)
+        {
+            var label = LabelNameResolver.GetLabelName(typeof(TVertex));
+            var traversal = graphTraversalSource.V(partitionKeyIdPairs).HasLabel(label);
             return traversal.AsSchemaBound<Vertex, TVertex>();
         }
     }

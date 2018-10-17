@@ -1,4 +1,4 @@
-﻿using Gremlin.Net.Process.Traversal;
+using Gremlin.Net.Process.Traversal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Gremlin.Net.CosmosDb.Structure;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -207,6 +208,15 @@ namespace Gremlin.Net.CosmosDb.Serialization
         private void Serialize(GroovyString str)
         {
             _writer.Write(str?.Value);
+        }
+
+        /// <summary>
+        /// Serializes the specified <see cref="PartitionKeyIdPair"/>
+        /// </summary>
+        /// <param name="pair"></param>
+        private void Serialize(PartitionKeyIdPair pair)
+        {
+            _writer.Write($"[\"{pair.PartitionKey}\", \"{pair.Id}\"]");
         }
 
         /// <summary>
