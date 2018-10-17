@@ -1,4 +1,5 @@
-﻿using Gremlin.Net.Process.Traversal;
+﻿using Gremlin.Net.CosmosDb.Structure;
+using Gremlin.Net.Process.Traversal;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -35,6 +36,18 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the V step to that traversal.
         /// </summary>
+        GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V();
+
+        /// <summary>
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
+        /// adds the V step to that traversal.
+        /// </summary>
         GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V(params object[] vertexIds);
+
+        /// <summary>
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
+        /// adds the V step to that traversal.
+        /// </summary>
+        GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V(params PartitionKeyIdPair[] vertexIds);
     }
 }

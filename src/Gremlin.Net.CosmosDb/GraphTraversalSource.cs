@@ -1,4 +1,5 @@
-﻿using Gremlin.Net.Process.Traversal;
+﻿using Gremlin.Net.CosmosDb.Structure;
+using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
 
 namespace Gremlin.Net.CosmosDb
@@ -67,11 +68,32 @@ namespace Gremlin.Net.CosmosDb
         /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
         /// adds the V step to that traversal.
         /// </summary>
+        /// <returns></returns>
+        public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V()
+        {
+            return _graphTraversalSource.V();
+        }
+
+        /// <summary>
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
+        /// adds the V step to that traversal.
+        /// </summary>
         /// <param name="vertexIds">Unique Identifiers of vertices to start the traversal with</param>
         /// <returns></returns>
         public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V(params object[] vertexIds)
         {
             return _graphTraversalSource.V(vertexIds);
+        }
+
+        /// <summary>
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
+        /// adds the V step to that traversal.
+        /// </summary>
+        /// <param name="pairs">Unique Identifiers of vertices to start the traversal with</param>
+        /// <returns></returns>
+        public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V(params PartitionKeyIdPair[] pairs)
+        {
+            return _graphTraversalSource.V(pairs);
         }
     }
 }
