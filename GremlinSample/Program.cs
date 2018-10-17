@@ -1,4 +1,4 @@
-﻿using Gremlin.Net.CosmosDb;
+using Gremlin.Net.CosmosDb;
 using GremlinSample.Schema;
 using Newtonsoft.Json;
 using System;
@@ -48,10 +48,17 @@ namespace GremlinSample
                 var response = await graphClient.QueryAsync(query);
 
                 Console.WriteLine();
+                Console.WriteLine("Response status:");
+
+                Console.WriteLine($"Code: {response.StatusCode}");
+                Console.WriteLine($"RU Cost: {response.TotalRequestCharge}");
+
+                Console.WriteLine();
                 Console.WriteLine("Response:");
                 foreach (var result in response)
                 {
-                    var json = JsonConvert.SerializeObject(result);
+                    var json = JsonConvert.SerializeObject(result, Formatting.Indented);
+
                     Console.WriteLine(json);
                 }
             }

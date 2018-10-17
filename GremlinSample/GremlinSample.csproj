@@ -17,10 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gremlin.Net" Version="3.3.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\src\Gremlin.Net.CosmosDb\Gremlin.Net.CosmosDb.csproj" />
   </ItemGroup>
 
