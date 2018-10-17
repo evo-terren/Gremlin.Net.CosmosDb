@@ -1,4 +1,4 @@
-﻿using Gremlin.Net.CosmosDb.Serialization;
+using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
 using Newtonsoft.Json;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Gremlin.Net.CosmosDb.Serialization;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -224,6 +225,7 @@ namespace Gremlin.Net.CosmosDb
             {
                 Converters = new JsonConverter[]
                 {
+                    new TreeJsonConverter(),
                     new EdgeBaseJsonConverter(),
                     new ElementJsonConverter(),
                     new VertexBaseJsonConverter(),
