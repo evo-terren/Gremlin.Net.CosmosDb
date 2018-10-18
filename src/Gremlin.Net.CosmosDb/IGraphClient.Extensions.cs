@@ -6,6 +6,7 @@ using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Gremlin.Net.CosmosDb
 {

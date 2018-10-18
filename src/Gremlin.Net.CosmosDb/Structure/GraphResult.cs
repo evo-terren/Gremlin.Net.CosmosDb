@@ -45,7 +45,7 @@ namespace Gremlin.Net.CosmosDb.Structure
 
         internal GraphResult(ResultSet<JToken> resultSet)
         {
-            ResultSet = resultSet;
+            ResultSet = resultSet ?? throw new System.ArgumentNullException(nameof(resultSet));
         }
 
         internal GraphResult<T> ApplyType<T>(JsonSerializer serializer)
@@ -62,6 +62,11 @@ namespace Gremlin.Net.CosmosDb.Structure
     {
         internal GraphResult(ResultSet<JToken> resultSet, JsonSerializer serializer) : base(resultSet)
         {
+            if (resultSet == null)
+            {
+                throw new System.ArgumentNullException(nameof(resultSet));
+            }
+
             Result = resultSet.Select(token => token.ToObject<T>(serializer)).ToList();
         }
 
