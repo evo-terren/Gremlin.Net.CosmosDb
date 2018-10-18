@@ -1,4 +1,5 @@
-﻿using Gremlin.Net.CosmosDb.Serialization;
+using Gremlin.Net.CosmosDb.Serialization;
+using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Driver;
 using Newtonsoft.Json.Linq;
 using System;
@@ -69,12 +70,14 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="gremlinQuery">The gremlin query.</param>
         /// <returns>Returns the results</returns>
         /// <exception cref="ArgumentNullException">gremlinQuery</exception>
-        public Task<IReadOnlyCollection<JToken>> QueryAsync(string gremlinQuery)
+        public async Task<GraphResult> QueryAsync(string gremlinQuery)
         {
             if (gremlinQuery == null)
                 throw new ArgumentNullException(nameof(gremlinQuery));
 
-            return _gremlinClient.SubmitAsync<JToken>(gremlinQuery);
+            var resultSet = await _gremlinClient.SubmitAsync<JToken>(gremlinQuery);
+
+            return new GraphResult(resultSet);
         }
 
         /// <summary>
@@ -84,7 +87,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the results</returns>
         /// <exception cref="ArgumentNullException">gremlinQuery</exception>
         [Obsolete("Renamed to QueryAsync")]
-        public Task<IReadOnlyCollection<JToken>> SubmitAsync(string gremlinQuery)
+        public Task<GraphResult> SubmitAsync(string gremlinQuery)
         {
             return QueryAsync(gremlinQuery);
         }

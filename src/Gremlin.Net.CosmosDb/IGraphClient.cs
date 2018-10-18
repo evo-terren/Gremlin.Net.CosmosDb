@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
+using Gremlin.Net.CosmosDb.Structure;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -21,7 +20,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         /// <param name="gremlinQuery">The gremlin query.</param>
         /// <returns>Returns the results</returns>
-        Task<IReadOnlyCollection<JToken>> QueryAsync(string gremlinQuery);
+        Task<GraphResult> QueryAsync(string gremlinQuery);
 
         /// <summary>
         /// Submits the given gremlin query to the Cosmos Db instance.
@@ -29,6 +28,6 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="gremlinQuery">The gremlin query.</param>
         /// <returns>Returns the results</returns>
         [Obsolete("Renaming to QueryAsync")]
-        Task<IReadOnlyCollection<JToken>> SubmitAsync(string gremlinQuery);
+        Task<GraphResult> SubmitAsync(string gremlinQuery);
     }
 }

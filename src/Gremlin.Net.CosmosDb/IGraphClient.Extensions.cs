@@ -1,14 +1,12 @@
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Gremlin.Net.CosmosDb.Serialization;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -54,7 +52,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="gremlinQuery">The traversal query.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<T>> QueryAsync<T>(this IGraphClient graphClient, string gremlinQuery)
+        public static Task<GraphResult<T>> QueryAsync<T>(this IGraphClient graphClient, string gremlinQuery)
         {
             return graphClient.QueryAsync<T>(gremlinQuery, BuildDefaultSerializerSettings());
         }
@@ -68,7 +66,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<T>> QueryAsync<T>(this IGraphClient graphClient, ITraversal traversal)
+        public static Task<GraphResult<T>> QueryAsync<T>(this IGraphClient graphClient, ITraversal traversal)
         {
             return graphClient.QueryAsync<T>(traversal, BuildDefaultSerializerSettings());
         }
@@ -83,7 +81,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<E>> QueryAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal)
+        public static Task<GraphResult<E>> QueryAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal)
         {
             return graphClient.QueryAsync(traversal, BuildDefaultSerializerSettings());
         }
@@ -98,7 +96,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<E>> QueryAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal)
+        public static Task<GraphResult<E>> QueryAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal)
         {
             return graphClient.QueryAsync(traversal, BuildDefaultSerializerSettings());
         }
@@ -112,7 +110,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<Vertex>> QueryAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Vertex> traversal)
+        public static Task<GraphResult<Vertex>> QueryAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Vertex> traversal)
         {
             return graphClient.QueryAsync<Vertex>(traversal);
         }
@@ -126,7 +124,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<Edge>> QueryAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Edge> traversal)
+        public static Task<GraphResult<Edge>> QueryAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Edge> traversal)
         {
             return graphClient.QueryAsync<Edge>(traversal);
         }
@@ -140,7 +138,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<Property>> QueryAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Property> traversal)
+        public static Task<GraphResult<Property>> QueryAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Property> traversal)
         {
             return graphClient.QueryAsync<Property>(traversal);
         }
@@ -155,12 +153,12 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializerSettings">The serializer settings.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static async Task<IReadOnlyCollection<T>> QueryAsync<T>(this IGraphClient graphClient, string gremlinQuery, JsonSerializerSettings serializerSettings)
+        public static async Task<GraphResult<T>> QueryAsync<T>(this IGraphClient graphClient, string gremlinQuery, JsonSerializerSettings serializerSettings)
         {
             var result = await graphClient.QueryAsync(gremlinQuery);
             var serializer = JsonSerializer.Create(serializerSettings);
 
-            return result.Select(token => token.ToObject<T>(serializer)).ToList();
+            return result.ApplyType<T>(serializer);
         }
 
         /// <summary>
@@ -174,7 +172,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializerSettings">The serializer settings.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<E>> QueryAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
+        public static Task<GraphResult<E>> QueryAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
         {
             return graphClient.QueryAsync<E>(traversal, serializerSettings);
         }
@@ -190,7 +188,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializerSettings">The serializer settings.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<E>> QueryAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
+        public static Task<GraphResult<E>> QueryAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
         {
             return graphClient.QueryAsync<E>(traversal.AsGraphTraversal(), serializerSettings);
         }
@@ -205,7 +203,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializerSettings">The serializer settings.</param>
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
-        public static Task<IReadOnlyCollection<T>> QueryAsync<T>(this IGraphClient graphClient, ITraversal traversal, JsonSerializerSettings serializerSettings)
+        public static Task<GraphResult<T>> QueryAsync<T>(this IGraphClient graphClient, ITraversal traversal, JsonSerializerSettings serializerSettings)
         {
             if (traversal == null)
                 throw new ArgumentNullException(nameof(traversal));
@@ -934,7 +932,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, string gremlinQuery)
+        public static Task<GraphResult<T>> SubmitAsync<T>(this IGraphClient graphClient, string gremlinQuery)
         {
             return graphClient.QueryAsync<T>(gremlinQuery);
         }
@@ -949,7 +947,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, ITraversal traversal)
+        public static Task<GraphResult<T>> SubmitAsync<T>(this IGraphClient graphClient, ITraversal traversal)
         {
             return graphClient.QueryAsync<T>(traversal);
         }
@@ -965,7 +963,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal)
+        public static Task<GraphResult<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal)
         {
             return graphClient.QueryAsync(traversal);
         }
@@ -981,7 +979,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal)
+        public static Task<GraphResult<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal)
         {
             return graphClient.QueryAsync(traversal);
         }
@@ -996,7 +994,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<Vertex>> SubmitAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Vertex> traversal)
+        public static Task<GraphResult<Vertex>> SubmitAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Vertex> traversal)
         {
             return graphClient.QueryAsync(traversal);
         }
@@ -1011,7 +1009,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<Edge>> SubmitAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Edge> traversal)
+        public static Task<GraphResult<Edge>> SubmitAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Edge> traversal)
         {
             return graphClient.QueryAsync(traversal);
         }
@@ -1026,7 +1024,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<Property>> SubmitAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Property> traversal)
+        public static Task<GraphResult<Property>> SubmitAsync<S>(this IGraphClient graphClient, ITraversal<S, Gremlin.Net.Structure.Property> traversal)
         {
             return graphClient.QueryAsync(traversal);
         }
@@ -1042,7 +1040,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, string gremlinQuery, JsonSerializerSettings serializerSettings)
+        public static Task<GraphResult<T>> SubmitAsync<T>(this IGraphClient graphClient, string gremlinQuery, JsonSerializerSettings serializerSettings)
         {
             return graphClient.QueryAsync<T>(gremlinQuery, serializerSettings);
         }
@@ -1059,7 +1057,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
+        public static Task<GraphResult<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ITraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
         {
             return graphClient.QueryAsync(traversal, serializerSettings);
         }
@@ -1076,7 +1074,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
+        public static Task<GraphResult<E>> SubmitAsync<S, E>(this IGraphClient graphClient, ISchemaBoundTraversal<S, E> traversal, JsonSerializerSettings serializerSettings)
         {
             return graphClient.QueryAsync(traversal, serializerSettings);
         }
@@ -1092,7 +1090,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the result</returns>
         /// <exception cref="ArgumentNullException">traversal</exception>
         [Obsolete("Please use QueryAsync or other method instead")]
-        public static Task<IReadOnlyCollection<T>> SubmitAsync<T>(this IGraphClient graphClient, ITraversal traversal, JsonSerializerSettings serializerSettings)
+        public static Task<GraphResult<T>> SubmitAsync<T>(this IGraphClient graphClient, ITraversal traversal, JsonSerializerSettings serializerSettings)
         {
             return graphClient.QueryAsync<T>(traversal, serializerSettings);
         }
