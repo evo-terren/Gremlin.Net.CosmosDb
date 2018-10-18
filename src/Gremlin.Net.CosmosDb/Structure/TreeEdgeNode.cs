@@ -19,6 +19,10 @@ namespace Gremlin.Net.CosmosDb.Structure
         [JsonProperty("value")]
         public TreeVertexNode VertexNode { get; set; }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString() => Edge.ToString();
     }
 }

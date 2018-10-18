@@ -8,11 +8,20 @@ using Newtonsoft.Json.Linq;
 namespace Gremlin.Net.CosmosDb.Structure
 {
     /// <summary>
-    /// Model of the result with explicit attributes from CosmosDb.
-    /// https://docs.microsoft.com/en-us/rest/api/cosmos-db/common-cosmosdb-rest-response-headers
+    /// Model of the result with explicit attributes from CosmosDb. https://docs.microsoft.com/en-us/rest/api/cosmos-db/common-cosmosdb-rest-response-headers
     /// </summary>
     public class GraphResult
     {
+        /// <summary>
+        /// x-ms-cosmosdb-graph-request-charge
+        /// </summary>
+        public double CosmosDbGraphRequestCharge => (double)ResultSet.StatusAttributes["x-ms-cosmosdb-graph-request-charge"];
+
+        /// <summary>
+        /// This is the number of normalized requests a.k.a. request units (RU) for the operation.
+        /// </summary>
+        public double RequestCharge => (double)ResultSet.StatusAttributes["x-ms-request-charge"];
+
         /// <summary>
         /// The original gremlin result.
         /// </summary>
@@ -24,24 +33,14 @@ namespace Gremlin.Net.CosmosDb.Structure
         public long StatusCode => (long)ResultSet.StatusAttributes["x-ms-status-code"];
 
         /// <summary>
-        /// This is the number of normalized requests a.k.a. request units (RU) for the operation.
+        /// StorageRU
         /// </summary>
-        public double RequestCharge => (double)ResultSet.StatusAttributes["x-ms-request-charge"];
+        public double StorageRU => (double)ResultSet.StatusAttributes["StorageRU"];
 
         /// <summary>
         /// x-ms-total-request-charge
         /// </summary>
         public double TotalRequestCharge => (double)ResultSet.StatusAttributes["x-ms-total-request-charge"];
-
-        /// <summary>
-        /// x-ms-cosmosdb-graph-request-charge
-        /// </summary>
-        public double CosmosDbGraphRequestCharge => (double)ResultSet.StatusAttributes["x-ms-cosmosdb-graph-request-charge"];
-
-        /// <summary>
-        /// StorageRU
-        /// </summary>
-        public double StorageRU => (double)ResultSet.StatusAttributes["StorageRU"];
 
         internal GraphResult(ResultSet<JToken> resultSet)
         {
@@ -60,6 +59,17 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// <typeparam name="T">The type to deserialize as.</typeparam>
     public class GraphResult<T> : GraphResult, IEnumerable<T>
     {
+        /// <summary>
+        /// The deserialized results of the operation.
+        /// </summary>
+        public IReadOnlyCollection<T> Result { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphResult{T}"/> class.
+        /// </summary>
+        /// <param name="resultSet">The result set.</param>
+        /// <param name="serializer">The serializer.</param>
+        /// <exception cref="System.ArgumentNullException">resultSet</exception>
         internal GraphResult(ResultSet<JToken> resultSet, JsonSerializer serializer) : base(resultSet)
         {
             if (resultSet == null)
@@ -71,11 +81,11 @@ namespace Gremlin.Net.CosmosDb.Structure
         }
 
         /// <summary>
-        /// The deserialized results of the operation.
+        /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        public IReadOnlyCollection<T> Result { get; }
-
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator() => Result.GetEnumerator();
+
         IEnumerator IEnumerable.GetEnumerator() => Result.GetEnumerator();
     }
 }

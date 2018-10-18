@@ -8,14 +8,14 @@ namespace Gremlin.Net.CosmosDb.Structure
     public class PartitionKeyIdPair
     {
         /// <summary>
-        /// The partition key.
-        /// </summary>
-        public string PartitionKey { get; set; }
-
-        /// <summary>
         /// The id.
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// The partition key.
+        /// </summary>
+        public string PartitionKey { get; set; }
 
         /// <summary>
         /// Creates a new partition key / id pair.
@@ -27,8 +27,6 @@ namespace Gremlin.Net.CosmosDb.Structure
             PartitionKey = partitionKey;
             Id = id;
         }
-
-        public override string ToString() => $"[\"{PartitionKey}\", \"{Id}\"]";
 
         /// <summary>
         /// Implicitly convert <see cref="Tuple"/> to <see cref="PartitionKeyIdPair"/>
@@ -47,5 +45,11 @@ namespace Gremlin.Net.CosmosDb.Structure
         {
             return new PartitionKeyIdPair(tuple.Item1, tuple.Item2);
         }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString() => $"[\"{PartitionKey}\", \"{Id}\"]";
     }
 }
