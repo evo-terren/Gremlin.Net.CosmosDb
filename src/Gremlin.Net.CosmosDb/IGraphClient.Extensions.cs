@@ -224,9 +224,9 @@ namespace Gremlin.Net.CosmosDb
                 Converters = new JsonConverter[]
                 {
                     new TreeJsonConverter(),
-                    new EdgeBaseJsonConverter(),
+                    new IEdgeJsonConverter(),
                     new ElementJsonConverter(),
-                    new VertexBaseJsonConverter(),
+                    new IVertexJsonConverter(),
                     new IsoDateTimeConverter
                     {
                         DateTimeStyles = DateTimeStyles.AdjustToUniversal

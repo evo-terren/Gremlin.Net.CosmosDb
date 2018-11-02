@@ -1,12 +1,12 @@
-using Gremlin.Net.Process.Traversal;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using Gremlin.Net.CosmosDb.Structure;
+using Gremlin.Net.Process.Traversal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -40,11 +40,8 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <exception cref="ArgumentNullException">writer</exception>
         public GremlinQuerySerializer(TextWriter writer)
         {
-            if (writer == null)
-                throw new ArgumentNullException(nameof(writer));
-
             _serializerSettings = DEFAULT_SERIALIZER_SETTINGS;
-            _writer = writer;
+            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
         }
 
         /// <summary>
@@ -55,13 +52,8 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <exception cref="ArgumentNullException">writer</exception>
         public GremlinQuerySerializer(TextWriter writer, JsonSerializerSettings serializerSettings)
         {
-            if (writer == null)
-                throw new ArgumentNullException(nameof(writer));
-            if (serializerSettings == null)
-                throw new ArgumentNullException(nameof(serializerSettings));
-
-            _serializerSettings = serializerSettings;
-            _writer = writer;
+            _serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
+            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
         }
 
         /// <summary>

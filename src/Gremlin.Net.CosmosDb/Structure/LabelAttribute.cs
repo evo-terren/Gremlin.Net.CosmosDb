@@ -6,7 +6,7 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// Declarative label name of a schema-bound graph element
     /// </summary>
     /// <seealso cref="System.Attribute"/>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public sealed class LabelAttribute : Attribute
     {
         /// <summary>
@@ -21,10 +21,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <exception cref="System.ArgumentNullException">name</exception>
         public LabelAttribute(string name)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
     }
 }

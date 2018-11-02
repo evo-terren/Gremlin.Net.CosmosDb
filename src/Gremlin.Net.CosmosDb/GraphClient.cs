@@ -1,10 +1,9 @@
+﻿using System;
+using System.Threading.Tasks;
 using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Driver;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -40,10 +39,7 @@ namespace Gremlin.Net.CosmosDb
         /// <exception cref="ArgumentNullException">gremlinClient</exception>
         internal GraphClient(IGremlinClient gremlinClient)
         {
-            if (gremlinClient == null)
-                throw new ArgumentNullException(nameof(gremlinClient));
-
-            _gremlinClient = gremlinClient;
+            _gremlinClient = gremlinClient ?? throw new ArgumentNullException(nameof(gremlinClient));
         }
 
         /// <summary>
