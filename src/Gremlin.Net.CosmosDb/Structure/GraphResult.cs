@@ -28,7 +28,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         public ResultSet<JToken> ResultSet { get; }
 
         /// <summary>
-        /// The status code of the operation.
+        /// The sub-status code of the operation, specific to CosmosDB.
         /// </summary>
         public long StatusCode => (long)ResultSet.StatusAttributes["x-ms-status-code"];
 
@@ -38,9 +38,21 @@ namespace Gremlin.Net.CosmosDb.Structure
         public double StorageRU => (double)ResultSet.StatusAttributes["StorageRU"];
 
         /// <summary>
-        /// x-ms-total-request-charge
+        /// The total request units charged for processing a request.
         /// </summary>
         public double TotalRequestCharge => (double)ResultSet.StatusAttributes["x-ms-total-request-charge"];
+
+        /// <summary>
+        /// The number of milliseconds to wait to retry the operation after an initial operation was
+        /// throttled. This will be populated when attribute 'x-ms-status-code' returns 429.
+        /// </summary>
+        public double RetryAfterMs => (double) ResultSet.StatusAttributes["x-ms-retry-after-ms"];
+
+        /// <summary>
+        /// Represents a unique identifier for the operation. Commonly used for troubleshooting
+        /// purposes.
+        /// </summary>
+        public string ActivityId => (string) ResultSet.StatusAttributes["x-ms-activity-id"];
 
         internal GraphResult(ResultSet<JToken> resultSet)
         {
