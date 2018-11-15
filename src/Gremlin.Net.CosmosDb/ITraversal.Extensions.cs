@@ -1,11 +1,11 @@
-﻿using Gremlin.Net.CosmosDb.Serialization;
-using Gremlin.Net.CosmosDb.Structure;
-using Gremlin.Net.Process.Traversal;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Gremlin.Net.CosmosDb.Serialization;
+using Gremlin.Net.CosmosDb.Structure;
+using Gremlin.Net.Process.Traversal;
+using Newtonsoft.Json;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -21,7 +21,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this ITraversal traversal)
-            where TEdge : EdgeBase
+            where TEdge : IEdge
         {
             var label = LabelNameResolver.GetLabelName(typeof(TEdge));
 
@@ -36,7 +36,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="edge">The edge to add.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this ITraversal traversal, TEdge edge)
-            where TEdge : EdgeBase
+            where TEdge : IEdge
         {
             return AddE(traversal, edge, new JsonSerializerSettings { ContractResolver = new ElementContractResolver() });
         }
@@ -50,7 +50,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializationSettings">The serialization settings.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TEdge> AddE<TEdge>(this ITraversal traversal, TEdge edge, JsonSerializerSettings serializationSettings)
-            where TEdge : EdgeBase
+            where TEdge : IEdge
         {
             var label = LabelNameResolver.GetLabelName(typeof(TEdge));
             var t = traversal.AsGraphTraversal().AddE(label);
@@ -67,7 +67,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this ITraversal traversal)
-            where TVertex : VertexBase
+            where TVertex : IVertex
         {
             var label = LabelNameResolver.GetLabelName(typeof(TVertex));
 
@@ -82,7 +82,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="vertex">The vertex to add.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this ITraversal traversal, TVertex vertex)
-            where TVertex : VertexBase
+            where TVertex : IVertex
         {
             return AddV(traversal, vertex, new JsonSerializerSettings { ContractResolver = new ElementContractResolver() });
         }
@@ -96,7 +96,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializationSettings">The serialization settings.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this ITraversal traversal, TVertex vertex, JsonSerializerSettings serializationSettings)
-            where TVertex : VertexBase
+            where TVertex : IVertex
         {
             var label = LabelNameResolver.GetLabelName(typeof(TVertex));
             var t = traversal.AsGraphTraversal().AddV(label);
@@ -114,7 +114,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the traversal</returns>
         [Obsolete("Use Cast<T>() instead")]
         public static ISchemaBoundTraversal<object, TEdge> AsEdge<TEdge>(this ITraversal traversal)
-            where TEdge : EdgeBase
+            where TEdge : IEdge
         {
             return traversal.AsSchemaBound<object, TEdge>();
         }
@@ -127,7 +127,7 @@ namespace Gremlin.Net.CosmosDb
         /// <returns>Returns the traversal</returns>
         [Obsolete("Use Cast<T>() instead")]
         public static ISchemaBoundTraversal<object, TVertex> AsVertex<TVertex>(this ITraversal traversal)
-            where TVertex : VertexBase
+            where TVertex : IVertex
         {
             return traversal.AsSchemaBound<object, TVertex>();
         }

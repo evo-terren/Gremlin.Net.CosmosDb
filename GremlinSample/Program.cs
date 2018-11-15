@@ -1,8 +1,8 @@
+using System;
+using System.Threading.Tasks;
 using Gremlin.Net.CosmosDb;
 using GremlinSample.Schema;
 using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
 
 namespace GremlinSample
 {
@@ -19,7 +19,6 @@ namespace GremlinSample
                 {
                     Ages = new[] { 4, 6, 23 },
                     Id = "person-12345",
-                    Label = "some-label",
                     Name = "my name"
                 };
                 var purchasedE = new PersonPurchasedProductEdge

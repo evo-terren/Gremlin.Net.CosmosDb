@@ -1,7 +1,7 @@
-﻿using Gremlin.Net.CosmosDb.Structure;
-using Newtonsoft.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Gremlin.Net.CosmosDb.Structure;
+using Newtonsoft.Json.Serialization;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -11,10 +11,6 @@ namespace Gremlin.Net.CosmosDb.Serialization
     /// <seealso cref="Newtonsoft.Json.Serialization.DefaultContractResolver"/>
     internal sealed class ElementContractResolver : DefaultContractResolver
     {
-        private static readonly Type TYPE_OF_EDGEBASE = typeof(EdgeBase);
-        private static readonly Type TYPE_OF_ELEMENT = typeof(Element);
-        private static readonly Type TYPE_OF_VERTEXBASE = typeof(VertexBase);
-
         /// <summary>
         /// Creates a <see cref="T:Newtonsoft.Json.Serialization.JsonObjectContract"/> for the given type.
         /// </summary>
@@ -30,23 +26,24 @@ namespace Gremlin.Net.CosmosDb.Serialization
 
             var contract = base.CreateObjectContract(objectType);
 
-            if (TYPE_OF_ELEMENT.IsAssignableFrom(objectType))
+            if (TypeCache.Element.IsAssignableFrom(objectType))
             {
                 contract.Properties.Remove(PropertyNames.Label);
             }
-            if (TYPE_OF_EDGEBASE.IsAssignableFrom(objectType))
+
+            if (TypeCache.IEdge.IsAssignableFrom(objectType))
             {
                 contract.Properties.Remove(PropertyNames.InVertexId);
                 contract.Properties.Remove(PropertyNames.InVertexLabel);
                 contract.Properties.Remove(PropertyNames.OutVertexId);
                 contract.Properties.Remove(PropertyNames.OutVertexLabel);
             }
-            else if (TYPE_OF_VERTEXBASE.IsAssignableFrom(objectType))
+            else if (TypeCache.IVertex.IsAssignableFrom(objectType))
             {
                 var edgeProps = new List<JsonProperty>();
                 foreach (var prop in contract.Properties)
                 {
-                    if (TYPE_OF_EDGEBASE.IsAssignableFrom(prop.PropertyType))
+                    if (TypeCache.IEdge.IsAssignableFrom(prop.PropertyType))
                         edgeProps.Add(prop);
                 }
                 edgeProps.ForEach(p => contract.Properties.Remove(p));

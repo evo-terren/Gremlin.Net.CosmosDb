@@ -3,8 +3,9 @@
 namespace GremlinSample.Schema
 {
     [Label("product")]
-    public sealed class ProductVertex : VertexBase
+    public sealed class ProductVertex : IVertex
     {
+        public string Id { get; set; }
         public PersonPurchasedProductEdge People { get; }
     }
 }

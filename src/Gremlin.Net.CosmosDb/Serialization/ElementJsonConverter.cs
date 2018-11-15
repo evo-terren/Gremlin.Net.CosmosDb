@@ -1,7 +1,7 @@
-﻿using Gremlin.Net.CosmosDb.Structure;
+﻿using System;
+using Gremlin.Net.CosmosDb.Structure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -33,7 +33,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Element);
+            return objectType == TypeCache.Element;
         }
 
         /// <summary>

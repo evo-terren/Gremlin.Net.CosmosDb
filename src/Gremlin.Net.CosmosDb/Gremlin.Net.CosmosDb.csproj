@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.0</TargetFrameworks>
     <Authors>Terren Musselwhite</Authors>
     <Company>evo</Company>
     <PackageTags>gremlin cosmos cosmosdb gremlin.net</PackageTags>
@@ -11,13 +11,22 @@
     <Version>0.3.4.0002-rc1</Version>
     <PackageProjectUrl>https://github.com/evo-terren/Gremlin.Net.CosmosDb</PackageProjectUrl>
     <RepositoryUrl>https://github.com/evo-terren/Gremlin.Net.CosmosDb</RepositoryUrl>
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>gremlincosmos.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <DefineConstants>NET_STANDARD</DefineConstants>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>gremlincosmos.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">
+    <DefineConstants>NET_CORE</DefineConstants>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

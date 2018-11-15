@@ -1,13 +1,13 @@
-﻿using Gremlin.Net.Process.Traversal;
+﻿using System.Collections.Generic;
+using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
-using System.Collections.Generic;
 
 namespace Gremlin.Net.CosmosDb
 {
     /// <summary>
-    /// Helper extension methods for <see cref="Gremlin.Net.CosmosDb.ISchemaBoundTraversal{S, E}"/> objects
+    /// Helper extension methods for <see cref="ISchemaBoundTraversal{S, E}"/> objects
     /// </summary>
-    static partial class ISchemaBoundTraversalExtensions
+    public static partial class ISchemaBoundTraversalExtensions
     {
         /// <summary>
         /// Adds the addE step to this <see cref="GraphTraversal{SType, EType}"/>.
@@ -501,7 +501,7 @@ namespace Gremlin.Net.CosmosDb
         /// Adds the in step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
         public static GraphTraversal<S, Vertex> In<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
-            where E : Gremlin.Net.CosmosDb.Structure.VertexBase
+            where E : Structure.IVertex
         {
             return traversal.AsGraphTraversal().In(edgeLabels);
         }
@@ -510,7 +510,7 @@ namespace Gremlin.Net.CosmosDb
         /// Adds the inE step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
         public static GraphTraversal<S, Edge> InE<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
-            where E : Gremlin.Net.CosmosDb.Structure.VertexBase
+            where E : Structure.IVertex
         {
             return traversal.AsGraphTraversal().InE(edgeLabels);
         }
@@ -647,7 +647,7 @@ namespace Gremlin.Net.CosmosDb
         /// Adds the out step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
         public static GraphTraversal<S, Vertex> Out<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
-            where E : Gremlin.Net.CosmosDb.Structure.VertexBase
+            where E : Structure.IEdge
         {
             return traversal.AsGraphTraversal().Out(edgeLabels);
         }
@@ -656,7 +656,7 @@ namespace Gremlin.Net.CosmosDb
         /// Adds the outE step to this <see cref="GraphTraversal{SType, EType}"/>.
         /// </summary>
         public static GraphTraversal<S, Edge> OutE<S, E>(this ISchemaBoundTraversal<S, E> traversal, params string[] edgeLabels)
-            where E : Gremlin.Net.CosmosDb.Structure.VertexBase
+            where E : Structure.IVertex
         {
             return traversal.AsGraphTraversal().OutE(edgeLabels);
         }

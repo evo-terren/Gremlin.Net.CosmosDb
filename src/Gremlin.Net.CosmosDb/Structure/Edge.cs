@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Gremlin.Net.CosmosDb.Structure
 {
@@ -73,7 +74,18 @@ namespace Gremlin.Net.CosmosDb.Structure
         public T ToObject<T>(JsonSerializerSettings serializerSettings)
             where T : class
         {
-            var serializer = JsonSerializer.Create(serializerSettings);
+            return (T)ToObject(typeof(T), serializerSettings);
+        }
+
+        /// <summary>
+        /// Converts this edge to an object of type <paramref name="objectType"/>.
+        /// </summary>
+        /// <param name="objectType">The type of object to convert to</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <returns>Returns the converted object</returns>
+        public object ToObject(Type objectType, JsonSerializerSettings serializerSettings = null)
+        {
+            var serializer = JsonSerializer.Create(serializerSettings ?? new JsonSerializerSettings());
             var properties = new Dictionary<string, object>(Properties)
             {
                 [PropertyNames.Id] = Id,
@@ -84,7 +96,7 @@ namespace Gremlin.Net.CosmosDb.Structure
                 [PropertyNames.OutVertexLabel] = OutVLabel
             };
 
-            return JObject.FromObject(Properties).ToObject<T>(serializer);
+            return JObject.FromObject(Properties).ToObject(objectType, serializer);
         }
 
         /// <summary>
@@ -93,7 +105,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return $"e[{Id}][{OutV}-{Label}->{InV}]";
+            return $"{OutVLabel}-{Label}->{InVLabel}";
         }
     }
 }

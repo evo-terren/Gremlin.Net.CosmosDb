@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Gremlin.Net.CosmosDb.Structure
 {
@@ -25,8 +24,6 @@ namespace Gremlin.Net.CosmosDb.Structure
             set { _properties = value ?? new Dictionary<string, ICollection<VertexPropertyValue>>(); }
         }
 
-        private static readonly Type TYPE_OF_IENUMERABLE = typeof(IEnumerable);
-        private static readonly Type TYPE_OF_STRING = typeof(string);
         private IDictionary<string, ICollection<VertexPropertyValue>> _properties = new Dictionary<string, ICollection<VertexPropertyValue>>();
 
         /// <summary>
@@ -55,11 +52,22 @@ namespace Gremlin.Net.CosmosDb.Structure
         public T ToObject<T>(JsonSerializerSettings serializerSettings)
             where T : class
         {
+            return (T)ToObject(typeof(T), serializerSettings);
+        }
+
+        /// <summary>
+        /// Converts this vertex to an object of type <paramref name="objectType"/>.
+        /// </summary>
+        /// <param name="objectType">The type of object to convert to</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <returns>Returns the converted object</returns>
+        public object ToObject(Type objectType, JsonSerializerSettings serializerSettings = null)
+        {
             //convert the properties to a flattened version, capturing the values under each key
             //the destination object type should determine if we get only the first value or all values (as an array)
             //for each property
-            var serializer = JsonSerializer.Create(serializerSettings);
-            var contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(typeof(T));
+            var serializer = JsonSerializer.Create(serializerSettings ?? new JsonSerializerSettings());
+            var contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(objectType);
             var flattenedProperties = new Dictionary<string, object>
             {
                 [PropertyNames.Id] = Id,
@@ -70,12 +78,12 @@ namespace Gremlin.Net.CosmosDb.Structure
             {
                 var propertyContract = contract.Properties.GetClosestMatchProperty(kvp.Key);
 
-                flattenedProperties[kvp.Key] = propertyContract == null || (TYPE_OF_IENUMERABLE.IsAssignableFrom(propertyContract.PropertyType) && TYPE_OF_STRING != propertyContract.PropertyType)
+                flattenedProperties[kvp.Key] = propertyContract == null || !TypeHelper.IsScalar(propertyContract.PropertyType)
                     ? kvp.Value.Select(pv => pv.Value).ToList()
                     : kvp.Value.FirstOrDefault()?.Value;
             }
 
-            return JObject.FromObject(flattenedProperties).ToObject<T>(serializer);
+            return JObject.FromObject(flattenedProperties).ToObject(objectType, serializer);
         }
 
         /// <summary>
@@ -84,7 +92,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return $"v[{Id}]";
+            return $"{Label}[{Id}]";
         }
     }
 }

@@ -1,15 +1,15 @@
-﻿using Gremlin.Net.CosmosDb.Structure;
+﻿using System;
+using Gremlin.Net.CosmosDb.Structure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
     /// <summary>
-    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.EdgeBase"/> objects
+    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.IEdge"/> objects
     /// </summary>
     /// <seealso cref="Newtonsoft.Json.JsonConverter"/>
-    internal sealed class EdgeBaseJsonConverter : JsonConverter
+    internal sealed class IEdgeJsonConverter : JsonConverter
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can
@@ -33,7 +33,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(EdgeBase).IsAssignableFrom(objectType);
+            return TypeCache.IEdge.IsAssignableFrom(objectType);
         }
 
         /// <summary>

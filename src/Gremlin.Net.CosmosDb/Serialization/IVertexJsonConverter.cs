@@ -1,17 +1,16 @@
-﻿using Gremlin.Net.CosmosDb.Structure;
+﻿using System;
+using Gremlin.Net.CosmosDb.Structure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
     /// <summary>
-    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.VertexBase"/> objects
+    /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.IVertex"/> objects
     /// </summary>
     /// <seealso cref="Newtonsoft.Json.JsonConverter"/>
-    internal sealed class VertexBaseJsonConverter : JsonConverter
+    internal sealed class IVertexJsonConverter : JsonConverter
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can
@@ -26,10 +25,6 @@ namespace Gremlin.Net.CosmosDb.Serialization
             get { return false; }
         }
 
-        private static readonly Type TYPE_OF_IENUMERABLE = typeof(IEnumerable);
-        private static readonly Type TYPE_OF_STRING = typeof(string);
-        private static readonly Type TYPE_OF_VERTEX_BASE = typeof(VertexBase);
-
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -39,7 +34,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return TYPE_OF_VERTEX_BASE.IsAssignableFrom(objectType);
+            return TypeCache.IVertex.IsAssignableFrom(objectType);
         }
 
         /// <summary>
@@ -107,9 +102,9 @@ namespace Gremlin.Net.CosmosDb.Serialization
                     continue;
 
                 var simplifiedValues = SimplifyArrayOfValues(value);
-                converted[key.Key] = TYPE_OF_IENUMERABLE.IsAssignableFrom(propertyContract.PropertyType) && TYPE_OF_STRING != propertyContract.PropertyType
-                    ? simplifiedValues
-                    : simplifiedValues.First;
+                converted[key.Key] = TypeHelper.IsScalar(propertyContract.PropertyType)
+                    ? simplifiedValues.First
+                    : simplifiedValues;
             }
 
             return converted;

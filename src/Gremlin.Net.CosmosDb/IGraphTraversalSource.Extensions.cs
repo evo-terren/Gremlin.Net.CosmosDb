@@ -16,7 +16,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="graphTraversalSource">The graph traversal source.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this IGraphTraversalSource graphTraversalSource)
-            where TVertex : VertexBase
+            where TVertex : IVertex
         {
             var label = LabelNameResolver.GetLabelName(typeof(TVertex));
 
@@ -31,7 +31,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="vertex">The vertex to add.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this IGraphTraversalSource graphTraversalSource, TVertex vertex)
-            where TVertex : VertexBase
+            where TVertex : IVertex
         {
             return AddV(graphTraversalSource, vertex, new JsonSerializerSettings { ContractResolver = new ElementContractResolver() });
         }
@@ -45,7 +45,7 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="serializationSettings">The serialization settings.</param>
         /// <returns>Returns the resulting traversal</returns>
         public static ISchemaBoundTraversal<object, TVertex> AddV<TVertex>(this IGraphTraversalSource graphTraversalSource, TVertex vertex, JsonSerializerSettings serializationSettings)
-            where TVertex : VertexBase
+            where TVertex : IVertex
         {
             var label = LabelNameResolver.GetLabelName(typeof(TVertex));
             var traversal = graphTraversalSource.AddV(label);
