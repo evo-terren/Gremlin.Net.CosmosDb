@@ -14,7 +14,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// The list of Out vertices.
         /// </summary>
-        public List<TOutV> OutV { get; set; }
+        public IList<TOutV> OutV { get; set; }
 
         /// <summary>
         /// The In vertex.

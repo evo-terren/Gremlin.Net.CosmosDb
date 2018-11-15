@@ -23,10 +23,10 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <typeparam name="T">The type to convert to.</typeparam>
         /// <param name="treeConnectors">Custom connectors to use for attaching edges and vertices.</param>
         /// <returns></returns>
-        public T[] ToObject<T>(List<ITreeConnector> treeConnectors = null)
+        public T[] ToObject<T>(IEnumerable<ITreeConnector> treeConnectors = null)
             where T : IVertex
         {
-            var parser = new TreeParser(treeConnectors ?? new List<ITreeConnector>());
+            var parser = new TreeParser(treeConnectors ?? Enumerable.Empty<ITreeConnector>());
 
             var vertices = RootVertexNodes.Select(n => parser.GetVertex(n, typeof(T))).Cast<T>();
 
@@ -42,11 +42,11 @@ namespace Gremlin.Net.CosmosDb.Structure
             private static Type GetEdgeInType(Type e) => e.GetInterfaces().FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == TypeCache.IHasInV).GetGenericArguments()[0];
             private static Type GetEdgeOutType(Type e) => e.GetInterfaces().FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == TypeCache.IHasOutV).GetGenericArguments()[0];
 
-            public TreeParser(List<ITreeConnector> connectors)
+            public TreeParser(IEnumerable<ITreeConnector> connectors)
             {
-                if (!connectors.Exists(c => c is AutoConnector))
+                if (!connectors.Any(c => c is AutoConnector))
                 {
-                    connectors.Add(new AutoConnector());
+                    connectors = connectors.Append(new AutoConnector());
                 }
 
                 _vertexConnectors = connectors.OfType<IVertexConnector>().ToList();

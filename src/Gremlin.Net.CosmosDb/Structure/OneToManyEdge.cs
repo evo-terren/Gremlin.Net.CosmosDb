@@ -19,6 +19,6 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// <summary>
         /// The list of In vertices.
         /// </summary>
-        public List<TInV> InV { get; set; }
+        public IList<TInV> InV { get; set; }
     }
 }
