@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Gremlin.Net.Driver;
+﻿using Gremlin.Net.Driver;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gremlin.Net.CosmosDb.Structure
 {
@@ -12,6 +12,11 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// </summary>
     public class GraphResult
     {
+        /// <summary>
+        /// Represents a unique identifier for the operation. Commonly used for troubleshooting purposes.
+        /// </summary>
+        public string ActivityId => (string)ResultSet.StatusAttributes["x-ms-activity-id"];
+
         /// <summary>
         /// x-ms-cosmosdb-graph-request-charge
         /// </summary>
@@ -28,6 +33,12 @@ namespace Gremlin.Net.CosmosDb.Structure
         public ResultSet<JToken> ResultSet { get; }
 
         /// <summary>
+        /// The number of milliseconds to wait to retry the operation after an initial operation was throttled. This will
+        /// be populated when attribute 'x-ms-status-code' returns 429.
+        /// </summary>
+        public double RetryAfterMs => (double)ResultSet.StatusAttributes["x-ms-retry-after-ms"];
+
+        /// <summary>
         /// The sub-status code of the operation, specific to CosmosDB.
         /// </summary>
         public long StatusCode => (long)ResultSet.StatusAttributes["x-ms-status-code"];
@@ -41,18 +52,6 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// The total request units charged for processing a request.
         /// </summary>
         public double TotalRequestCharge => (double)ResultSet.StatusAttributes["x-ms-total-request-charge"];
-
-        /// <summary>
-        /// The number of milliseconds to wait to retry the operation after an initial operation was
-        /// throttled. This will be populated when attribute 'x-ms-status-code' returns 429.
-        /// </summary>
-        public double RetryAfterMs => (double) ResultSet.StatusAttributes["x-ms-retry-after-ms"];
-
-        /// <summary>
-        /// Represents a unique identifier for the operation. Commonly used for troubleshooting
-        /// purposes.
-        /// </summary>
-        public string ActivityId => (string) ResultSet.StatusAttributes["x-ms-activity-id"];
 
         internal GraphResult(ResultSet<JToken> resultSet)
         {

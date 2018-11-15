@@ -1,11 +1,10 @@
-﻿using System.Reflection;
-using Gremlin.Net.CosmosDb.Structure;
+﻿using Gremlin.Net.CosmosDb.Structure;
+using System.Reflection;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
     /// <summary>
-    /// A connector for <see cref="IEdge"/>.
-    /// Can connect a <see cref="IEdge"/> to a <see cref="IVertex"/>.
+    /// A connector for <see cref="IEdge"/>. Can connect a <see cref="IEdge"/> to a <see cref="IVertex"/>.
     /// </summary>
     public interface IEdgeConnector : ITreeConnector
     {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Gremlin.Net.CosmosDb.Structure;
+﻿using Gremlin.Net.CosmosDb.Structure;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -15,9 +15,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// Creates a <see cref="T:Newtonsoft.Json.Serialization.JsonObjectContract"/> for the given type.
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
-        /// <returns>
-        /// A <see cref="T:Newtonsoft.Json.Serialization.JsonObjectContract"/> for the given type.
-        /// </returns>
+        /// <returns>A <see cref="T:Newtonsoft.Json.Serialization.JsonObjectContract"/> for the given type.</returns>
         /// <exception cref="ArgumentNullException">objectType</exception>
         protected override JsonObjectContract CreateObjectContract(Type objectType)
         {

@@ -5,8 +5,7 @@ using System;
 namespace Gremlin.Net.CosmosDb.Serialization
 {
     /// <summary>
-    /// GraphSON reader that just returns the json token to get around weird implementation choices
-    /// of gremlin .net
+    /// GraphSON reader that just returns the json token to get around weird implementation choices of gremlin .net
     /// </summary>
     /// <seealso cref="Gremlin.Net.Structure.IO.GraphSON.GraphSONReader"/>
     internal sealed class GraphSONJTokenReader : GraphSONReader
@@ -27,10 +26,9 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <param name="token">The token.</param>
         /// <returns>Returns the converted version of the token</returns>
         /// <remarks>
-        /// This is only in place due to how deserialization is handled by the Gremlin.Net code. By
-        /// default json.net assumes local time no matter what the input if you don't specify certain
-        /// settings during deserialization. This code overrides that by assuming universal since
-        /// that's what we're going to use most of the time.
+        /// This is only in place due to how deserialization is handled by the Gremlin.Net code. By default json.net
+        /// assumes local time no matter what the input if you don't specify certain settings during deserialization.
+        /// This code overrides that by assuming universal since that's what we're going to use most of the time.
         /// </remarks>
         private static JToken ConvertDateJson(JToken token)
         {

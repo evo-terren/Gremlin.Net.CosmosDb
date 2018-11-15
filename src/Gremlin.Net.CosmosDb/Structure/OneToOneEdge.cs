@@ -10,13 +10,13 @@
         where TInV : IVertex
     {
         /// <summary>
-        /// The Out vertex.
-        /// </summary>
-        public TOutV OutV { get; set; }
-
-        /// <summary>
         /// The In vertex.
         /// </summary>
         public TInV InV { get; set; }
+
+        /// <summary>
+        /// The Out vertex.
+        /// </summary>
+        public TOutV OutV { get; set; }
     }
 }

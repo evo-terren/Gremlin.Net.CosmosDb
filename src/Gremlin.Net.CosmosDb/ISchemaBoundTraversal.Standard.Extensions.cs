@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Gremlin.Net.Process.Traversal;
+﻿using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
+using System.Collections.Generic;
 
 namespace Gremlin.Net.CosmosDb
 {

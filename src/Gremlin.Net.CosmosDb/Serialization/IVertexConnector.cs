@@ -3,8 +3,7 @@
 namespace Gremlin.Net.CosmosDb.Serialization
 {
     /// <summary>
-    /// A connector for <see cref="IVertex"/>.
-    /// Can connect a <see cref="IVertex"/> to an <see cref="IEdge"/>.
+    /// A connector for <see cref="IVertex"/>. Can connect a <see cref="IVertex"/> to an <see cref="IEdge"/>.
     /// </summary>
     public interface IVertexConnector : ITreeConnector
     {

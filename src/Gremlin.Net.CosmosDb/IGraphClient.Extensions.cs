@@ -1,12 +1,12 @@
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -44,8 +44,7 @@ namespace Gremlin.Net.CosmosDb
         #region QueryAsync
 
         /// <summary>
-        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and
-        /// returns the result
+        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -58,8 +57,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -72,8 +70,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -87,8 +84,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -102,8 +98,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -116,8 +111,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -130,8 +124,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -144,8 +137,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -162,8 +154,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -178,8 +169,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -194,8 +184,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -243,8 +232,7 @@ namespace Gremlin.Net.CosmosDb
         #region QueryFirstAsync
 
         /// <summary>
-        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and
-        /// returns the first result
+        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -257,8 +245,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -271,8 +259,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -286,8 +274,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -301,8 +289,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -315,8 +303,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -329,8 +317,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -343,8 +331,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -358,8 +346,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -374,8 +362,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -390,8 +378,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -409,9 +397,8 @@ namespace Gremlin.Net.CosmosDb
         #region QueryFirstOrDefaultAsync
 
         /// <summary>
-        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and
-        /// returns the first result, or the default value of <typeparamref name="T"/> if no results
-        /// were found
+        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the first result,
+        /// or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -424,9 +411,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="T"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -439,9 +425,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -455,9 +440,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -471,8 +455,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first vertex, or <c>null</c> if no results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first vertex, or <c>null</c> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -485,8 +469,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first edge, or <c>null</c> if no results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first edge, or <c>null</c> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -499,8 +483,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first property, or <c>null</c> if no results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first property, or <c>null</c> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -513,9 +497,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="T"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -529,9 +512,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -546,9 +528,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -563,9 +544,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="T"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -583,8 +563,7 @@ namespace Gremlin.Net.CosmosDb
         #region QuerySingleAsync
 
         /// <summary>
-        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and
-        /// returns the first result
+        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -597,8 +576,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -611,8 +590,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -626,8 +605,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -641,8 +620,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -655,8 +634,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -669,8 +648,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -683,8 +662,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -698,8 +677,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -714,8 +693,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -730,8 +709,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -749,9 +728,8 @@ namespace Gremlin.Net.CosmosDb
         #region QuerySingleOrDefaultAsync
 
         /// <summary>
-        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and
-        /// returns the first result, or the default value of <typeparamref name="T"/> if no results
-        /// were found
+        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the first result,
+        /// or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -764,9 +742,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="T"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -779,9 +756,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -795,9 +771,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -811,8 +786,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first vertex, or <c>null</c> if no results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first vertex, or <c>null</c> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -825,8 +800,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first edge, or <c>null</c> if no results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first edge, or <c>null</c> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -839,8 +814,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first property, or <c>null</c> if no results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first property, or <c>null</c> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -853,9 +828,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="T"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -869,9 +843,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -886,9 +859,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="E"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="E"/> if no results were found
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -903,9 +875,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the first result, or the default value of <typeparamref name="T"/> if no
-        /// results were found
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the
+        /// first result, or the default value of <typeparamref name="T"/> if no results were found
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -923,8 +894,7 @@ namespace Gremlin.Net.CosmosDb
         #region SubmitAsync (Obsolete)
 
         /// <summary>
-        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and
-        /// returns the result
+        /// Submits the given query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -938,8 +908,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -953,8 +922,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -969,8 +937,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -985,8 +952,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -1000,8 +966,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -1015,8 +980,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -1030,8 +994,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>
@@ -1046,8 +1009,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -1063,8 +1025,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="S"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -1080,8 +1041,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/>
-        /// and returns the result
+        /// Submits the given traversal query to the <see cref="Gremlin.Net.CosmosDb.IGraphClient"/> and returns the result
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="graphClient">The graph client.</param>

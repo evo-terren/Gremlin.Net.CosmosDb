@@ -22,8 +22,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the addV step to that traversal.
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and adds the addV step to
+        /// that traversal.
         /// </summary>
         /// <returns>Returns the traversal</returns>
         public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> AddV()
@@ -32,8 +32,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the addV step to that traversal.
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and adds the addV step to
+        /// that traversal.
         /// </summary>
         /// <param name="label">The vertex label</param>
         /// <returns>Returns the traversal</returns>
@@ -43,8 +43,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the addV step to that traversal.
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and adds the addV step to
+        /// that traversal.
         /// </summary>
         /// <param name="vertexLabelTraversal">The vertex label traversal</param>
         /// <returns>Returns the traversal</returns>
@@ -54,8 +54,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the E step to that traversal.
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and adds the E step to
+        /// that traversal.
         /// </summary>
         /// <param name="edgesIds">Unique Identifiers of edges to start the traversal with</param>
         /// <returns>Returns the traversal</returns>
@@ -65,8 +65,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the V step to that traversal.
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and adds the V step to
+        /// that traversal.
         /// </summary>
         /// <returns></returns>
         public GraphTraversal<Gremlin.Net.Structure.Vertex, Gremlin.Net.Structure.Vertex> V()
@@ -75,8 +75,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the V step to that traversal.
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and adds the V step to
+        /// that traversal.
         /// </summary>
         /// <param name="vertexIds">Unique Identifiers of vertices to start the traversal with</param>
         /// <returns></returns>
@@ -86,8 +86,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and
-        /// adds the V step to that traversal.
+        /// Spawns a <see cref="GraphTraversal{SType, EType}"/> off this graph traversal source and adds the V step to
+        /// that traversal.
         /// </summary>
         /// <param name="pairs">Unique Identifiers of vertices to start the traversal with</param>
         /// <returns></returns>

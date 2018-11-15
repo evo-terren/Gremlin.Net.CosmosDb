@@ -8,47 +8,6 @@ namespace Gremlin.Net.CosmosDb.Serialization
 {
     public class TreeTests
     {
-        [Fact]
-        private void TreeJsonConverter_deserializes_a_tree_that_includes_edges()
-        {
-            var settings = new JsonSerializerSettings
-            {
-                Converters = new JsonConverter[]
-                {
-                    new TreeJsonConverter(),
-                    new IEdgeJsonConverter(),
-                    new ElementJsonConverter(),
-                    new IVertexJsonConverter(),
-                },
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateParseHandling = DateParseHandling.DateTimeOffset,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc
-            };
-
-            var tree = JsonConvert.DeserializeObject<Tree>(TEST_TREE, settings);
-
-            tree.RootVertexNodes.Should().NotBeNullOrEmpty();
-            tree.RootVertexNodes[0].Vertex.Properties.Should().ContainKeys("firstName", "lastName");
-
-            tree.RootVertexNodes[0].EdgeNodes.Should().NotBeNullOrEmpty();
-            tree.RootVertexNodes[0].EdgeNodes[0].Edge.Label.Should().Be("purchased");
-
-            tree.RootVertexNodes[0].EdgeNodes[0].VertexNode.Vertex.Should().NotBeNull();
-            tree.RootVertexNodes[0].EdgeNodes[0].VertexNode.Vertex.Label.Should().Be("product");
-            tree.RootVertexNodes[0].EdgeNodes[0].VertexNode.Vertex.Properties.Should().ContainKeys("name", "price");
-
-            var test = tree.ToObject<Person>();
-
-            test.Length.Should().Be(1);
-            test[0].FirstName.Should().Be("John");
-            test[0].LastName.Should().Be("Doe");
-
-            test[0].Purchased.Should().NotBeNull();
-            test[0].Purchased.InV.Should().ContainItemsAssignableTo<Product>();
-            test[0].Purchased.InV[0].Name.Should().Be("gold");
-            test[0].Purchased.InV[1].Name.Should().Be("silver");
-        }
-
         private const string TEST_TREE = @"
 {
     ""8d168895-d073-437c-9d30-3cac28e51a8e"": {
@@ -145,5 +104,46 @@ namespace Gremlin.Net.CosmosDb.Serialization
         }
     }
 }";
+
+        [Fact]
+        private void TreeJsonConverter_deserializes_a_tree_that_includes_edges()
+        {
+            var settings = new JsonSerializerSettings
+            {
+                Converters = new JsonConverter[]
+                {
+                    new TreeJsonConverter(),
+                    new IEdgeJsonConverter(),
+                    new ElementJsonConverter(),
+                    new IVertexJsonConverter(),
+                },
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                DateParseHandling = DateParseHandling.DateTimeOffset,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc
+            };
+
+            var tree = JsonConvert.DeserializeObject<Tree>(TEST_TREE, settings);
+
+            tree.RootVertexNodes.Should().NotBeNullOrEmpty();
+            tree.RootVertexNodes[0].Vertex.Properties.Should().ContainKeys("firstName", "lastName");
+
+            tree.RootVertexNodes[0].EdgeNodes.Should().NotBeNullOrEmpty();
+            tree.RootVertexNodes[0].EdgeNodes[0].Edge.Label.Should().Be("purchased");
+
+            tree.RootVertexNodes[0].EdgeNodes[0].VertexNode.Vertex.Should().NotBeNull();
+            tree.RootVertexNodes[0].EdgeNodes[0].VertexNode.Vertex.Label.Should().Be("product");
+            tree.RootVertexNodes[0].EdgeNodes[0].VertexNode.Vertex.Properties.Should().ContainKeys("name", "price");
+
+            var test = tree.ToObject<Person>();
+
+            test.Length.Should().Be(1);
+            test[0].FirstName.Should().Be("John");
+            test[0].LastName.Should().Be("Doe");
+
+            test[0].Purchased.Should().NotBeNull();
+            test[0].Purchased.InV.Should().ContainItemsAssignableTo<Product>();
+            test[0].Purchased.InV[0].Name.Should().Be("gold");
+            test[0].Purchased.InV[1].Name.Should().Be("silver");
+        }
     }
 }

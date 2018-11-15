@@ -12,13 +12,19 @@ namespace Gremlin.Net.CosmosDb.Structure
         where TInV : IVertex
     {
         /// <summary>
-        /// The list of Out vertices.
-        /// </summary>
-        public IList<TOutV> OutV { get; set; }
-
-        /// <summary>
         /// The In vertex.
         /// </summary>
         public TInV InV { get; set; }
+
+        /// <summary>
+        /// The list of Out vertices.
+        /// </summary>
+        public IList<TOutV> OutV
+        {
+            get { return _outV ?? new TOutV[0]; }
+            set { _outV = value; }
+        }
+
+        private IList<TOutV> _outV;
     }
 }

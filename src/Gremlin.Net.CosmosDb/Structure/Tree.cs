@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Gremlin.Net.CosmosDb.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Gremlin.Net.CosmosDb.Serialization;
 
 namespace Gremlin.Net.CosmosDb.Structure
 {
     /// <summary>
-    /// A parsed traversal result in tree representation.
-    /// E.g. "g.V().hasLabel('person').outE('purchased').inV().tree()"
+    /// A parsed traversal result in tree representation. E.g. "g.V().hasLabel('person').outE('purchased').inV().tree()"
     /// </summary>
     public class Tree
     {
@@ -35,12 +34,8 @@ namespace Gremlin.Net.CosmosDb.Structure
 
         private class TreeParser
         {
-            private readonly List<IVertexConnector> _vertexConnectors;
             private readonly List<IEdgeConnector> _edgeConnectors;
-
-            private static PropertyInfo[] GetEdgeProps(Type v) => v.GetProperties().Where(p => TypeCache.IEdge.IsAssignableFrom(p.PropertyType)).ToArray();
-            private static Type GetEdgeInType(Type e) => e.GetInterfaces().FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == TypeCache.IHasInV).GetGenericArguments()[0];
-            private static Type GetEdgeOutType(Type e) => e.GetInterfaces().FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == TypeCache.IHasOutV).GetGenericArguments()[0];
+            private readonly List<IVertexConnector> _vertexConnectors;
 
             public TreeParser(IEnumerable<ITreeConnector> connectors)
             {
@@ -51,6 +46,22 @@ namespace Gremlin.Net.CosmosDb.Structure
 
                 _vertexConnectors = connectors.OfType<IVertexConnector>().ToList();
                 _edgeConnectors = connectors.OfType<IEdgeConnector>().ToList();
+            }
+
+            public IEdge GetEdge(TreeEdgeNode edgeNode, Type edgeType, bool directionIsOut)
+            {
+                var edge = (IEdge)edgeNode.Edge.ToObject(edgeType);
+
+                var nextVertexType = directionIsOut ? GetEdgeInType(edgeType) : GetEdgeOutType(edgeType);
+
+                var vertex = GetVertex(edgeNode.VertexNode, nextVertexType);
+
+                foreach (var connector in _vertexConnectors)
+                {
+                    if (connector.ConnectVertex(edge, vertex)) continue;
+                }
+
+                return edge;
             }
 
             public IVertex GetVertex(TreeVertexNode vertexNode, Type vertexType)
@@ -86,21 +97,11 @@ namespace Gremlin.Net.CosmosDb.Structure
                 return vertexObject;
             }
 
-            public IEdge GetEdge(TreeEdgeNode edgeNode, Type edgeType, bool directionIsOut)
-            {
-                var edge = (IEdge)edgeNode.Edge.ToObject(edgeType);
+            private static Type GetEdgeInType(Type e) => e.GetInterfaces().FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == TypeCache.IHasInV).GetGenericArguments()[0];
 
-                var nextVertexType = directionIsOut ? GetEdgeInType(edgeType) : GetEdgeOutType(edgeType);
+            private static Type GetEdgeOutType(Type e) => e.GetInterfaces().FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == TypeCache.IHasOutV).GetGenericArguments()[0];
 
-                var vertex = GetVertex(edgeNode.VertexNode, nextVertexType);
-
-                foreach (var connector in _vertexConnectors)
-                {
-                    if (connector.ConnectVertex(edge, vertex)) continue;
-                }
-
-                return edge;
-            }
+            private static PropertyInfo[] GetEdgeProps(Type v) => v.GetProperties().Where(p => TypeCache.IEdge.IsAssignableFrom(p.PropertyType)).ToArray();
         }
     }
 }

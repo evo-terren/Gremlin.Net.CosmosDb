@@ -1,9 +1,9 @@
-﻿using System.Globalization;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Gremlin.Net.CosmosDb.Schema;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 using Xunit;
 
 namespace Gremlin.Net.CosmosDb.Serialization

@@ -10,12 +10,11 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// </summary>
     internal static class LabelNameResolver
     {
-        private static readonly ConcurrentDictionary<Type, string> _typeLabelLookup = new ConcurrentDictionary<Type, string>();
         private static readonly ConcurrentDictionary<PropertyInfo, string> _propertyLabelLookup = new ConcurrentDictionary<PropertyInfo, string>();
+        private static readonly ConcurrentDictionary<Type, string> _typeLabelLookup = new ConcurrentDictionary<Type, string>();
 
         /// <summary>
-        /// Gets the name of the label.
-        /// Defaults to the name of the type.
+        /// Gets the name of the label. Defaults to the name of the type.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>Returns the name</returns>
@@ -30,8 +29,7 @@ namespace Gremlin.Net.CosmosDb.Structure
         }
 
         /// <summary>
-        /// Gets the name of the label for a property.
-        /// Defaults to the name of the property.
+        /// Gets the name of the label for a property. Defaults to the name of the property.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>Returns the label name.</returns>

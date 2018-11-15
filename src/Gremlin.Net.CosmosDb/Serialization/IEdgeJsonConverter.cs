@@ -1,7 +1,7 @@
-﻿using System;
-using Gremlin.Net.CosmosDb.Structure;
+﻿using Gremlin.Net.CosmosDb.Structure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -12,13 +12,9 @@ namespace Gremlin.Net.CosmosDb.Serialization
     internal sealed class IEdgeJsonConverter : JsonConverter
     {
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can
-        /// write JSON.
+        /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON;
-        /// otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON; otherwise, <c>false</c>.</value>
         public override bool CanWrite
         {
             get { return false; }
@@ -28,9 +24,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// Determines whether this instance can convert the specified object type.
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
-        /// <returns>
-        /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.</returns>
         public override bool CanConvert(Type objectType)
         {
             return TypeCache.IEdge.IsAssignableFrom(objectType);

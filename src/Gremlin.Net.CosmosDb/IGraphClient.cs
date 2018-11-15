@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Gremlin.Net.CosmosDb.Structure;
+using System;
 using System.Threading.Tasks;
-using Gremlin.Net.CosmosDb.Structure;
 
 namespace Gremlin.Net.CosmosDb
 {

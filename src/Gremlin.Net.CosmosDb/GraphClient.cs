@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Gremlin.Net.CosmosDb.Serialization;
+﻿using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Driver;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Threading.Tasks;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -52,8 +52,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting
-        /// unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -92,8 +91,7 @@ namespace Gremlin.Net.CosmosDb
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        /// unmanaged resources.
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
         /// </param>
         protected void Dispose(bool disposing)
         {

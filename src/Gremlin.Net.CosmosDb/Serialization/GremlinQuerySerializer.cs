@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Gremlin.Net.CosmosDb.Structure;
+using Gremlin.Net.Process.Traversal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Gremlin.Net.CosmosDb.Structure;
-using Gremlin.Net.Process.Traversal;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {

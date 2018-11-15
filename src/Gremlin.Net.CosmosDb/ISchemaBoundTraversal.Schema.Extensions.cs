@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Gremlin.Net.CosmosDb.Structure;
+using Gremlin.Net.Process.Traversal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Gremlin.Net.CosmosDb.Structure;
-using Gremlin.Net.Process.Traversal;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -15,8 +15,7 @@ namespace Gremlin.Net.CosmosDb
     public static partial class ISchemaBoundTraversalExtensions
     {
         /// <summary>
-        /// Adds the "has()" step to the traversal, removing traversers that do not have a value
-        /// defined for the given property
+        /// Adds the "has()" step to the traversal, removing traversers that do not have a value defined for the given property
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TElement">The type of the element.</typeparam>
@@ -32,8 +31,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "has()" step to the traversal, removing traversers that do not have a specific
-        /// value defined for the given property
+        /// Adds the "has()" step to the traversal, removing traversers that do not have a specific value defined for the
+        /// given property
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TElement">The type of the element.</typeparam>
@@ -50,8 +49,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "has()" step to the traversal, removing traversers that do not satisfy the given
-        /// traversal for the given property
+        /// Adds the "has()" step to the traversal, removing traversers that do not satisfy the given traversal for the
+        /// given property
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TElement">The type of the element.</typeparam>
@@ -68,8 +67,8 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "has()" step to the traversal, removing traversers that do not satisfy the given
-        /// predicate for the property selected
+        /// Adds the "has()" step to the traversal, removing traversers that do not satisfy the given predicate for the
+        /// property selected
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TElement">The type of the element.</typeparam>
@@ -86,8 +85,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "hasNot()" step to the traversal, removing traversers that define a value for
-        /// the selected property
+        /// Adds the "hasNot()" step to the traversal, removing traversers that define a value for the selected property
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TElement">The type of the element.</typeparam>
@@ -103,8 +101,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "in()" step to the traversal, returning all inbound adjacent vertices with the
-        /// given label
+        /// Adds the "in()" step to the traversal, returning all inbound adjacent vertices with the given label
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
@@ -122,8 +119,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "in()" step to the traversal, returning all inbound adjacent vertices with the
-        /// given label
+        /// Adds the "in()" step to the traversal, returning all inbound adjacent vertices with the given label
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
@@ -143,8 +139,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "inE()" step to the traversal, returning all inbound adjacent edges with the
-        /// given label
+        /// Adds the "inE()" step to the traversal, returning all inbound adjacent edges with the given label
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
@@ -162,8 +157,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "inE()" step to the traversal, returning all inbound adjacent edges with the
-        /// given labels
+        /// Adds the "inE()" step to the traversal, returning all inbound adjacent edges with the given labels
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
@@ -196,8 +190,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "out()" step to the traversal, returning all adjacent vertices connected via
-        /// outbount edges
+        /// Adds the "out()" step to the traversal, returning all adjacent vertices connected via outbount edges
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
@@ -215,8 +208,7 @@ namespace Gremlin.Net.CosmosDb
         }
 
         /// <summary>
-        /// Adds the "out()" step to the traversal, returning all adjacent vertices connected via
-        /// outbount edges
+        /// Adds the "out()" step to the traversal, returning all adjacent vertices connected via outbount edges
         /// </summary>
         /// <typeparam name="S">The source of the traversal</typeparam>
         /// <typeparam name="TVertex">The type of the vertex.</typeparam>
