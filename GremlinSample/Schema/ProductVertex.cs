@@ -7,5 +7,6 @@ namespace GremlinSample.Schema
     {
         public string Id { get; set; }
         public PersonPurchasedProductEdge People { get; }
+        public StorePurchasedProductEdge Store { get; }
     }
 }
