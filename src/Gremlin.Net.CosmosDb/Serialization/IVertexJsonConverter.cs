@@ -1,8 +1,9 @@
-﻿using Gremlin.Net.CosmosDb.Structure;
+﻿using System;
+using System.Linq;
+using Gremlin.Net.CosmosDb.Structure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using System;
 
 namespace Gremlin.Net.CosmosDb.Serialization
 {
@@ -56,6 +57,12 @@ namespace Gremlin.Net.CosmosDb.Serialization
             {
                 var vertexContract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(objectType);
                 var convertedProperties = ConvertPropertiesObject(propertiesObj, vertexContract);
+
+                foreach (var prop in objectType.GetProperties().Where(x => !x.PropertyType.Module.ScopeName.ToLower().StartsWith("system") && convertedProperties.ContainsKey(x.Name)))
+                {
+                    convertedProperties[prop.Name] = JObject.Parse(convertedProperties.GetValue(prop.Name).ToString());
+                }
+
                 serializer.Populate(convertedProperties.CreateReader(), vertex);
             }
 

@@ -8,7 +8,14 @@ namespace GremlinSample.Schema
         public int[] Ages { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
+        public PersonLink Link { get; set; }
 
         public PersonPurchasedProductEdge Purchases { get; }
+    }
+
+    public class PersonLink
+    {
+        public int Reference { get; set; }
+        public string Name { get; set; }
     }
 }
