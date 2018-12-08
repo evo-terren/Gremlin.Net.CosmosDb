@@ -203,8 +203,9 @@ namespace Gremlin.Net.CosmosDb
             where TinVertex : IVertex
         {
             var labelName = GetLabelName(typeof(TVertex), edgeSelector);
+            var inVertexLabel = LabelNameResolver.GetLabelName(typeof(TinVertex));
 
-            return traversal.AsGraphTraversal().Out(labelName).AsSchemaBound<S, TinVertex>();
+            return traversal.AsGraphTraversal().Out(labelName).HasLabel(inVertexLabel).AsSchemaBound<S, TinVertex>();
         }
 
         /// <summary>
