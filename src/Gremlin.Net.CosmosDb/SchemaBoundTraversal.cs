@@ -8,7 +8,7 @@ namespace Gremlin.Net.CosmosDb
     /// </summary>
     /// <typeparam name="S">The source of the traversal</typeparam>
     /// <typeparam name="E">The type of the current element</typeparam>
-    internal sealed class SchemaBoundTraversal<S, E> : ISchemaBoundTraversal<S, E>
+    public class SchemaBoundTraversal<S, E> : ISchemaBoundTraversal<S, E>
     {
         /// <summary>
         /// Gets the bytecode.

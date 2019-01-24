@@ -14,7 +14,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
     /// Helper gremlin query serializer for <see cref="Gremlin.Net.Process.Traversal.ITraversal"/> objects
     /// </summary>
     /// <seealso cref="System.IDisposable"/>
-    internal sealed class GremlinQuerySerializer : IDisposable
+    public class GremlinQuerySerializer : IDisposable
     {
         private static readonly JsonSerializerSettings DEFAULT_SERIALIZER_SETTINGS = new JsonSerializerSettings
         {

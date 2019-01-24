@@ -566,7 +566,7 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="E">The type of the current element</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the traversal</returns>
-        internal static GraphTraversal<S, E> AsGraphTraversal<S, E>(this ITraversal traversal)
+        public static GraphTraversal<S, E> AsGraphTraversal<S, E>(this ITraversal traversal)
         {
             return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
         }
@@ -576,7 +576,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the traversal</returns>
-        internal static GraphTraversal<object, object> AsGraphTraversal(this ITraversal traversal)
+        public static GraphTraversal<object, object> AsGraphTraversal(this ITraversal traversal)
         {
             return new GraphTraversal<object, object>(new ITraversalStrategy[0], traversal.Bytecode);
         }
@@ -588,7 +588,7 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="E">The element type of the current node</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the traversal</returns>
-        internal static ISchemaBoundTraversal<S, E> AsSchemaBound<S, E>(this ITraversal traversal)
+        public static ISchemaBoundTraversal<S, E> AsSchemaBound<S, E>(this ITraversal traversal)
         {
             return new SchemaBoundTraversal<S, E>(traversal.Bytecode);
         }
@@ -600,7 +600,7 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="E">The element type of the current node</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the traversal</returns>
-        internal static ISchemaBoundTraversal<S, E> AsSchemaBound<S, E>(this ITraversal<S, E> traversal)
+        public static ISchemaBoundTraversal<S, E> AsSchemaBound<S, E>(this ITraversal<S, E> traversal)
         {
             return new SchemaBoundTraversal<S, E>(traversal.Bytecode);
         }

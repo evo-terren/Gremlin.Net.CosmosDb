@@ -958,7 +958,7 @@ namespace Gremlin.Net.CosmosDb
         /// <typeparam name="E">The type of the current element</typeparam>
         /// <param name="traversal">The traversal.</param>
         /// <returns>Returns the traversal</returns>
-        internal static GraphTraversal<S, E> AsGraphTraversal<S, E>(this ISchemaBoundTraversal<S, E> traversal)
+        public static GraphTraversal<S, E> AsGraphTraversal<S, E>(this ISchemaBoundTraversal<S, E> traversal)
         {
             return new GraphTraversal<S, E>(new ITraversalStrategy[0], traversal.Bytecode);
         }

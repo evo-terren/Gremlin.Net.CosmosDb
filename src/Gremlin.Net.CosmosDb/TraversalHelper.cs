@@ -7,7 +7,7 @@ namespace Gremlin.Net.CosmosDb
     /// <summary>
     /// Helper methods for common traversal recipes
     /// </summary>
-    internal static class TraversalHelper
+    public static class TraversalHelper
     {
         /// <summary>
         /// Adds the property steps for all properties defined by the given object.

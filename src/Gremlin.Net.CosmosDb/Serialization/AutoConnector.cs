@@ -13,7 +13,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
     /// <see cref="CanConnectEdge(IVertex, IEdge, PropertyInfo)"/> and <see cref="CanConnectVertex(IEdge, IVertex)"/>
     /// both simply return true.
     /// </summary>
-    internal class AutoConnector : IVertexConnector, IEdgeConnector
+    public class AutoConnector : IVertexConnector, IEdgeConnector
     {
         public bool CanConnectEdge(IVertex vertex, IEdge edge, PropertyInfo property) => true;
 

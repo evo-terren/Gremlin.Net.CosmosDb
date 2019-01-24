@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GremlinSample
 {
-    internal class Program
+    public class Program
     {
-        internal static async Task Main()
+        public static async Task Main()
         {
             using (var graphClient = new GraphClient("your-gremlin-host-name", "your-db-name", "your-graph-name", "your-access-key"))
             {

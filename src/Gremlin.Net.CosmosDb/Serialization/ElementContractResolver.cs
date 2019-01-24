@@ -9,7 +9,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
     /// Json.net contract resolver that helps with the resolution of contracts for known element types
     /// </summary>
     /// <seealso cref="Newtonsoft.Json.Serialization.DefaultContractResolver"/>
-    internal sealed class ElementContractResolver : DefaultContractResolver
+    public class ElementContractResolver : DefaultContractResolver
     {
         /// <summary>
         /// Creates a <see cref="T:Newtonsoft.Json.Serialization.JsonObjectContract"/> for the given type.

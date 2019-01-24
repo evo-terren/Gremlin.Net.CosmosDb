@@ -10,7 +10,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
     /// Json.Net converter for <see cref="Gremlin.Net.CosmosDb.Structure.IVertex"/> objects
     /// </summary>
     /// <seealso cref="Newtonsoft.Json.JsonConverter"/>
-    internal sealed class IVertexJsonConverter : JsonConverter
+    public class IVertexJsonConverter : JsonConverter
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON.

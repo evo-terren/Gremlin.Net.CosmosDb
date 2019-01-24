@@ -2,7 +2,7 @@
 
 namespace Gremlin.Net.CosmosDb.Structure
 {
-    internal class TreeVertexIntermediateNode : Dictionary<string, TreeVertexNode>
+    public class TreeVertexIntermediateNode : Dictionary<string, TreeVertexNode>
     {
     }
 }

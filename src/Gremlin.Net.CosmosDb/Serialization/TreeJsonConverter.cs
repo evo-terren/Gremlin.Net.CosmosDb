@@ -10,7 +10,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
     /// <summary>
     /// Used for converting the result of a tree() traversal into the <see cref="Tree"/> data structure.
     /// </summary>
-    internal class TreeJsonConverter : JsonConverter
+    public class TreeJsonConverter : JsonConverter
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON.

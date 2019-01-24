@@ -8,7 +8,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
     /// GraphSON reader that just returns the json token to get around weird implementation choices of gremlin .net
     /// </summary>
     /// <seealso cref="Gremlin.Net.Structure.IO.GraphSON.GraphSONReader"/>
-    internal sealed class GraphSONJTokenReader : GraphSONReader
+    public class GraphSONJTokenReader : GraphSONReader
     {
         /// <summary>
         /// Deserializes GraphSON to an object.

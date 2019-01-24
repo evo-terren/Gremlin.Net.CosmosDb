@@ -8,7 +8,7 @@ namespace Gremlin.Net.CosmosDb.Structure
     /// <summary>
     /// Helper class that resolves label names for elements
     /// </summary>
-    internal static class LabelNameResolver
+    public static class LabelNameResolver
     {
         private static readonly ConcurrentDictionary<PropertyInfo, string> _propertyLabelLookup = new ConcurrentDictionary<PropertyInfo, string>();
         private static readonly ConcurrentDictionary<Type, string> _typeLabelLookup = new ConcurrentDictionary<Type, string>();

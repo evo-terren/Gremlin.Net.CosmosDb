@@ -3,7 +3,7 @@
     /// <summary>
     /// Definition of all known json property names for graph objects
     /// </summary>
-    internal static class PropertyNames
+    public static class PropertyNames
     {
         /// <summary>
         /// The id property
