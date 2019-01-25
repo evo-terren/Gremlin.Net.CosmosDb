@@ -33,7 +33,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
 		private void GremlinQuerySerializer()
 		{
 			//	TODO: Need to mock
-			var server = new GremlinServer("lcu-prd.gremlin.cosmosdb.azure.com", 443, true, "dbs/Registry/colls/Enterprises", "sPIS6qJqJsCGc7OUpd9JKABNIXa3YnC1HkJdcr9N7sJlfUyDsHkxhMxYukT9EtXubgNBZhqlqReJ99WYo4iiPg==");
+			var server = new GremlinServer();
 
 			var client = new GremlinClient(server);
 
