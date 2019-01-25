@@ -80,6 +80,8 @@ namespace Gremlin.Net.CosmosDb.Serialization
 			{
 				if (!first)
 					_writer.Write('.');
+				else
+					_writer.Write("g.");
 
 				_writer.Write(instr.OperatorName);
 
@@ -90,6 +92,8 @@ namespace Gremlin.Net.CosmosDb.Serialization
 			{
 				if (!first)
 					_writer.Write('.');
+				else
+					_writer.Write("g.");
 
 				Serialize(instr);
 
@@ -139,9 +143,6 @@ namespace Gremlin.Net.CosmosDb.Serialization
 		/// <param name="instruction">The instruction.</param>
 		private void Serialize(Instruction instruction)
 		{
-			if (instruction.OperatorName == "V")
-				_writer.Write("g.");
-
 			_writer.Write(instruction.OperatorName);
 			_writer.Write('(');
 			SerializeListWithCommas(instruction.Arguments);
