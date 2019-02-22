@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm i",
+      "type": "npm",
+      "script": "install",
+      "auto": true
+    }
+  ]
+}
