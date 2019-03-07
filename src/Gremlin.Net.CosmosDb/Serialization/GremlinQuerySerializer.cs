@@ -30,6 +30,9 @@ namespace Gremlin.Net.CosmosDb.Serialization
             DateTimeZoneHandling = DateTimeZoneHandling.Utc
         };
 
+        private static readonly string[] INSTRUCTIONS_REQUIRING_DOUBLE_UNDERSCORES_FOR_ANONYMOUS
+            = new[] { "in", "not", "V" };
+
         private readonly JsonSerializerSettings _serializerSettings;
         private readonly TextWriter _writer;
 
@@ -63,10 +66,21 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// <exception cref="ArgumentNullException">traversal</exception>
         public void Serialize(ITraversal traversal)
         {
+            Serialize(traversal, startAnonTraversal: false);
+        }
+
+        /// <summary>
+        /// Serializes the specified traversal.
+        /// </summary>
+        /// <param name="traversal">The traversal.</param>
+        /// <param name="startAnonTraversal">true indicates that we're starting an anonymous traversal</param>
+        /// <exception cref="ArgumentNullException">traversal</exception>
+        private void Serialize(ITraversal traversal, bool startAnonTraversal)
+        {
             if (traversal == null)
                 throw new ArgumentNullException(nameof(traversal));
 
-            Serialize(traversal.Bytecode);
+            Serialize(traversal.Bytecode, startAnonTraversal);
         }
 
         /// <summary>
@@ -74,6 +88,16 @@ namespace Gremlin.Net.CosmosDb.Serialization
         /// </summary>
         /// <param name="bytecode">The bytecode.</param>
         private void Serialize(Bytecode bytecode)
+        {
+            Serialize(bytecode, startAnonTraversal: false);
+        }
+
+        /// <summary>
+        /// Serializes the specified bytecode.
+        /// </summary>
+        /// <param name="bytecode">The bytecode.</param>
+        /// <param name="startAnonTraversal">true indicates that we're starting an anonymous traversal</param>
+        private void Serialize(Bytecode bytecode, bool startAnonTraversal)
         {
             var first = true;
             foreach (var instr in bytecode.SourceInstructions)
@@ -84,16 +108,25 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 _writer.Write(instr.OperatorName);
 
                 first = false;
+                startAnonTraversal = false;
             }
 
             foreach (var instr in bytecode.StepInstructions)
             {
                 if (!first)
+                {
                     _writer.Write('.');
+                }
+                else if (startAnonTraversal
+                    && INSTRUCTIONS_REQUIRING_DOUBLE_UNDERSCORES_FOR_ANONYMOUS.Contains(instr.OperatorName))
+                {
+                    _writer.Write("__.");
+                }
 
                 Serialize(instr);
 
                 first = false;
+                startAnonTraversal = false;
             }
         }
 
@@ -167,6 +200,8 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 var predicateValues = predicate.Value as IEnumerable<dynamic>;
                 if (predicateValues?.Any() ?? false)
                     SerializeListWithCommas(predicateValues);
+                else if (predicate.Value is ITraversal traversal)
+                    Serialize(traversal, startAnonTraversal: true);
                 else
                     Serialize(predicate.Value);
             }
@@ -223,7 +258,10 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 if (addComma)
                     _writer.Write(',');
 
-                Serialize(value);
+                if (value is ITraversal traversal)
+                    Serialize(traversal, startAnonTraversal: true);
+                else
+                    Serialize(value);
 
                 addComma = true;
             }
