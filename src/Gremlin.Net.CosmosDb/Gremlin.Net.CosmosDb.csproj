@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gremlin.Net" Version="3.4.0" />
+    <PackageReference Include="Gremlin.Net" Version="3.4.0-rc2" />
   </ItemGroup>
 
 </Project>
