@@ -240,7 +240,7 @@ namespace Gremlin.Net.CosmosDb
             where TVertex : IVertex
             where TEdge : IHasOutV<TVertex>
         {
-            var labelName = GetLabelName(typeof(TEdge), edgeSelector);
+            var labelName = GetLabelName(typeof(TVertex), edgeSelector);
 
             return traversal.AsGraphTraversal().OutE(labelName).AsSchemaBound<S, TEdge>();
         }
