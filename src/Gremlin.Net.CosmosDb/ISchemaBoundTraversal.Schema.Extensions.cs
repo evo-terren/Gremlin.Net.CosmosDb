@@ -435,7 +435,7 @@ namespace Gremlin.Net.CosmosDb
             var jsonProperty = propInfo.GetCustomAttributes(typeof(Newtonsoft.Json.JsonPropertyAttribute), false).OfType<Newtonsoft.Json.JsonPropertyAttribute>().FirstOrDefault();
             if (jsonProperty != null)
             {
-              if (jsonProperty.PropertyName != null && jsonProperty.PropertyName != "")
+              if (!String.IsNullOrWhiteSpace(jsonProperty.PropertyName))
                 return jsonProperty.PropertyName;
             }
 
