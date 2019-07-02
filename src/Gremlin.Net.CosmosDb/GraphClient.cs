@@ -43,6 +43,7 @@ namespace Gremlin.Net.CosmosDb
         /// <exception cref="ArgumentNullException">gremlinClient</exception>
         internal GraphClient(IGremlinClient gremlinClient)
         {
+            _graphSONReader = new GraphSONJTokenReader();
             _gremlinClient = gremlinClient ?? throw new ArgumentNullException(nameof(gremlinClient));
         }
 
