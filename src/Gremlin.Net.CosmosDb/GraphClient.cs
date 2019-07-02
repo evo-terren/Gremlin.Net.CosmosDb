@@ -1,9 +1,9 @@
-﻿using Gremlin.Net.CosmosDb.Serialization;
+﻿using System;
+using System.Threading.Tasks;
+using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Driver;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Threading.Tasks;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -25,9 +25,10 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="databaseName">Name of the database (case-sensitive).</param>
         /// <param name="graphName">Name of the graph.</param>
         /// <param name="accessKey">The access key.</param>
-        public GraphClient(string gremlinHostname, string databaseName, string graphName, string accessKey)
+        public GraphClient(string gremlinHostname, string databaseName, string graphName, string accessKey,
+            int port = 443, bool useSSL = true)
         {
-            var server = new GremlinServer(gremlinHostname, 443, true, $"/dbs/{databaseName}/colls/{graphName}", accessKey);
+            var server = new GremlinServer(gremlinHostname, port, useSSL, $"/dbs/{databaseName}/colls/{graphName}", accessKey);
 
             _gremlinClient = new GremlinClient(server, new GraphSONJTokenReader(), mimeType: GremlinClient.GraphSON2MimeType);
         }
