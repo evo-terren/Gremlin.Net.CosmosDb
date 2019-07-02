@@ -1,9 +1,11 @@
-﻿using Gremlin.Net.CosmosDb.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Gremlin.Net.CosmosDb.Serialization;
 using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Driver;
+using Gremlin.Net.Structure.IO.GraphSON;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Threading.Tasks;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -15,6 +17,7 @@ namespace Gremlin.Net.CosmosDb
     public class GraphClient : IGraphClient, IDisposable
     {
         private readonly IGremlinClient _gremlinClient;
+        private readonly GraphSONReader _graphSONReader;
 
         private bool disposedValue = false;
 
@@ -29,7 +32,8 @@ namespace Gremlin.Net.CosmosDb
         {
             var server = new GremlinServer(gremlinHostname, 443, true, $"/dbs/{databaseName}/colls/{graphName}", accessKey);
 
-            _gremlinClient = new GremlinClient(server, new GraphSONJTokenReader(), mimeType: GremlinClient.GraphSON2MimeType);
+            _graphSONReader = new GraphSONJTokenReader();
+            _gremlinClient = new GremlinClient(server, _graphSONReader, mimeType: GremlinClient.GraphSON2MimeType);
         }
 
         /// <summary>
@@ -70,9 +74,22 @@ namespace Gremlin.Net.CosmosDb
             if (gremlinQuery == null)
                 throw new ArgumentNullException(nameof(gremlinQuery));
 
-            var resultSet = await _gremlinClient.SubmitAsync<JToken>(gremlinQuery);
+            var rawResultSet = await _gremlinClient.SubmitAsync<JToken>(gremlinQuery);
 
-            return new GraphResult(resultSet);
+            // Because SubmitAsync() above handles JToken differently from all other types, we
+            // have to do the normal processing (that it would do for any other type) here.
+            var resultList = new List<JToken>();
+            foreach (var rawJToken in rawResultSet)
+            {
+                var processedJToken = (JToken)this._graphSONReader.ToObject(rawJToken);
+                foreach (var d in processedJToken)
+                {
+                    resultList.Add(d);
+                }
+            }
+            var newResultSet = new ResultSet<JToken>(resultList, rawResultSet.StatusAttributes);
+
+            return new GraphResult(newResultSet);
         }
 
         /// <summary>
