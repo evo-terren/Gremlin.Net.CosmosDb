@@ -1,6 +1,5 @@
 ﻿using Gremlin.Net.CosmosDb.Structure;
 using Gremlin.Net.Process.Traversal;
-using Gremlin.Net.Structure;
 
 namespace Gremlin.Net.CosmosDb
 {
@@ -17,7 +16,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         public GraphTraversalSource()
         {
-            _graphTraversalSource = new Graph().Traversal();
+            _graphTraversalSource = AnonymousTraversalSource.Traversal();
             _graphTraversalSource.Bytecode.AddSource("g");
         }
 
