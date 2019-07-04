@@ -7,8 +7,8 @@
     <PackageTags>gremlin cosmos cosmosdb gremlin.net</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Helper library to use Gremlin.Net with a Cosmos DB graph instance</Description>
-    <Copyright>© 2001-2018 evo - All rights reserved, all wrongs reversed</Copyright>
-    <Version>0.3.4.0004-rc1</Version>
+    <Copyright>© 2001-2019 evo - All rights reserved, all wrongs reversed</Copyright>
+    <Version>0.3.4.5-rc1</Version>
     <PackageProjectUrl>https://github.com/evo-terren/Gremlin.Net.CosmosDb</PackageProjectUrl>
     <RepositoryUrl>https://github.com/evo-terren/Gremlin.Net.CosmosDb</RepositoryUrl>
   </PropertyGroup>
@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gremlin.Net" Version="3.4.0" />
+    <PackageReference Include="Gremlin.Net" Version="3.4.2" />
   </ItemGroup>
 
 </Project>
