@@ -116,7 +116,7 @@ namespace Gremlin.Net.CosmosDb.Serialization
                 {
                     // If we are here it means that the property is non-scalar and not an array. As such, assume it's a
                     // List (otherwise it's non-trivial)
-                    if (prop.GetValue(edge) is IList oldList)
+                    if (prop.GetValue(edge) is IList oldList && !oldList.IsFixedSize)
                     {
                         // If it already exists, add the vertex
                         oldList.Add(vertex);
