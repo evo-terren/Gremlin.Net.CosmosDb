@@ -28,9 +28,10 @@ namespace Gremlin.Net.CosmosDb
         /// <param name="databaseName">Name of the database (case-sensitive).</param>
         /// <param name="graphName">Name of the graph.</param>
         /// <param name="accessKey">The access key.</param>
-        public GraphClient(string gremlinHostname, string databaseName, string graphName, string accessKey)
+        public GraphClient(string gremlinHostname, string databaseName, string graphName, string accessKey,
+            int port = 443, bool useSSL = true)
         {
-            var server = new GremlinServer(gremlinHostname, 443, true, $"/dbs/{databaseName}/colls/{graphName}", accessKey);
+            var server = new GremlinServer(gremlinHostname, port, useSSL, $"/dbs/{databaseName}/colls/{graphName}", accessKey);
 
             _graphSONReader = new GraphSONJTokenReader();
             _gremlinClient = new GremlinClient(server, _graphSONReader, mimeType: GremlinClient.GraphSON2MimeType);
