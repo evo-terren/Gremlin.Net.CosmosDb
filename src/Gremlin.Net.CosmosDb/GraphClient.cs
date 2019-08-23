@@ -38,7 +38,7 @@ namespace Gremlin.Net.CosmosDb
         /// </summary>
         /// <param name="gremlinClient">The gremlin client.</param>
         /// <exception cref="ArgumentNullException">gremlinClient</exception>
-        internal GraphClient(IGremlinClient gremlinClient)
+        public GraphClient(IGremlinClient gremlinClient)
         {
             _gremlinClient = gremlinClient ?? throw new ArgumentNullException(nameof(gremlinClient));
         }
