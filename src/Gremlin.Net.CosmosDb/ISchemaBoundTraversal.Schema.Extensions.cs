@@ -432,6 +432,12 @@ namespace Gremlin.Net.CosmosDb
             if (elementType != propInfo.ReflectedType && !elementType.IsSubclassOf(propInfo.ReflectedType))
                 throw new ArgumentException($"Expression '{lambda}' refers to a property that is not from type {elementType}.");
 
+            if (propInfo.GetCustomAttribute<Newtonsoft.Json.JsonPropertyAttribute>() is var jsonProperty)
+            {
+              if (!String.IsNullOrWhiteSpace(jsonProperty.PropertyName))
+                return jsonProperty.PropertyName;
+            }
+
             return propInfo.Name;
         }
     }
