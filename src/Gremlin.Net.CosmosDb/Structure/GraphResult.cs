@@ -53,12 +53,12 @@ namespace Gremlin.Net.CosmosDb.Structure
         /// </summary>
         public double TotalRequestCharge => (double)ResultSet.StatusAttributes["x-ms-total-request-charge"];
 
-        internal GraphResult(ResultSet<JToken> resultSet)
+        public GraphResult(ResultSet<JToken> resultSet)
         {
             ResultSet = resultSet ?? throw new System.ArgumentNullException(nameof(resultSet));
         }
 
-        internal GraphResult<T> ApplyType<T>(JsonSerializer serializer)
+        public GraphResult<T> ApplyType<T>(JsonSerializer serializer)
         {
             return new GraphResult<T>(ResultSet, serializer);
         }
