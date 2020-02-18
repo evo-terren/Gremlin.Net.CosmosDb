@@ -1,4 +1,6 @@
 ﻿# Gremlin.Net.CosmosDb
+ 
+**I have officially abandoned this project. If you are looking for a good alternative, I recommend https://github.com/ExRam/ExRam.Gremlinq at the time of writing.**
 
 Gremlin.Net.CosmosDb is a helper library to be used in conjuntion with [Gremlin.Net](https://github.com/apache/tinkerpop/tree/master/gremlin-dotnet).
 
